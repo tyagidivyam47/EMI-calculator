@@ -5,6 +5,7 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Auth/Login";
 import SignUp from "./Pages/Auth/Signup";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
+import SetupForgotPass from "./Pages/Auth/SetupForgotPass";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/passwordReset" element={<ForgotPassword />} />
+        <Route path="/forgotPassword" element={<SetupForgotPass />} />
       </Routes>
       {/* <Routes>
       </Routes> */}

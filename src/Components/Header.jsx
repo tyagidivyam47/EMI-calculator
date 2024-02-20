@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/EMI-logo1.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { primaryColor, tertiaryColor } from "../Theme";
 
 const Header = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -28,12 +29,15 @@ const Header = () => {
     }
   }, [cookies]);
   return (
-    <div>
+    <div style={{
+      position:"sticky",
+          top:0
+    }}>
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          backgroundColor: "#E5F9F5",
+          backgroundColor: primaryColor,
           height: "60px",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
@@ -41,7 +45,7 @@ const Header = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <img src={logo} style={{ height: "68px" }} />
           <div
-            className="text-xl font-semibold text-teal-900"
+            className="text-xl font-semibold text-white"
             style={{ fontFamily: "Sixtyfour, sans-serif" }}
           >
             EMI Buddy

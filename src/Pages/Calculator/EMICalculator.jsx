@@ -58,7 +58,7 @@ const EMICalculator = () => {
 
   return (
     <div style={{ background: "", width: "100%", height: "100vh" }}>
-      {showParticles && <Particle />}
+      {/* {showParticles && <Particle />} */}
       <div
         style={{
           textAlign: "center",

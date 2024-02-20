@@ -139,9 +139,9 @@ const Calculator = ({
         </div>
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginRight: "20px" }}
+            style={{ fontSize: "15px", color: "#dcdcdc", marginRight: "30px" }}
           >
-            1L
+            1
           </div>
           <input
             id="loan-amount"
@@ -158,7 +158,7 @@ const Calculator = ({
           <div
             style={{ fontSize: "15px", color: "#dcdcdc", marginLeft: "5px" }}
           >
-            100L
+            100
           </div>
         </div>
       </div>
