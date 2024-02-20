@@ -1,23 +1,32 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Calculator = ({
   inputLoanAmount,
   inputTenure,
   inputInterest,
   onChange,
+  amountUl,
+  interestUl,
+  tenureUl,
 }) => {
   const [totalLoanAmount, setTotalLoanAmount] = useState(inputLoanAmount);
   const [tenure, setTenure] = useState(inputTenure);
   const [rateOfInterest, setRateOfInterest] = useState(inputInterest);
-
   const [monthlyEMI, setMonthlyEMI] = useState(0);
   const [totalInterest, setTotalInterest] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-
   const [totalLoanError, setTotalLoanError] = useState("input");
   const [tenureError, setTenureError] = useState("input");
   const [rateOfInterestError, setRateOfInterestError] = useState("input");
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "auth_token",
+    "user_id",
+  ]);
+
+  const navigate = useNavigate();
 
   const calculateEMI = () => {
     if (
@@ -56,7 +65,11 @@ const Calculator = ({
   }, [totalLoanAmount, tenure, rateOfInterest]);
 
   const handleTotalLoanChange = (e) => {
-    if (e.target.value.length < 6 || e.target.value.length > 8) {
+    if (
+      e.target.value.length < 6 ||
+      e.target.value.length > 8 ||
+      e.target.value > amountUl
+    ) {
       setTotalLoanError("input error");
     } else {
       setTotalLoanError("input");
@@ -65,7 +78,11 @@ const Calculator = ({
   };
 
   const handleTenureChange = (e) => {
-    if (e.target.value > 40 || e.target.value < 1) {
+    if (
+      e.target.value > 40 ||
+      e.target.value < 1 ||
+      e.target.value > tenureUl
+    ) {
       setTenureError("input error");
     } else {
       setTenureError("input");
@@ -74,13 +91,26 @@ const Calculator = ({
   };
 
   const handleRateOfInterestChange = (e) => {
-    if (e.target.value > 45 || e.target.value < 1) {
+    if (
+      e.target.value > 45 ||
+      e.target.value < 1 ||
+      e.target.value > interestUl
+    ) {
       setRateOfInterestError("input error");
     } else {
       setRateOfInterestError("input");
     }
     setRateOfInterest(parseFloat(e.target.value).toFixed(2));
   };
+
+  useEffect(() => {
+    const isLoggedIn = cookies.auth_token;
+    if (isLoggedIn) {
+      console.log("logged in");
+    } else {
+      navigate("/login");
+    }
+  }, [cookies]);
   return (
     <div>
       <div className="loan-container">
@@ -257,7 +287,7 @@ const Calculator = ({
         </div>
 
         <div className="values">
-          <span style={{fontWeight:"600"}}>Total amount</span>
+          <span style={{ fontWeight: "600" }}>Total amount</span>
           <span>₹ {totalAmount.toLocaleString("en-IN")}</span>
         </div>
       </div>
