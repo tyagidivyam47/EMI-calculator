@@ -7,6 +7,7 @@ import {
   CssBaseline,
   Fade,
   Grid,
+  InputAdornment,
   Modal,
   TextField,
   Typography,
@@ -21,6 +22,7 @@ import { ThemeProvider } from "@emotion/react";
 import Container from "@mui/material/Container";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { primaryColor } from "../../Theme";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const defaultTheme = createTheme();
 
@@ -53,6 +55,7 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [succModal, setSuccModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = React.useState(false);
 
   const inputChangeHandler = (e) => {
     setPassword(e.target.value);
@@ -179,12 +182,15 @@ const ForgotPassword = () => {
                   style={{ width: "400px", marginTop: "10px" }}
                   required
                   fullWidth
-                  type="password"
+                  type={showPass ? "text" : "password"}
                   //   value={confirmPassword}
                   id="confPassword"
                   label="Confirm Password"
                   autoFocus
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end"><span onClick={() => setShowPass(!showPass)}><VisibilityIcon sx={{ cursor: "pointer" }} /></span></InputAdornment>,
+                  }}
                 />
               </Grid>
             </Grid>

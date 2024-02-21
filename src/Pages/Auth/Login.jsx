@@ -18,6 +18,9 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/EMI-logo1.png";
 import { primaryColor, tertiaryColor } from "../../Theme";
 import { verifyInput } from "../../input-validation";
+import { InputAdornment } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+// import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function Copyright(props) {
   return (
@@ -46,6 +49,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [errorMsg, setErrMsg] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [showPass, setShowPass] = React.useState(false);
 
   const handleSubmit = async (event) => {
     try {
@@ -63,7 +67,7 @@ const Login = () => {
         return;
       }
       const emailValid = verifyInput(body.email, 'email');
-      if(!emailValid){
+      if (!emailValid) {
         setErrMsg("Email format is Invalid");
         setLoading(false);
         return;
@@ -167,10 +171,14 @@ const Login = () => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPass ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
+                InputProps={{
+                  endAdornment: <InputAdornment position="end"><span onClick={() => setShowPass(!showPass)}><VisibilityIcon sx={{ cursor: "pointer" }} /></span></InputAdornment>,
+                }}
               />
+
               {errorMsg && <span className="text-red-500">{errorMsg}</span>}
               <Button
                 type="submit"
