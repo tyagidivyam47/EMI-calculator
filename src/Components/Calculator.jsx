@@ -1,7 +1,9 @@
+import { Tooltip } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { primaryColor, secondaryColor } from "../Theme";
 
 const Calculator = ({
   inputLoanAmount,
@@ -106,7 +108,7 @@ const Calculator = ({
   useEffect(() => {
     const isLoggedIn = cookies.auth_token;
     if (isLoggedIn) {
-      console.log("logged in");
+      // console.log("logged in");
     } else {
       navigate("/login");
     }
@@ -123,17 +125,27 @@ const Calculator = ({
               totalLoanError.includes("error") ? "error" : ""
             }`}
           >
-            <input
-              type="number"
-              className={totalLoanError}
-              style={{
-                width: "100px",
-                textAlign: "right",
-                borderBottom: "2px solid #00D09B",
-              }}
-              value={totalLoanAmount}
-              onChange={handleTotalLoanChange}
-            />
+            <Tooltip
+              open={totalLoanError.includes("error")}
+              title="
+              The amount of total loan selected is above than the market standards. Getting large loans may have the following risks
+              such as Early Payoff Penalties, Upfront Fees, Privacy Concerns, Precomputed Interest, Insurance Offers.
+              "
+              placement="right"
+              style={{ background: primaryColor }}
+            >
+              <input
+                type="number"
+                className={totalLoanError}
+                style={{
+                  width: "100px",
+                  textAlign: "right",
+                  borderBottom: "2px solid #007BA7",
+                }}
+                value={totalLoanAmount}
+                onChange={handleTotalLoanChange}
+              />
+            </Tooltip>
             <span>₹</span>
           </div>
         </div>
@@ -173,17 +185,27 @@ const Calculator = ({
               rateOfInterestError.includes("error") ? "error" : ""
             }`}
           >
-            <input
-              type="number"
-              className={rateOfInterestError}
-              style={{
-                width: "100px",
-                textAlign: "right",
-                borderBottom: "2px solid #00D09B",
-              }}
-              value={rateOfInterest}
-              onChange={handleRateOfInterestChange}
-            />
+            <Tooltip
+              open={rateOfInterestError.includes("error")}
+              title="
+              The selected rate of interest on the loan is above than the market standards. Doing such may have the following risks
+              such as Interest Rate Burden, Early Payoff Penalties, Upfront Fees, Privacy Concerns, Precomputed Interest, Insurance Offers.
+              "
+              placement="right"
+              style={{ background: primaryColor }}
+            >
+              <input
+                type="number"
+                className={rateOfInterestError}
+                style={{
+                  width: "100px",
+                  textAlign: "right",
+                  borderBottom: "2px solid #007BA7",
+                }}
+                value={rateOfInterest}
+                onChange={handleRateOfInterestChange}
+              />
+            </Tooltip>
             <span
               className={`${
                 rateOfInterestError.includes("error") ? "error" : ""
@@ -228,17 +250,27 @@ const Calculator = ({
               tenureError.includes("error") ? "error" : ""
             }`}
           >
-            <input
-              type="number"
-              className={tenureError}
-              style={{
-                width: "100px",
-                textAlign: "right",
-                borderBottom: "2px solid #00D09B",
-              }}
-              value={tenure}
-              onChange={handleTenureChange}
-            />
+            <Tooltip
+              open={tenureError.includes("error")}
+              title="
+              The selected rate of interest on the loan is above than the market standards. Doing such may have the following risks
+              such as Interest Rate Burden, Extended Debt Obligation, Total Interest Paid, Opportunity Cost, Life Changes, Prepayment Penalties.
+              "
+              placement="right"
+              style={{ background: primaryColor }}
+            >
+              <input
+                type="number"
+                className={tenureError}
+                style={{
+                  width: "100px",
+                  textAlign: "right",
+                  borderBottom: "2px solid #007BA7",
+                }}
+                value={tenure}
+                onChange={handleTenureChange}
+              />
+            </Tooltip>
             <span>Yr</span>
           </div>
         </div>
@@ -270,25 +302,25 @@ const Calculator = ({
 
       <div className="result-container">
         <div className="values">
-          <span style={{ fontWeight: "600" }}>Monthly EMI</span>
-          <span>₹ {monthlyEMI.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>Monthly EMI</span>
+          <span style={{color: secondaryColor}}>₹ {monthlyEMI.toLocaleString("en-IN")}</span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600" }}>Principal amount</span>
-          <span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>Principal amount</span>
+          <span style={{color: secondaryColor}}>
             ₹ {totalLoanAmount ? totalLoanAmount.toLocaleString("en-IN") : 0}
           </span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600" }}>Total interest</span>
-          <span>₹ {totalInterest.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>Total interest</span>
+          <span style={{color: secondaryColor}}>₹ {totalInterest.toLocaleString("en-IN")}</span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600" }}>Total amount</span>
-          <span>₹ {totalAmount.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>Total amount</span>
+          <span style={{color: secondaryColor}}>₹ {totalAmount.toLocaleString("en-IN")}</span>
         </div>
       </div>
     </div>

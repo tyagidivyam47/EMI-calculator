@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { primaryColor, secondaryColor } from "../Theme";
 
 const BarChart = ({
   loanAmount,
@@ -48,12 +49,12 @@ const BarChart = ({
       {
         label: "Principal Amount",
         data: principalData,
-        backgroundColor: "#00d09b",
+        backgroundColor: primaryColor,
       },
       {
         label: "Interest",
         data: interestData,
-        backgroundColor: "#E5F9F5",
+        backgroundColor: secondaryColor,
       },
     ],
   };

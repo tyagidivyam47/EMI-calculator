@@ -15,13 +15,15 @@ import PhoneInput from "react-phone-input-2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "react-phone-input-2/lib/style.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import logo from "../../assets/EMI-logo1.png";
 import { auth } from "../../Components/services/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { Alert, Modal, Tooltip } from "@mui/material";
 import Signup2 from "./Signup2";
 import OTPInput from "react-otp-input";
 import axios from "axios";
+import { primaryColor, secondaryColor } from "../../Theme";
+import { verifyInput } from "../../input-validation";
 
 function Copyright(props) {
   return (
@@ -82,6 +84,18 @@ export default function SignUp() {
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
+    if (name === "first_name" || name === "last_name") {
+      if (value === " ") {
+        return;
+      }
+      const nameValid = verifyInput(value, "name");
+      if (!nameValid) {
+        return;
+      }
+    }
+    if (name === "email" && value === " ") {
+      return;
+    }
     setDetails({ ...details, [name]: value });
   };
 
@@ -102,6 +116,12 @@ export default function SignUp() {
 
   const sendEmailOtp = async () => {
     try {
+      const emailValid = verifyInput(details.email, "email");
+      if (!emailValid) {
+        setErrorMsg("Enter a Valid Email");
+        setUnfilled(true);
+        return;
+      }
       setOtpLoadingEmail(true);
       if (
         details.first_name === "" ||
@@ -110,6 +130,7 @@ export default function SignUp() {
       ) {
         setUnfilled(true);
         setErrorMsg("Fill all the madatory fields");
+        setOtpLoadingEmail(false);
         return;
       }
       const response = await axios.get(
@@ -119,12 +140,13 @@ export default function SignUp() {
 
       setBlockOtp(true);
       setCounter(counter - 1);
+      setOtpLoadingEmail(false);
     } catch (error) {
       setUnfilled(true);
       setErrorMsg("Error while sending OTP. Please try again after some time");
       console.log(error);
+      setOtpLoadingEmail(false);
     }
-    setOtpLoadingEmail(false);
   };
 
   const verifyEmailOtp = async () => {
@@ -221,118 +243,156 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {!showScreen2 && (
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {unfilled && (
-              <div className="absolute bottom-3 right-5">
-                <Alert variant="filled" severity="error">
-                  {errorMsg}
-                </Alert>
-              </div>
-            )}
-            <Avatar sx={{ m: 1, bgcolor: "#00d09b" }}>
-              <AccountCircleIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1487088678257-3a541e6e3922?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="flex flex-col justify-center items-center mt-24">
+            <img src={logo} style={{ width: "400px" }} />
+            <div
+              style={{ background: primaryColor }}
+              className="flex flex-col justify-center items-center w-[400px] mx-auto rounded-xl"
             >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="first_name"
-                    required
-                    fullWidth
-                    value={details.first_name}
-                    id="first_name"
-                    label="First Name"
-                    autoFocus
-                    onChange={inputChangeHandler}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    value={details.last_name}
-                    onChange={inputChangeHandler}
-                    id="last_name"
-                    label="Last Name"
-                    name="last_name"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    onChange={inputChangeHandler}
-                    value={details.email}
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12} sx={{ justifyContent: "center" }}>
-                  {!otpLoadingEmail && (
-                    <div className="flex">
-                      <Button
-                        style={{
-                          margin: "auto",
-                          marginTop: "10px",
-                          borderColor: emailOtpSucc ? "green" : "",
-                          color: emailOtpSucc ? "green" : "",
-                        }}
-                        variant="outlined"
-                        onClick={sendEmailOtp}
-                        disabled={blockOtp || emailOtpSucc}
-                      >
-                        {emailOtpSucc ? "Email Verified" : "Verify Email"}
-                      </Button>
-                    </div>
-                  )}
+              <div
+                className="text-4xl font-semibold py-2"
+                style={{
+                  fontFamily: "Sixtyfour, sans-serif",
+                  color: "#FFFFFF",
+                }}
+              >
+                EMI Buddy
+              </div>
+            </div>
+          </div>
+        </Grid>
 
-                  {otpLoadingEmail && (
-                    <div className="flex">
-                      <Button
-                        style={{
-                          margin: "auto",
-                          marginTop: "10px",
-                          borderColor: emailOtpSucc ? "green" : "",
-                          color: emailOtpSucc ? "green" : "",
-                        }}
-                        variant="outlined"
-                        onClick={sendEmailOtp}
-                        disabled
-                      >
-                        Loading...
-                      </Button>
+        {!showScreen2 && (
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {unfilled && (
+                <div className="absolute bottom-3 right-5">
+                  <Alert variant="filled" severity="error">
+                    {errorMsg}
+                  </Alert>
+                </div>
+              )}
+              <AccountCircleIcon
+                sx={{ height: "70px", width: "70px", color: primaryColor }}
+              />
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="first_name"
+                      required
+                      fullWidth
+                      value={details.first_name}
+                      id="first_name"
+                      label="First Name"
+                      autoFocus
+                      onChange={inputChangeHandler}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      value={details.last_name}
+                      onChange={inputChangeHandler}
+                      id="last_name"
+                      label="Last Name"
+                      name="last_name"
+                      autoComplete="family-name"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      onChange={inputChangeHandler}
+                      value={details.email}
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sx={{ justifyContent: "center" }}>
+                    {!otpLoadingEmail && (
+                      <div className="flex">
+                        <Button
+                          style={{
+                            margin: "auto",
+                            marginTop: "10px",
+                            borderColor: emailOtpSucc ? "green" : "",
+                            color: emailOtpSucc ? "green" : "",
+                          }}
+                          variant="outlined"
+                          onClick={sendEmailOtp}
+                          disabled={blockOtp || emailOtpSucc}
+                        >
+                          {emailOtpSucc ? "Email Verified" : "Verify Email"}
+                        </Button>
+                      </div>
+                    )}
+
+                    {otpLoadingEmail && (
+                      <div className="flex">
+                        <Button
+                          style={{
+                            margin: "auto",
+                            marginTop: "10px",
+                            borderColor: emailOtpSucc ? "green" : "",
+                            color: emailOtpSucc ? "green" : "",
+                          }}
+                          variant="outlined"
+                          onClick={sendEmailOtp}
+                          disabled
+                        >
+                          Loading...
+                        </Button>
+                      </div>
+                    )}
+                  </Grid>
+                  {blockOtp && !emailOtpSucc && (
+                    <div className="flex justify-center mx-auto mt-2">
+                      Retry in {counter} seconds
                     </div>
                   )}
-                </Grid>
-                {blockOtp && !emailOtpSucc && (
-                  <div className="flex justify-center mx-auto mt-2">
-                    Retry in {counter} seconds
-                  </div>
-                )}
-                {/*<Grid item xs={12}>
+                  {/*<Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -355,162 +415,184 @@ export default function SignUp() {
                 />
               </Grid> */}
 
-                <Grid item xs={12}>
-                  <div className="flex hidden">
-                    <PhoneInput
-                      country={"in"}
-                      inputStyle={{ height: "62px" }}
-                      value={phone}
-                      onChange={(phone) => setPhone(phone)}
-                    />
-                    <Tooltip
-                      open={blockOtp}
-                      title={`Wait for ${counter} seconds`}
-                      placement="right"
-                    >
-                      <Button
-                        onClick={sendOtp}
-                        variant="outlined"
-                        disabled={blockOtp}
-                      >
-                        Get OTP
-                      </Button>
-                    </Tooltip>
-                  </div>
-                  <div
-                    className="flex mt-3 justify-center"
-                    id="recaptcha"
-                  ></div>
-                </Grid>
-                <Grid item xs={12}>
-                  {getOtpClicked && (
-                    <div className="flex flex-col items-center">
-                      <TextField
-                        onChange={(e) => setOtp(e.target.value)}
-                        required
-                        fullWidth
-                        name="otp"
-                        label="Enter the OTP"
-                        type="otp"
-                        id="otp"
-                        autoComplete="otp"
-                        style={{
-                          border: `${
-                            otpSuccess === "FAILURE"
-                              ? "1px solid red"
-                              : "1px solid green"
-                          }`,
-                        }}
+                  <Grid item xs={12}>
+                    <div className="flex hidden">
+                      <PhoneInput
+                        country={"in"}
+                        inputStyle={{ height: "62px" }}
+                        value={phone}
+                        onChange={(phone) => setPhone(phone)}
                       />
-                      <Button
-                        className="ml-auto flex justify-center"
-                        onClick={verifyOtp}
-                        disabled={otpSuccess === "SUCCESS" ? true : false}
+                      <Tooltip
+                        open={blockOtp}
+                        title={`Wait for ${counter} seconds`}
+                        placement="right"
                       >
-                        {otpSuccess === "SUCCESS"
-                          ? "Verified"
-                          : otpLoading
-                          ? "Verifying..."
-                          : "Verify"}
-                      </Button>
+                        <Button
+                          onClick={sendOtp}
+                          variant="outlined"
+                          disabled={blockOtp}
+                        >
+                          Get OTP
+                        </Button>
+                      </Tooltip>
                     </div>
-                  )}
+                    <div
+                      className="flex mt-3 justify-center"
+                      id="recaptcha"
+                    ></div>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {getOtpClicked && (
+                      <div className="flex flex-col items-center">
+                        <TextField
+                          onChange={(e) => setOtp(e.target.value)}
+                          required
+                          fullWidth
+                          name="otp"
+                          label="Enter the OTP"
+                          type="otp"
+                          id="otp"
+                          autoComplete="otp"
+                          style={{
+                            border: `${
+                              otpSuccess === "FAILURE"
+                                ? "1px solid red"
+                                : "1px solid green"
+                            }`,
+                          }}
+                        />
+                        <Button
+                          className="ml-auto flex justify-center"
+                          onClick={verifyOtp}
+                          disabled={otpSuccess === "SUCCESS" ? true : false}
+                        >
+                          {otpSuccess === "SUCCESS"
+                            ? "Verified"
+                            : otpLoading
+                            ? "Verifying..."
+                            : "Verify"}
+                        </Button>
+                      </div>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-              {/* {errorMsg && <span className="text-red-500">{errorMsg}</span>} */}
+                {/* {errorMsg && <span className="text-red-500">{errorMsg}</span>} */}
 
-              <Button
-                onClick={nextClickHandler}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={!emailOtpSucc}
-              >
-                Submit
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <span className="text-sm text-blue-500">
-                    Already have an account?{" "}
-                  </span>
-                  <Link
-                    href="/login"
-                    variant="body2"
-                    className="cursor-pointer"
-                  >
-                    Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-          <Copyright sx={{ mt: 5 }} />
-
-          <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            {/* <Fade in={true}> */}
-            <Box sx={style} borderRadius={"20px"}>
-              <Typography id="transition-modal-title">
-                <div className="text-center">
-                  Enter the OTP sent to{" "}
-                  <span className="font-semibold">{details.email}</span>
-                </div>
-                {/* <img src={DoneAllIcon} /> */}
-              </Typography>
-              <div className="flex justify-center">
-                <OTPInput
-                  value={emailOtp}
-                  onChange={setEmailOtp}
-                  numInputs={6}
-                  renderSeparator={<span>-</span>}
-                  renderInput={(props) => <input {...props} />}
-                  containerStyle={{ padding: "20px" }}
-                  inputStyle={{ height: "40px", width: "40px" }}
-                  inputType="number"
-                  shouldAutoFocus
-                />
-              </div>
-              <div className="flex justify-center">
                 <Button
-                  disabled={emailOtp?.length < 6 || verifyLoading}
-                  onClick={verifyEmailOtp}
+                  onClick={nextClickHandler}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={!emailOtpSucc}
                 >
-                  {verifyLoading ? "Verifying..." : "Verify"}
+                  Submit
                 </Button>
-                {blockOtp && (
-                  <Button disabled={blockOtp}>
-                    Resend OTP in <br />
-                    {counter} seconds
-                  </Button>
-                )}
-                {!blockOtp && !otpLoadingEmail && (
-                  <Button onClick={sendEmailOtp} disabled={blockOtp}>
-                    Resend OTP
-                  </Button>
-                )}
-                {otpLoadingEmail && <Button disabled>Loading...</Button>}
-              </div>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <span className="text-sm text-blue-500">
+                      Already have an account?{" "}
+                    </span>
+                    <Link
+                      href="/login"
+                      variant="body2"
+                      className="cursor-pointer"
+                    >
+                      Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
             </Box>
-            {/* </Fade> */}
-          </Modal>
-        </Container>
-      )}
+            <Copyright sx={{ mt: 5 }} />
 
-      {showScreen2 && (
-        <Signup2
-          first_name={details.first_name}
-          last_name={details.last_name}
-          email={details.email}
-          phone={phone}
-        />
-      )}
+            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+              {/* <Fade in={true}> */}
+              <Box sx={style} borderRadius={"20px"}>
+                <Typography id="transition-modal-title">
+                  <div className="text-center">
+                    Enter the OTP sent to{" "}
+                    <span
+                      className="font-semibold"
+                      style={{ color: secondaryColor }}
+                    >
+                      {details.email}
+                    </span>
+                  </div>
+                  {/* <img src={DoneAllIcon} /> */}
+                </Typography>
+                <div className="flex justify-center">
+                  <OTPInput
+                    value={emailOtp}
+                    onChange={setEmailOtp}
+                    numInputs={6}
+                    renderSeparator={<span>-</span>}
+                    renderInput={(props) => <input {...props} />}
+                    containerStyle={{ padding: "20px" }}
+                    inputStyle={{
+                      height: "55px",
+                      width: "55px",
+                      background: "#FFFFFF",
+                      border: `1px solid ${primaryColor}`,
+                      fontWeight: "bold",
+                      fontSize: "20px",
+                      color: secondaryColor,
+                    }}
+                    inputType="number"
+                    shouldAutoFocus
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <Button
+                    disabled={
+                      !emailOtp || emailOtp?.length < 6 || verifyLoading
+                    }
+                    onClick={verifyEmailOtp}
+                    variant="outlined"
+                    sx={{ marginRight: "5px" }}
+                  >
+                    {verifyLoading ? "Verifying..." : "Verify"}
+                  </Button>
+                  {blockOtp && (
+                    <Button disabled={blockOtp} variant="outlined">
+                      Resend(
+                      {counter} sec)
+                    </Button>
+                  )}
+                  {!blockOtp && !otpLoadingEmail && (
+                    <Button
+                      onClick={sendEmailOtp}
+                      disabled={blockOtp}
+                      variant="outlined"
+                    >
+                      Resend
+                    </Button>
+                  )}
+                  {otpLoadingEmail && <Button disabled>Loading...</Button>}
+                </div>
+              </Box>
+              {/* </Fade> */}
+            </Modal>
+          </Container>
+        )}
 
-      {/* <Signup2
+        {showScreen2 && (
+          <Signup2
+            first_name={details.first_name}
+            last_name={details.last_name}
+            email={details.email}
+            phone={phone}
+          />
+        )}
+
+        {/* <Signup2
           first_name={'Divyam'}
           last_name={'Tyagi'}
           email={'tyagidivyam47@gmail.com'}
           phone={919548114838}
         /> */}
+      </Grid>
     </ThemeProvider>
   );
 }

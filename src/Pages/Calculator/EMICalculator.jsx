@@ -7,6 +7,7 @@ import BarChart from "../../Components/BarChart";
 import downloadIcon from "../../assets/download-icon.png";
 
 import "./EMICalculator.css";
+import { primaryColor } from "../../Theme";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(1000000);
@@ -77,15 +78,16 @@ const EMICalculator = () => {
           justifyContent: "space-between",
           paddingLeft: "10px",
           paddingRight: "10px",
+          background: primaryColor
         }}
-        className="bg-teal-800"
+        // className="bg-teal-800"
       >
         <div
           onClick={() => loanTypeClick("home")}
           className={
             loanType === "home"
-              ? "text-[#123830] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
-              : "text-white  hover:text-[#4cb9a2] cursor-pointer"
+              ? "text-[#007BA7] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
+              : "text-white  hover:text-[#67dafd] cursor-pointer"
           }
         >
           Home Loan
@@ -94,8 +96,8 @@ const EMICalculator = () => {
           onClick={() => loanTypeClick("car")}
           className={
             loanType === "car"
-              ? "text-[#123830] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
-              : "text-white  hover:text-[#4cb9a2] cursor-pointer"
+              ? "text-[#007BA7] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
+              : "text-white  hover:text-[#67dafd] cursor-pointer"
           }
         >
           Car Loan
@@ -104,8 +106,8 @@ const EMICalculator = () => {
           onClick={() => loanTypeClick("edu")}
           className={
             loanType === "edu"
-              ? "text-[#123830] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
-              : "text-white  hover:text-[#4cb9a2] cursor-pointer"
+              ? "text-[#007BA7] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
+              : "text-white  hover:text-[#67dafd] cursor-pointer"
           }
         >
           Education Loan
@@ -114,8 +116,8 @@ const EMICalculator = () => {
           onClick={() => loanTypeClick("personal")}
           className={
             loanType === "personal"
-              ? "text-[#123830] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
-              : "text-white  hover:text-[#4cb9a2] cursor-pointer"
+              ? "text-[#007BA7] font-semibold bg-white px-3 rounded-t-lg cursor-pointer"
+              : "text-white  hover:text-[#67dafd] cursor-pointer"
           }
         >
           Personal Loan

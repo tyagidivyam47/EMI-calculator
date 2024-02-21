@@ -51,7 +51,7 @@ const Header = () => {
             EMI Buddy
           </div>
         </div>
-        <div className="flex justify-center mx-auto">
+        <div className="flex justify-end ml-auto">
           <NavLink
             to="/"
             style={{
@@ -76,7 +76,7 @@ const Header = () => {
                 margin: "0 10px",
                 transition: "color 0.3s ease",
               }}
-              className="text-[#00d09b] hover:text-teal-900"
+              className="text-[#ffffff] hover:text-blue-300"
             >
               Calculator
             </NavLink>
@@ -95,7 +95,7 @@ const Header = () => {
             Contact Us
           </NavLink>
         </div>
-        {!loggedIn && (
+        {/* {!loggedIn && (
           <NavLink
             to="/login"
             style={{
@@ -109,11 +109,11 @@ const Header = () => {
           >
             Log In
           </NavLink>
-        )}
+        )} */}
 
         {loggedIn && (
           <Link
-            to='/'
+            to='/dashboard'
             style={{
               fontSize: "16px",
               fontWeight: "bold",
@@ -121,9 +121,9 @@ const Header = () => {
               margin: "0 10px",
               transition: "color 0.3s ease",
             }}
-            className="text-[#00d09b] rounded-lg hover:bg-[#E5F9F5] hover:text-teal-800 cursor-pointer"
+            className="text-[#ffffff] hover:text-blue-300"
           >
-            Profile
+            Dashboard
           </Link>
         )}
         {loggedIn && (
@@ -136,7 +136,7 @@ const Header = () => {
               margin: "0 10px",
               transition: "color 0.3s ease",
             }}
-            className="text-[#00d09b] bg-white px-5 py-2 rounded-lg hover:bg-[#E5F9F5] hover:text-teal-800 cursor-pointer"
+            className={`text-[#${primaryColor}] bg-white px-5 py-2 rounded-lg hover:bg-[#54a4ffa9] hover:text-white cursor-pointer`}
           >
             Log Out
           </span>

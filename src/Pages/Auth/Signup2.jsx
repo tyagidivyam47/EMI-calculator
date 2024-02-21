@@ -20,6 +20,11 @@ import { ThemeProvider } from "@emotion/react";
 // import { Container } from "postcss";
 import Container from "@mui/material/Container";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { primaryColor, secondaryColor } from "../../Theme";
+import { useCookies } from "react-cookie";
+import { verifyInput } from "../../input-validation";
+
 
 const defaultTheme = createTheme();
 
@@ -38,6 +43,7 @@ const style = {
 const Signup2 = ({ first_name, last_name, email, phone }) => {
   const API_ENDPOINT = import.meta.env.VITE_BASE_URL;
 
+  const [cookie, setCookie] = useCookies(["auth_token", "user_id"]);
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState();
   const [unfilled, setUnfilled] = useState(false);
@@ -63,31 +69,42 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
         setErrorMsg("Passwords do not match");
         return;
       }
-      if (details.password.length < 6) {
+      if (details.password.length < 8) {
         setUnfilled(true);
-        setErrorMsg("Password length should be greater than 6");
+        setErrorMsg("Password length should be greater than 8");
         return;
       }
+      const passValid = verifyInput(details.password, 'pass');
+      if(!passValid){
+        setUnfilled(true);
+        setErrorMsg("Password must contain 'Capital Letter' and 'Special Character'");
+        return;
+      }
+
       const response = await axios.post(`${API_ENDPOINT}signup`, details);
+      // console.log(response)
+      setCookie("auth_token", response?.data.token);
+      setCookie("user_id", response?.data.userId);
       setSuccModal(true);
       //   navigate('/login');
     } catch (error) {
+      console.log(error)
       setUnfilled(true);
-      setErrorMsg("Something went wrong!");
+      setErrorMsg(error.response.data.message);
     }
   };
 
   useEffect(() => {
     setTimeout(() => {
       setUnfilled(false);
-    }, [3000]);
+    }, [4000]);
   }, [unfilled]);
 
   useEffect(() => {
     if (succModal) {
       setTimeout(() => {
         setSuccModal(false);
-        navigate("/login");
+        navigate("/calculator");
       }, [2000]);
     }
   }, [succModal]);
@@ -98,19 +115,17 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
         <CssBaseline />
 
         <Modal open={succModal} onClose={() => setSuccModal(false)}>
-          
           {/* <Fade in={true}> */}
-          <Box sx={style}>
+          <Box sx={style} borderRadius={'20px'}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <div className="flex justify-center">
-                <DoneAllIcon sx={{ color: "green" }} />
+                <DoneAllIcon sx={{ color: "green", height:"100px", width:"100px" }} />
               </div>
-              {/* <img src={DoneAllIcon} /> */}
+              
             </Typography>
             <div className="text-center">
-              <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                Account Created Successfully. <br />
-                Kindly Login to continue
+              <Typography id="transition-modal-description" sx={{ mt: 2, fontSize:"20px", fontWeight:"bold", color: secondaryColor }}>
+                Account Created Successfully
               </Typography>
             </div>
           </Box>
@@ -132,9 +147,10 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
               </Alert>
             </div>
           )}
-          <Avatar sx={{ m: 1, bgcolor: "#00d09b" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <AccountCircleIcon
+            sx={{ height: "70px", width: "70px", color: primaryColor }}
+          />
+
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>

@@ -16,7 +16,8 @@ import axios from "axios";
 import { Cookies, useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/EMI-logo1.png";
-import { primaryColor } from "../../Theme";
+import { primaryColor, tertiaryColor } from "../../Theme";
+import { verifyInput } from "../../input-validation";
 
 function Copyright(props) {
   return (
@@ -56,12 +57,25 @@ const Login = () => {
         email: data.get("email"),
         password: data.get("password"),
       };
+      if (body.email.length < 1 || body.password.length < 1) {
+        setErrMsg("Fill Email and Password to continue");
+        setLoading(false);
+        return;
+      }
+      const emailValid = verifyInput(body.email, 'email');
+      if(!emailValid){
+        setErrMsg("Email format is Invalid");
+        setLoading(false);
+        return;
+      }
+
+      console.log(emailValid)
       const resp = await axios.post(`${API_ENDPOINT}login`, body);
       setCookie("auth_token", resp?.data.token);
       setCookie("user_id", resp?.data.userId);
       navigate("/calculator");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setErrMsg(error?.response?.data.message);
     }
     setLoading(false);
@@ -88,11 +102,20 @@ const Login = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="flex flex-col justify-center items-center bg-white w-[500px] mx-auto mt-32 rounded-3xl">
+          <div
+            style={{
+              boxShadow:
+                "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;",
+            }}
+            className="flex flex-col justify-center items-center bg-white w-[500px] mx-auto mt-32 rounded-3xl"
+          >
             <img src={logo} style={{ width: "400px" }} />
             <div
               className="text-4xl font-semibold"
-              style={{ fontFamily: "Sixtyfour, sans-serif", color: primaryColor }}
+              style={{
+                fontFamily: "Sixtyfour, sans-serif",
+                color: primaryColor,
+              }}
             >
               EMI Buddy
             </div>
@@ -108,8 +131,15 @@ const Login = () => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "green" }}>
-              <LockOutlinedIcon />
+            <Avatar
+              sx={{
+                m: 1,
+                bgcolor: primaryColor,
+                height: "70px",
+                width: "70px",
+              }}
+            >
+              <LockOutlinedIcon sx={{ height: "30px", width: "30px" }} />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
@@ -147,18 +177,24 @@ const Login = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                style={{ background: "#525252" }}
+                style={{ background: primaryColor }}
               >
                 {loading ? "Signing In..." : "Sign In"}
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to={'/forgotPassword'} className="cursor-pointer text-sm text-blue-500 underline" variant="body2">
+                  <Link
+                    to={"/forgotPassword"}
+                    className="cursor-pointer text-sm text-blue-500 underline"
+                    variant="body2"
+                  >
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <span className="text-sm text-blue-500">Don't have an account?</span>
+                  <span className="text-sm text-blue-500">
+                    Don't have an account?
+                  </span>
                   <Link
                     to="/signup"
                     className="cursor-pointer text-sm text-blue-500 underline"

@@ -20,6 +20,7 @@ import { ThemeProvider } from "@emotion/react";
 // import { Container } from "postcss";
 import Container from "@mui/material/Container";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { primaryColor } from "../../Theme";
 
 const defaultTheme = createTheme();
 
@@ -138,8 +139,10 @@ const ForgotPassword = () => {
               </Alert>
             </div>
           )}
-          <Avatar sx={{ m: 1, bgcolor: "#00d09b" }}>
-            <LockOutlinedIcon />
+          <Avatar
+            sx={{ m: 1, bgcolor: primaryColor, height: "70px", width: "70px" }}
+          >
+            <LockOutlinedIcon sx={{ height: "30px", width: "30px" }} />
           </Avatar>
           <Typography component="h1" variant="h5">
             Reset Your Password
@@ -191,7 +194,7 @@ const ForgotPassword = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: primaryColor }}
               //   disabled={otpSuccess === "FAILURE" || !otpSuccess ? true : false}
             >
               Submit

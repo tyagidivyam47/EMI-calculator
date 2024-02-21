@@ -1,6 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
+import { primaryColor, secondaryColor, tertiaryColor } from "../Theme";
 
 const PieChart = ({ loanAmount, totalInterest }) => {
   const data = {
@@ -8,7 +9,7 @@ const PieChart = ({ loanAmount, totalInterest }) => {
     datasets: [
       {
         data: [loanAmount, totalInterest],
-        backgroundColor: ["#00d09b", "#E5F9F5"],
+        backgroundColor: [primaryColor, secondaryColor],
         hoverBackgroundColor: ["#36A2EB", "#36A2EB"],
       },
     ],
