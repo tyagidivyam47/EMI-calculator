@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 // import FormControlLabel from "@mui/material/FormControlLabel";
 // import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 // import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -24,6 +24,7 @@ import OTPInput from "react-otp-input";
 import axios from "axios";
 import { primaryColor, secondaryColor } from "../../Theme";
 import { verifyInput } from "../../input-validation";
+import { Link } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -495,9 +496,9 @@ export default function SignUp() {
                       Already have an account?{" "}
                     </span>
                     <Link
-                      href="/login"
+                      to="/login"
                       variant="body2"
-                      className="cursor-pointer"
+                      className="cursor-pointer text-blue-500 text-sm underline"
                     >
                       Sign in
                     </Link>
