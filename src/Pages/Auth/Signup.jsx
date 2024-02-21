@@ -3,21 +3,21 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import PhoneInput from "react-phone-input-2";
+// import PhoneInput from "react-phone-input-2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "react-phone-input-2/lib/style.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import logo from "../../assets/EMI-logo1.png";
-import { auth } from "../../Components/services/firebase.config";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+// import { auth } from "../../Components/services/firebase.config";
+// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { Alert, Modal, Tooltip } from "@mui/material";
 import Signup2 from "./Signup2";
 import OTPInput from "react-otp-input";
@@ -175,23 +175,23 @@ export default function SignUp() {
   };
 
   const sendOtp = async () => {
-    try {
-      const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {});
-      const confirmation = await signInWithPhoneNumber(
-        auth,
-        `+${phone}`,
-        recaptcha
-      );
-      console.log(confirmation);
-      setUser(confirmation);
-      setGetOtpClicked(true);
-      setBlockOtp(true);
-      setCounter(counter - 1);
-    } catch (error) {
-      setUnfilled(true);
-      setErrorMsg("Error while sending OTP. Please try again after some time");
-      console.log(error);
-    }
+    // try {
+    //   const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {});
+    //   const confirmation = await signInWithPhoneNumber(
+    //     auth,
+    //     `+${phone}`,
+    //     recaptcha
+    //   );
+    //   console.log(confirmation);
+    //   setUser(confirmation);
+    //   setGetOtpClicked(true);
+    //   setBlockOtp(true);
+    //   setCounter(counter - 1);
+    // } catch (error) {
+    //   setUnfilled(true);
+    //   setErrorMsg("Error while sending OTP. Please try again after some time");
+    //   console.log(error);
+    // }
   };
 
   React.useEffect(() => {
@@ -417,12 +417,12 @@ export default function SignUp() {
 
                   <Grid item xs={12}>
                     <div className="flex hidden">
-                      <PhoneInput
+                      {/* <PhoneInput
                         country={"in"}
                         inputStyle={{ height: "62px" }}
                         value={phone}
                         onChange={(phone) => setPhone(phone)}
-                      />
+                      /> */}
                       <Tooltip
                         open={blockOtp}
                         title={`Wait for ${counter} seconds`}
