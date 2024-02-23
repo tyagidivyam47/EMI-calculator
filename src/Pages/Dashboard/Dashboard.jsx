@@ -88,7 +88,6 @@ const Dashboard = () => {
       </Box>
       <Box sx={{ marginBottom: "50px", marginRight: "60px" }}>
         <Accordion
-          square="false"
           sx={{ minHeight: "100px", borderRadius: "10px", marginRight: "60px" }}
         >
           <AccordionSummary

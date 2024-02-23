@@ -13,6 +13,7 @@ const Calculator = ({
   amountUl,
   interestUl,
   tenureUl,
+  loanCharges
 }) => {
   const [totalLoanAmount, setTotalLoanAmount] = useState(inputLoanAmount);
   const [tenure, setTenure] = useState(inputTenure);
@@ -30,7 +31,10 @@ const Calculator = ({
 
   const navigate = useNavigate();
 
+  // console.log("Inside Calculator")
+
   const calculateEMI = () => {
+    // console.log("second")
     if (
       !Number(rateOfInterest) ||
       !Number(tenure) ||
@@ -48,7 +52,11 @@ const Calculator = ({
 
     let totalAmt = emi * tenureInMonths;
     let totalInt = totalAmt - totalLoanAmount;
-
+    if(loanCharges && loanCharges > 0){
+      const chargesNum = parseInt(loanCharges, 10);
+      const totalAmountNum = parseInt(totalAmt, 10);
+      totalAmt = (totalAmountNum + chargesNum)
+    }
     onChange(
       totalLoanAmount,
       tenure,
@@ -64,7 +72,7 @@ const Calculator = ({
 
   useEffect(() => {
     calculateEMI();
-  }, [totalLoanAmount, tenure, rateOfInterest]);
+  }, [ tenure, rateOfInterest, loanCharges]);
 
   const handleTotalLoanChange = (e) => {
     if (
@@ -113,6 +121,13 @@ const Calculator = ({
       navigate("/login");
     }
   }, [cookies]);
+
+  useEffect(()=>{
+    // console.log("first")
+    setTotalLoanAmount(inputLoanAmount)
+  },[inputLoanAmount])
+
+  console.log(inputLoanAmount)
   return (
     <div>
       <div className="loan-container">

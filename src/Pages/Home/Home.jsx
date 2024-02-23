@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const isLoggedIn = cookies.auth_token;
     if (isLoggedIn) {
-      navigate('/calculator')
+      navigate('/Dashboard')
     } else {
       navigate('/login');
     }

@@ -6,10 +6,13 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Calculator from "../../../Components/Calculator";
-import { secondaryColor } from "../../../Theme";
+import { primaryColor, secondaryColor, tertiaryColor } from "../../../Theme";
+import { Doughnut } from "react-chartjs-2";
+import InputCalculator from "../../../Components/InputCalculator";
+import PaymentList from "../../../Components/PaymentList";
 
 const HomeLoan = () => {
   const [loanAmount, setLoanAmount] = useState(1000000);
@@ -17,36 +20,249 @@ const HomeLoan = () => {
   const [interest, setInterest] = useState(6.5);
   const [monthlyEMI, setMonthlyEMI] = useState();
   const [totalInterest, setTotalInterest] = useState();
+  const [loanCharges, setLoanCharges] = useState(0);
   const [advancedInfo, setAdvancedInfo] = useState({
-    hv: null,
-    dp: null,
-    li: null,
-    loanCharges: null,
+    hv: 1000000,
+    dp: 0,
+    li: 0,
+    loanCharges: 0,
+    propertyTaxes: 0,
+    homeInsurance: 0,
+    maintenence: 0,
   });
+  const [errorMsg, setErrorMsg] = useState();
+  const [unfilled, setUnfilled] = useState(false);
+  const [accOpen, setAccOpen] = useState(false);
+  const [monthlyPayList, setMonthlyPayList] = useState([
+    {
+      key: "EMI",
+      value: 19566,
+    },
+    {
+      key: "Monthly Extra Pay",
+      value: 0,
+    },
+    {
+      key: "Property Taxes",
+      value: 0,
+    },
+    {
+      key: "Home Insurance",
+      value: 0,
+    },
+    {
+      key: "Maintenance Expenses",
+      value: 0,
+    },
+    {
+      key: "Total Monthly Payment	",
+      value: 19566,
+    },
+  ]);
 
-  const handleChange = (
+  const [totalPayList, setTotalPayList] = useState([
+    {
+      key: "Down Payment, Fees & One-time Expenses",
+      value: 0,
+    },
+    {
+      key: "Principal",
+      value: 1000000,
+    },
+    {
+      key: "Prepayments",
+      value: 0,
+    },
+    {
+      key: "Interest",
+      value: 0,
+    },
+    {
+      key: "Taxes, Home Insurance & Maintenance",
+      value: 0,
+    },
+    {
+      key: "Total of all Payments	",
+      value: 1000000,
+    },
+  ]);
+
+  const setTable = (emi, extraPay, taxes, insurance, maintenence) => {
+    const total = +emi + +extraPay + +taxes + +insurance + +maintenence;
+    setMonthlyPayList([
+      {
+        key: "EMI",
+        value: emi,
+      },
+      {
+        key: "Monthly Extra Pay",
+        value: extraPay,
+      },
+      {
+        key: "Property Taxes",
+        value: taxes,
+      },
+      {
+        key: "Home Insurance",
+        value: insurance,
+      },
+      {
+        key: "Maintenance Expenses",
+        value: maintenence,
+      },
+      {
+        key: "Total Monthly Payment	",
+        value: total,
+      },
+    ]);
+  };
+
+  const setTotalTable = (
+    oneTime,
+    principal,
+    prepay,
+    interestLocal,
+    TaxInsurMain
+  ) => {
+    const total =
+      +oneTime + +principal + +prepay + +interestLocal + +TaxInsurMain;
+    setTotalPayList([
+      {
+        key: "Down Payment, Fees & One-time Expenses",
+        value: oneTime,
+      },
+      {
+        key: "Principal",
+        value: principal,
+      },
+      {
+        key: "Prepayments",
+        value: prepay,
+      },
+      {
+        key: "Interest",
+        value: interestLocal,
+      },
+      {
+        key: "Taxes, Home Insurance & Maintenance",
+        value: TaxInsurMain,
+      },
+      {
+        key: "Total of all Payments	",
+        value: total,
+      },
+    ]);
+  };
+
+  const getData = (
     loanAmountI,
     tenureI,
     interestI,
     monthlyEMII,
     totalInterestI
   ) => {
-    setLoanAmount(loanAmountI);
-    setTenure(tenureI);
-    setInterest(interestI);
-    setMonthlyEMI(monthlyEMII);
-    setTotalInterest(totalInterestI);
+    setLoanAmount(+loanAmountI);
+    setTenure(+tenureI);
+    setInterest(+interestI);
+    setMonthlyEMI(+monthlyEMII);
+    setTotalInterest(+totalInterestI);
+    setTotalTable(
+      totalPayList[0].value,
+      +loanAmountI,
+      totalPayList[2].value,
+      +totalInterestI,
+      totalPayList[4].value
+    );
+    setTable(
+      +monthlyEMII,
+      monthlyPayList[1].value,
+      monthlyPayList[2].value,
+      monthlyPayList[3].value,
+      monthlyPayList[4].value
+    );
   };
 
-  const advancedChangeHandle = (e) => {};
+  const submitHandler = () => {
+    const {
+      hv,
+      dp,
+      li,
+      loanCharges,
+      propertyTaxes,
+      homeInsurance,
+      maintenence,
+    } = advancedInfo;
+    if (dp > hv) {
+      setUnfilled(true);
+      setErrorMsg("Error");
+    }
+
+    const hvNumber = parseInt(hv, 10);
+    const dpNumber = parseInt(dp, 10);
+    const liNumber = parseInt(li, 10);
+    const loanChargesNumber = parseInt(loanCharges, 10);
+    setLoanCharges(loanChargesNumber);
+    const tempLoanAmount = hvNumber + liNumber - dpNumber;
+    // console.log(tempLoanAmount);
+    setLoanAmount(tempLoanAmount);
+    setTotalTable(
+      loanChargesNumber+dpNumber,
+      totalPayList[1].value,
+      totalPayList[2].value,
+      totalPayList[3].value,
+      ((+propertyTaxes*tenure) + (homeInsurance*tenure) + (maintenence*12)*tenure)
+    );
+    setTable(
+      monthlyPayList[0].value,
+      monthlyPayList[1].value,
+      propertyTaxes / 12,
+      homeInsurance / 12,
+      maintenence
+    );
+  };
+
+  // useEffect(()=>{
+  //   setAdvancedInfo({ ...advancedInfo, ['hv']: e.target.value });
+  // },[loanAmount])
+
+  const advancedChangeHandler = (e) => {
+    if (e.target.value < 0 || e.target.value > 1000000000000000) {
+      return;
+    }
+    if (e.target.value.length < 1) {
+      return;
+    }
+    // if (e.target.name === "hv" || e.target.name === "lv" || e.target.name === "dp") {
+    //   setLoanAmount(e.target.value);
+    // }
+    setAdvancedInfo({ ...advancedInfo, [e.target.name]: +e.target.value });
+  };
+
+  // console.log(loanAmount)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUnfilled(false);
+    }, [4000]);
+  }, [unfilled]);
+
   return (
     <Box sx={{ marginLeft: "auto" }}>
+      {unfilled && (
+        <div className="absolute bottom-3 right-5">
+          <Alert variant="filled" severity="error">
+            {errorMsg}
+          </Alert>
+        </div>
+      )}
       <Box
         sx={{ marginBottom: "50px", marginLeft: "50px", marginRight: "50px" }}
       >
         <Accordion
-          square="false"
           sx={{ minHeight: "80px", borderRadius: "10px" }}
+          onChange={() => {
+            setAccOpen(!accOpen);
+          }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
@@ -73,43 +289,202 @@ const HomeLoan = () => {
                   justifyContent: "space-evenly",
                   flexWrap: "wrap",
                   gap: "50px",
-                  rowGap: "10px",
+                  rowGap: "20px",
+                  marginTop: "10px",
                 }}
               >
-                <TextField label={"Home Value(HV)"} />
-                <TextField label={"Margin OR Down Payment (DP)"} />
-                <TextField label={"Loan Insurance (LI)"} />
-                <TextField label={"Loan Fees & Charges"} />
-                <TextField label={"Home Value(HV)"} />
+                <TextField
+                  name="hv"
+                  value={advancedInfo.hv}
+                  label={"Home Value(HV)"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="dp"
+                  value={advancedInfo.dp}
+                  label={"Down Payment (DP)"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="li"
+                  value={advancedInfo.li}
+                  label={"Loan Insurance (LI)"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="loanCharges"
+                  value={advancedInfo.loanCharges}
+                  label={"Loan Fees & Charges"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="propertyTaxes"
+                  value={advancedInfo.propertyTaxes}
+                  label={"Property Taxes / year"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="homeInsurance"
+                  value={advancedInfo.homeInsurance}
+                  label={"Home Insurance / year"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                <TextField
+                  name="maintenence"
+                  value={advancedInfo.maintenence}
+                  label={"Maintenance Expenses / month"}
+                  onChange={advancedChangeHandler}
+                  type="number"
+                />
+                {/* <TextField label={"Home Value(HV)"} /> */}
               </div>
-              <div style={{display:"flex", marginLeft:"auto", justifyContent:"center", marginTop:"10px"}}>
-                <Button variant="contained">Submit</Button>
+              <div
+                style={{
+                  display: "flex",
+                  marginLeft: "auto",
+                  justifyContent: "center",
+                  marginTop: "15px",
+                  gap: "10px",
+                }}
+              >
+                <Button onClick={submitHandler} variant="contained">
+                  Submit
+                </Button>
+                <Button
+                  onClick={() => {
+                    setAdvancedInfo({
+                      hv: 0,
+                      dp: 0,
+                      li: 0,
+                      loanCharges: 0,
+                    });
+                  }}
+                  variant="outlined"
+                >
+                  Reset
+                </Button>
               </div>
             </div>
           </AccordionDetails>
         </Accordion>
       </Box>
       <Box
-      sx={{background:"#FFFFFF"}}
+        sx={{
+          background: "",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "150px",
+        }}
         style={{
-          maxWidth: "500px",
-          marginLeft: "auto",
-          marginRight: "auto",
-          border: `2px solid ${secondaryColor}`,
+          // maxWidth: "500px",
+          // border: `2px solid ${secondaryColor}`,
           padding: "20px",
           borderRadius: 20,
         }}
-        
       >
-        <Calculator
-          inputLoanAmount={10000}
-          inputTenure={5}
-          inputInterest={10}
-          onChange={handleChange}
-          amountUl={10000000}
-          interestUl={9}
-          tenureUl={35}
-        />
+        <div
+          style={{
+            height: "316px",
+            width: "350px",
+            background: "#FFFFFF",
+            borderRadius: 6,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "1px solid #d3d3d3",
+          }}
+        >
+          <InputCalculator
+            amountLabel={"Loan Amount (HV + LI – DP)"}
+            rateOfInterest={interest}
+            tenure={tenure}
+            totalLoanAmount={loanAmount}
+            sendData={getData}
+            disableAmount={accOpen}
+          />
+        </div>
+        <div>
+          <PaymentList paymentList={monthlyPayList} />
+        </div>
+      </Box>
+
+      <Box sx={{ paddingX: "50px" }}>
+        <PaymentList paymentList={totalPayList} />
+      </Box>
+
+      <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+        <Box>
+          <Doughnut
+            data={{
+              labels: ["Down Payment", "Loan Charges"],
+              datasets: [
+                {
+                  label: "1 Time Expenses",
+                  data: [advancedInfo.dp, loanCharges],
+                  backgroundColor: [primaryColor, secondaryColor],
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "One Time Expenses",
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Box>
+          <Doughnut
+            data={{
+              labels: [
+                "Principal Amount",
+                "Total Interest",
+                "One Time Expenses",
+              ],
+              datasets: [
+                {
+                  label: "1 Time Expenses",
+                  data: [
+                    loanAmount,
+                    totalInterest,
+                    advancedInfo.loanCharges + advancedInfo.dp,
+                  ],
+                  backgroundColor: [
+                    primaryColor,
+                    secondaryColor,
+                    tertiaryColor,
+                  ],
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Total of all payments",
+                },
+              },
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

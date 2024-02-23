@@ -139,6 +139,7 @@ const Sidebar = () => {
         <List>
           {links.map((text, index) => (
             <NavLink
+            key={index}
               to={links[index]}
               style={{ background: "red" }}
               onClick={() => setIndexActive(index)}

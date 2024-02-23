@@ -186,6 +186,7 @@ const Login = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 style={{ background: primaryColor }}
+                disabled={loading}
               >
                 {loading ? "Signing In..." : "Sign In"}
               </Button>
