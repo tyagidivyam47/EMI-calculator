@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/EMI-logo1.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { primaryColor, tertiaryColor } from "../Theme";
+import { primaryColor, secondaryColor, tertiaryColor } from "../Theme";
+import { Box } from "@mui/material";
 
 const Header = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -38,7 +39,7 @@ const Header = () => {
           display: "flex",
           alignItems: "center",
           backgroundColor: primaryColor,
-          height: "60px",
+          height: "64px",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
       >
@@ -65,7 +66,7 @@ const Header = () => {
           >
             Home
           </NavLink>
-          {loggedIn && (
+          {/* {loggedIn && (
             <NavLink
               to="/calculator"
               style={{
@@ -80,7 +81,7 @@ const Header = () => {
             >
               Calculator
             </NavLink>
-          )}
+          )} */}
           <NavLink
             href="#"
             style={{
@@ -111,7 +112,7 @@ const Header = () => {
           </NavLink>
         )} */}
 
-        {loggedIn && (
+        {/* {loggedIn && (
           <Link
             to='/dashboard'
             style={{
@@ -125,22 +126,26 @@ const Header = () => {
           >
             Dashboard
           </Link>
-        )}
-        {loggedIn && (
-          <span
+        )} */}
+        {/* {loggedIn && (
+          <Box
             onClick={logoutHandler}
-            style={{
+            sx={{
               fontSize: "16px",
               fontWeight: "bold",
               textDecoration: "none",
               margin: "0 10px",
               transition: "color 0.3s ease",
+              color: secondaryColor,
+              ":hover":{
+                color:"#ffffff"
+              }
             }}
-            className={`text-[#${primaryColor}] bg-white px-5 py-2 rounded-lg hover:bg-[#54a4ffa9] hover:text-white cursor-pointer`}
+            className={` bg-white px-5 py-2 rounded-lg hover:bg-[#54a4ffa9] cursor-pointer`}
           >
             Log Out
-          </span>
-        )}
+          </Box>
+        )} */}
       </div>
     </div>
   );

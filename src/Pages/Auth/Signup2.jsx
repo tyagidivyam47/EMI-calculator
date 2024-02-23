@@ -22,8 +22,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { primaryColor, secondaryColor } from "../../Theme";
 import { useCookies } from "react-cookie";
 import { verifyInput } from "../../input-validation";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const defaultTheme = createTheme();
 
@@ -56,6 +55,7 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [succModal, setSuccModal] = useState(false);
   const [showPass, setShowPass] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const inputChangeHandler = (e) => {
     setDetails({ ...details, ["password"]: e.target.value });
@@ -74,23 +74,28 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
         setErrorMsg("Password length should be greater than 8");
         return;
       }
-      const passValid = verifyInput(details.password, 'pass');
+      const passValid = verifyInput(details.password, "pass");
       if (!passValid) {
         setUnfilled(true);
-        setErrorMsg("Password must contain 'Capital Letter' and 'Special Character'");
+        setErrorMsg(
+          "Password must contain 'Capital Letter' and 'Special Character'"
+        );
         return;
       }
 
+      setLoading(true);
       const response = await axios.post(`${API_ENDPOINT}signup`, details);
       // console.log(response)
       setCookie("auth_token", response?.data.token);
       setCookie("user_id", response?.data.userId);
       setSuccModal(true);
       //   navigate('/login');
+      setLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setUnfilled(true);
       setErrorMsg(error.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -104,7 +109,7 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
     if (succModal) {
       setTimeout(() => {
         setSuccModal(false);
-        navigate("/calculator");
+        navigate("/Dashboard");
       }, [2000]);
     }
   }, [succModal]);
@@ -116,15 +121,24 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
 
         <Modal open={succModal} onClose={() => setSuccModal(false)}>
           {/* <Fade in={true}> */}
-          <Box sx={style} borderRadius={'20px'}>
+          <Box sx={style} borderRadius={"20px"}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <div className="flex justify-center">
-                <DoneAllIcon sx={{ color: "green", height: "100px", width: "100px" }} />
+                <DoneAllIcon
+                  sx={{ color: "green", height: "100px", width: "100px" }}
+                />
               </div>
-
             </Typography>
             <div className="text-center">
-              <Typography id="transition-modal-description" sx={{ mt: 2, fontSize: "20px", fontWeight: "bold", color: secondaryColor }}>
+              <Typography
+                id="transition-modal-description"
+                sx={{
+                  mt: 2,
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  color: secondaryColor,
+                }}
+              >
                 Account Created Successfully
               </Typography>
             </div>
@@ -196,7 +210,13 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
                   autoFocus
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   InputProps={{
-                    endAdornment: <InputAdornment position="end"><span onClick={() => setShowPass(!showPass)}><VisibilityIcon sx={{ cursor: "pointer" }} /></span></InputAdornment>,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <span onClick={() => setShowPass(!showPass)}>
+                          <VisibilityIcon sx={{ cursor: "pointer" }} />
+                        </span>
+                      </InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
@@ -208,7 +228,7 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-            //   disabled={otpSuccess === "FAILURE" || !otpSuccess ? true : false}
+              //   disabled={otpSuccess === "FAILURE" || !otpSuccess ? true : false}
             >
               Submit
             </Button>

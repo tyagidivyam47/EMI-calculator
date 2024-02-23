@@ -77,7 +77,7 @@ const Login = () => {
       const resp = await axios.post(`${API_ENDPOINT}login`, body);
       setCookie("auth_token", resp?.data.token);
       setCookie("user_id", resp?.data.userId);
-      navigate("/calculator");
+      navigate("/Dashboard");
     } catch (error) {
       // console.log(error);
       setErrMsg(error?.response?.data.message);

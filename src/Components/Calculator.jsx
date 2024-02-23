@@ -151,7 +151,7 @@ const Calculator = ({
         </div>
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginRight: "30px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
           >
             1
           </div>
@@ -168,7 +168,7 @@ const Calculator = ({
             onChange={handleTotalLoanChange}
           />
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginLeft: "5px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "5px" }}
           >
             100
           </div>
@@ -217,7 +217,7 @@ const Calculator = ({
         </div>
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginRight: "30px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
           >
             1
           </div>
@@ -233,7 +233,7 @@ const Calculator = ({
             onChange={handleRateOfInterestChange}
           />
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginLeft: "20px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "20px" }}
           >
             45
           </div>
@@ -277,7 +277,7 @@ const Calculator = ({
 
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginRight: "30px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
           >
             1
           </div>
@@ -293,7 +293,7 @@ const Calculator = ({
             onChange={handleTenureChange}
           />
           <div
-            style={{ fontSize: "15px", color: "#dcdcdc", marginLeft: "20px" }}
+            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "20px" }}
           >
             40
           </div>
