@@ -24,6 +24,10 @@ import WarningIcon from "@mui/icons-material/Warning";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Calculator from "../../Components/Calculator";
 import HomeLoan from "../LoanTypes/HomeLoan/HomeLoan";
+import HelpIcon from '@mui/icons-material/Help';
+import HomeInfo from "../LoanTypes/HomeLoan/HomeInfo";
+import LAPInfo from "../LoanTypes/LAP/LAPInfo";
+import LAP from "../LoanTypes/LAP/LAP";
 
 const style = {
   position: "absolute",
@@ -39,6 +43,27 @@ const style = {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  borderRadius: 6,
+};
+
+const infoStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  maxWidth: 1800,
+  height: 600,
+  overflowY:"auto",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  // background:"#feede6",
+background:"linear-gradient(156deg, rgba(254,237,230,1) 86%, rgba(80,178,234,1) 100%)",
+  // justifyContent: "center",
   borderRadius: 6,
 };
 
@@ -71,13 +96,14 @@ const Dashboard = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [warnModal, setWarnModal] = useState(false);
   const [loanType, setLoanType] = useState();
+  const [infoModal, setInfoModal] = useState(false);
 
   const handleLoanClick = (type) => {
     setOpenDrawer(true);
     setLoanType(type);
   };
 
-  const handleChangeTemp = () => {};
+  const handleChangeTemp = () => { };
 
   return (
     <Box sx={{ marginLeft: "70px", marginTop: "30px" }}>
@@ -153,7 +179,7 @@ const Dashboard = () => {
           <div onClick={() => setWarnModal(true)}>
             <CancelIcon
               sx={{
-                color: "red",
+                color: "darkred",
                 width: "35px",
                 height: "35px",
                 marginLeft: "10px",
@@ -162,32 +188,39 @@ const Dashboard = () => {
               }}
             />
           </div>
-          <div
-            style={{
-              font: mainSubHeading,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent:"center",
-              color: primaryColor,
-              marginBottom: "60px",
-            }}
-          >
-            {loanType === "home"
-              ? "Home Loan Calculator"
-              : loanType === "car"
-              ? "Car Loan Calculator"
-              : loanType === "edu"
-              ? "Education Loan Calculator"
-              : loanType === "personal"
-              ? "Personal Loan Calculator"
-              : "Loan Against Property"}
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+            <div
+              style={{
+                font: mainSubHeading,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                color: primaryColor,
+                marginBottom: "60px",
+              }}
+            >
+              {loanType === "home"
+                ? "Home Loan Calculator"
+                : loanType === "car"
+                  ? "Car Loan Calculator"
+                  : loanType === "edu"
+                    ? "Education Loan Calculator"
+                    : loanType === "personal"
+                      ? "Personal Loan Calculator"
+                      : "Loan Against Property"}
+            </div>
+            <div onClick={()=>setInfoModal(true)}>
+              <HelpIcon style={{ color: secondaryColor, width: "32px", height: "32px", cursor: "pointer" }} />
+            </div>
           </div>
           {loanType === "home" ? (
             <div style={{}}>
               <HomeLoan />
             </div>
-          ) : (
+          ) : loanType === 'lap' ? (
+            <LAP />
+          ):(
             <div
               style={{
                 maxWidth: "500px",
@@ -250,6 +283,18 @@ const Dashboard = () => {
               Yes
             </Button>
           </Box>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={infoModal}
+        onClose={() => {
+          setInfoModal(false);
+        }}
+      >
+        <Box sx={infoStyle}>
+          {loanType === "home" && <HomeInfo />}
+          {loanType === "lap" && <LAPInfo />}
         </Box>
       </Modal>
     </Box>

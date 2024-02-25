@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   TextField,
@@ -194,7 +195,8 @@ const HomeLoan = () => {
     } = advancedInfo;
     if (dp > hv) {
       setUnfilled(true);
-      setErrorMsg("Error");
+      setErrorMsg("Down Payment can not be larger than the Home Value");
+      return;
     }
 
     const hvNumber = parseInt(hv, 10);
@@ -226,12 +228,18 @@ const HomeLoan = () => {
   // },[loanAmount])
 
   const advancedChangeHandler = (e) => {
-    if (e.target.value < 0 || e.target.value > 1000000000000000) {
+    if(e.target.value / 10 < 1){
+      // console.log(+e.target.value%10)
+      console.log({ ...advancedInfo, [e.target.name]: +e.target.value%10 })
+      setAdvancedInfo({ ...advancedInfo, [e.target.name]: +e.target.value%10 });
       return;
     }
-    if (e.target.value.length < 1) {
-      return;
-    }
+    // if (e.target.value > 1000000000) {
+    //   return;
+    // }
+    // if (e.target.value.length < 1) {
+    //   return;
+    // }
     // if (e.target.name === "hv" || e.target.name === "lv" || e.target.name === "dp") {
     //   setLoanAmount(e.target.value);
     // }
@@ -298,6 +306,7 @@ const HomeLoan = () => {
                   value={advancedInfo.hv}
                   label={"Home Value(HV)"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -305,6 +314,7 @@ const HomeLoan = () => {
                   value={advancedInfo.dp}
                   label={"Down Payment (DP)"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -312,6 +322,7 @@ const HomeLoan = () => {
                   value={advancedInfo.li}
                   label={"Loan Insurance (LI)"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -319,6 +330,7 @@ const HomeLoan = () => {
                   value={advancedInfo.loanCharges}
                   label={"Loan Fees & Charges"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -326,6 +338,7 @@ const HomeLoan = () => {
                   value={advancedInfo.propertyTaxes}
                   label={"Property Taxes / year"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -333,6 +346,7 @@ const HomeLoan = () => {
                   value={advancedInfo.homeInsurance}
                   label={"Home Insurance / year"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 <TextField
@@ -340,6 +354,7 @@ const HomeLoan = () => {
                   value={advancedInfo.maintenence}
                   label={"Maintenance Expenses / month"}
                   onChange={advancedChangeHandler}
+                  onFocus={(e)=>e.target.select()}
                   type="number"
                 />
                 {/* <TextField label={"Home Value(HV)"} /> */}

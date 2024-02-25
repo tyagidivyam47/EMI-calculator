@@ -86,8 +86,8 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
       setLoading(true);
       const response = await axios.post(`${API_ENDPOINT}signup`, details);
       // console.log(response)
-      setCookie("auth_token", response?.data.token);
-      setCookie("user_id", response?.data.userId);
+      setCookie("auth_token", response?.data.token, {maxAge: 86400});
+      setCookie("user_id", response?.data.userId, {maxAge: 86400});
       setSuccModal(true);
       //   navigate('/login');
       setLoading(false);

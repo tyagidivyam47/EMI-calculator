@@ -1,4 +1,4 @@
-import { Route, Router, Routes } from "react-router-dom";
+import { Navigate, Route, Router, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import EMICalculator from "./Pages/Calculator/EMICalculator";
 import Home from "./Pages/Home/Home";
@@ -55,7 +55,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/calculator" element={<EMICalculator />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={loggedIn ? <Navigate to={'/Dashboard'} /> : <Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/passwordReset" element={<ForgotPassword />} />
             <Route path="/forgotPassword" element={<SetupForgotPass />} />

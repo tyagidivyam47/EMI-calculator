@@ -8,7 +8,7 @@ const InputCalculator = ({
   tenure,
   totalLoanAmount,
   sendData,
-  disableAmount
+  disableAmount,
 }) => {
   // console.log(totalLoanAmount)
   const [inInterest, setInInterest] = useState(rateOfInterest);

@@ -75,8 +75,12 @@ const Login = () => {
 
       console.log(emailValid)
       const resp = await axios.post(`${API_ENDPOINT}login`, body);
-      setCookie("auth_token", resp?.data.token);
-      setCookie("user_id", resp?.data.userId);
+      setCookie("auth_token", resp?.data.token, {
+        maxAge: 86400
+      });
+      setCookie("user_id", resp?.data.userId, {
+        maxAge: 86400
+      });
       navigate("/Dashboard");
     } catch (error) {
       // console.log(error);
