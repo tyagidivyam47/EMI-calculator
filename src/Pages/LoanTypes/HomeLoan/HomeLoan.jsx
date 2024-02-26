@@ -193,9 +193,12 @@ const HomeLoan = () => {
       homeInsurance,
       maintenence,
     } = advancedInfo;
-    if (dp > hv) {
+
+
+
+    if (dp >= hv) {
       setUnfilled(true);
-      setErrorMsg("Down Payment can not be larger than the Home Value");
+      setErrorMsg("Home Value should always be greater than Down Payment");
       return;
     }
 
@@ -208,11 +211,13 @@ const HomeLoan = () => {
     // console.log(tempLoanAmount);
     setLoanAmount(tempLoanAmount);
     setTotalTable(
-      loanChargesNumber+dpNumber,
+      loanChargesNumber + dpNumber,
       totalPayList[1].value,
       totalPayList[2].value,
       totalPayList[3].value,
-      ((+propertyTaxes*tenure) + (homeInsurance*tenure) + (maintenence*12)*tenure)
+      +propertyTaxes * tenure +
+        homeInsurance * tenure +
+        maintenence * 12 * tenure
     );
     setTable(
       monthlyPayList[0].value,
@@ -228,10 +233,13 @@ const HomeLoan = () => {
   // },[loanAmount])
 
   const advancedChangeHandler = (e) => {
-    if(e.target.value / 10 < 1){
+    if (e.target.value / 10 < 1) {
       // console.log(+e.target.value%10)
-      console.log({ ...advancedInfo, [e.target.name]: +e.target.value%10 })
-      setAdvancedInfo({ ...advancedInfo, [e.target.name]: +e.target.value%10 });
+      console.log({ ...advancedInfo, [e.target.name]: +e.target.value % 10 });
+      setAdvancedInfo({
+        ...advancedInfo,
+        [e.target.name]: +e.target.value % 10,
+      });
       return;
     }
     // if (e.target.value > 1000000000) {
@@ -304,57 +312,57 @@ const HomeLoan = () => {
                 <TextField
                   name="hv"
                   value={advancedInfo.hv}
-                  label={"Home Value(HV)"}
+                  label={"Home Value(HV) in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="dp"
                   value={advancedInfo.dp}
-                  label={"Down Payment (DP)"}
+                  label={"Down Payment (DP) in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="li"
                   value={advancedInfo.li}
-                  label={"Loan Insurance (LI)"}
+                  label={"Loan Insurance (LI) in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="loanCharges"
                   value={advancedInfo.loanCharges}
-                  label={"Loan Fees & Charges"}
+                  label={"Loan Fees & Charges in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="propertyTaxes"
                   value={advancedInfo.propertyTaxes}
-                  label={"Property Taxes / year"}
+                  label={"Property Taxes / year in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="homeInsurance"
                   value={advancedInfo.homeInsurance}
-                  label={"Home Insurance / year"}
+                  label={"Home Insurance / year in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 <TextField
                   name="maintenence"
                   value={advancedInfo.maintenence}
-                  label={"Maintenance Expenses / month"}
+                  label={"Maintenance Expenses / month in ₹"}
                   onChange={advancedChangeHandler}
-                  onFocus={(e)=>e.target.select()}
+                  onFocus={(e) => e.target.select()}
                   type="number"
                 />
                 {/* <TextField label={"Home Value(HV)"} /> */}
@@ -378,6 +386,9 @@ const HomeLoan = () => {
                       dp: 0,
                       li: 0,
                       loanCharges: 0,
+                      propertyTaxes: 0,
+                      homeInsurance: 0,
+                      maintenence: 0,
                     });
                   }}
                   variant="outlined"

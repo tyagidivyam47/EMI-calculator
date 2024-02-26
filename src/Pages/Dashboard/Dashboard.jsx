@@ -24,10 +24,12 @@ import WarningIcon from "@mui/icons-material/Warning";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Calculator from "../../Components/Calculator";
 import HomeLoan from "../LoanTypes/HomeLoan/HomeLoan";
-import HelpIcon from '@mui/icons-material/Help';
+import HelpIcon from "@mui/icons-material/Help";
 import HomeInfo from "../LoanTypes/HomeLoan/HomeInfo";
 import LAPInfo from "../LoanTypes/LAP/LAPInfo";
 import LAP from "../LoanTypes/LAP/LAP";
+import BudgetLoan from "../LoanTypes/BudgetLoan/BudgetLoan";
+import BudgetInfo from "../LoanTypes/BudgetLoan/BudgetInfo";
 
 const style = {
   position: "absolute",
@@ -53,7 +55,7 @@ const infoStyle = {
   transform: "translate(-50%, -50%)",
   maxWidth: 1800,
   height: 600,
-  overflowY:"auto",
+  overflowY: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -62,7 +64,8 @@ const infoStyle = {
   flexDirection: "column",
   alignItems: "center",
   // background:"#feede6",
-background:"linear-gradient(156deg, rgba(254,237,230,1) 86%, rgba(80,178,234,1) 100%)",
+  background:
+    "linear-gradient(156deg, rgba(254,237,230,1) 86%, rgba(80,178,234,1) 100%)",
   // justifyContent: "center",
   borderRadius: 6,
 };
@@ -103,7 +106,7 @@ const Dashboard = () => {
     setLoanType(type);
   };
 
-  const handleChangeTemp = () => { };
+  const handleChangeTemp = () => {};
 
   return (
     <Box sx={{ marginLeft: "70px", marginTop: "30px" }}>
@@ -157,6 +160,9 @@ const Dashboard = () => {
               <div onClick={() => handleLoanClick("lap")}>
                 <LoanCard>Loan Against Property</LoanCard>
               </div>
+              <div onClick={() => handleLoanClick("budget")}>
+                <LoanCard>Loan as per Budget</LoanCard>
+              </div>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -188,7 +194,9 @@ const Dashboard = () => {
               }}
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+          <div
+            style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+          >
             <div
               style={{
                 font: mainSubHeading,
@@ -197,30 +205,41 @@ const Dashboard = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 color: primaryColor,
-                marginBottom: "60px",
+                marginBottom: "40px",
               }}
             >
               {loanType === "home"
                 ? "Home Loan Calculator"
                 : loanType === "car"
-                  ? "Car Loan Calculator"
-                  : loanType === "edu"
-                    ? "Education Loan Calculator"
-                    : loanType === "personal"
-                      ? "Personal Loan Calculator"
-                      : "Loan Against Property"}
+                ? "Car Loan Calculator"
+                : loanType === "edu"
+                ? "Education Loan Calculator"
+                : loanType === "personal"
+                ? "Personal Loan Calculator"
+                : loanType === "budget"
+                ? "Loan as per Budget"
+                : "Loan Against Property"}
             </div>
-            <div onClick={()=>setInfoModal(true)}>
-              <HelpIcon style={{ color: secondaryColor, width: "32px", height: "32px", cursor: "pointer" }} />
+            <div onClick={() => setInfoModal(true)}>
+              <HelpIcon
+                style={{
+                  color: secondaryColor,
+                  width: "32px",
+                  height: "32px",
+                  cursor: "pointer",
+                }}
+              />
             </div>
           </div>
           {loanType === "home" ? (
             <div style={{}}>
               <HomeLoan />
             </div>
-          ) : loanType === 'lap' ? (
+          ) : loanType === "lap" ? (
             <LAP />
-          ):(
+          ) : loanType === "budget" ? (
+            <BudgetLoan />
+          ) : (
             <div
               style={{
                 maxWidth: "500px",
@@ -257,7 +276,7 @@ const Dashboard = () => {
           <Box>
             <WarningIcon
               sx={{
-                color: "red",
+                color: "darkred",
                 width: "100px",
                 height: "100px",
                 marginX: "auto",
@@ -274,7 +293,7 @@ const Dashboard = () => {
             </Button>
             <Button
               variant="contained"
-              sx={{ background: "red" }}
+              sx={{ background: "darkred" }}
               onClick={() => {
                 setWarnModal(false);
                 setOpenDrawer(false);
@@ -295,6 +314,7 @@ const Dashboard = () => {
         <Box sx={infoStyle}>
           {loanType === "home" && <HomeInfo />}
           {loanType === "lap" && <LAPInfo />}
+          {loanType === "budget" && <BudgetInfo />}
         </Box>
       </Modal>
     </Box>
