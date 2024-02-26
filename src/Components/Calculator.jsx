@@ -13,7 +13,7 @@ const Calculator = ({
   amountUl,
   interestUl,
   tenureUl,
-  loanCharges
+  loanCharges,
 }) => {
   const [totalLoanAmount, setTotalLoanAmount] = useState(inputLoanAmount);
   const [tenure, setTenure] = useState(inputTenure);
@@ -52,10 +52,10 @@ const Calculator = ({
 
     let totalAmt = emi * tenureInMonths;
     let totalInt = totalAmt - totalLoanAmount;
-    if(loanCharges && loanCharges > 0){
+    if (loanCharges && loanCharges > 0) {
       const chargesNum = parseInt(loanCharges, 10);
       const totalAmountNum = parseInt(totalAmt, 10);
-      totalAmt = (totalAmountNum + chargesNum)
+      totalAmt = totalAmountNum + chargesNum;
     }
     onChange(
       totalLoanAmount,
@@ -72,7 +72,7 @@ const Calculator = ({
 
   useEffect(() => {
     calculateEMI();
-  }, [ tenure, rateOfInterest, loanCharges]);
+  }, [tenure, rateOfInterest, loanCharges]);
 
   const handleTotalLoanChange = (e) => {
     if (
@@ -80,7 +80,7 @@ const Calculator = ({
       e.target.value.length > 8 ||
       e.target.value > amountUl
     ) {
-      setTotalLoanError("input error");
+      // setTotalLoanError("input error");
     } else {
       setTotalLoanError("input");
     }
@@ -93,7 +93,7 @@ const Calculator = ({
       e.target.value < 1 ||
       e.target.value > tenureUl
     ) {
-      setTenureError("input error");
+      // setTenureError("input error");
     } else {
       setTenureError("input");
     }
@@ -106,7 +106,7 @@ const Calculator = ({
       e.target.value < 1 ||
       e.target.value > interestUl
     ) {
-      setRateOfInterestError("input error");
+      // setRateOfInterestError("input error");
     } else {
       setRateOfInterestError("input");
     }
@@ -122,12 +122,12 @@ const Calculator = ({
     }
   }, [cookies]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("first")
-    setTotalLoanAmount(inputLoanAmount)
-  },[inputLoanAmount])
+    setTotalLoanAmount(inputLoanAmount);
+  }, [inputLoanAmount]);
 
-  console.log(inputLoanAmount)
+  console.log(inputLoanAmount);
   return (
     <div>
       <div className="loan-container">
@@ -159,6 +159,7 @@ const Calculator = ({
                 }}
                 value={totalLoanAmount}
                 onChange={handleTotalLoanChange}
+                onFocus={(e) => e.target.select()}
               />
             </Tooltip>
             <span>₹</span>
@@ -166,7 +167,11 @@ const Calculator = ({
         </div>
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginRight: "30px",
+            }}
           >
             1
           </div>
@@ -183,7 +188,11 @@ const Calculator = ({
             onChange={handleTotalLoanChange}
           />
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "5px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginLeft: "5px",
+            }}
           >
             100
           </div>
@@ -219,6 +228,7 @@ const Calculator = ({
                 }}
                 value={rateOfInterest}
                 onChange={handleRateOfInterestChange}
+                onFocus={(e) => e.target.select()}
               />
             </Tooltip>
             <span
@@ -232,7 +242,11 @@ const Calculator = ({
         </div>
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginRight: "30px",
+            }}
           >
             1
           </div>
@@ -248,7 +262,11 @@ const Calculator = ({
             onChange={handleRateOfInterestChange}
           />
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "20px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginLeft: "20px",
+            }}
           >
             45
           </div>
@@ -284,6 +302,7 @@ const Calculator = ({
                 }}
                 value={tenure}
                 onChange={handleTenureChange}
+                onFocus={(e) => e.target.select()}
               />
             </Tooltip>
             <span>Yr</span>
@@ -292,7 +311,11 @@ const Calculator = ({
 
         <div style={{ display: "flex" }}>
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginRight: "30px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginRight: "30px",
+            }}
           >
             1
           </div>
@@ -308,7 +331,11 @@ const Calculator = ({
             onChange={handleTenureChange}
           />
           <div
-            style={{ fontSize: "15px", color: secondaryColor, marginLeft: "20px" }}
+            style={{
+              fontSize: "15px",
+              color: secondaryColor,
+              marginLeft: "20px",
+            }}
           >
             40
           </div>
@@ -317,25 +344,39 @@ const Calculator = ({
 
       <div className="result-container">
         <div className="values">
-          <span style={{ fontWeight: "600", color: primaryColor }}>Monthly EMI</span>
-          <span style={{color: secondaryColor}}>₹ {monthlyEMI.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>
+            Monthly EMI
+          </span>
+          <span style={{ color: secondaryColor }}>
+            ₹ {monthlyEMI.toLocaleString("en-IN")}
+          </span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600", color: primaryColor }}>Principal amount</span>
-          <span style={{color: secondaryColor}}>
+          <span style={{ fontWeight: "600", color: primaryColor }}>
+            Principal amount
+          </span>
+          <span style={{ color: secondaryColor }}>
             ₹ {totalLoanAmount ? totalLoanAmount.toLocaleString("en-IN") : 0}
           </span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600", color: primaryColor }}>Total interest</span>
-          <span style={{color: secondaryColor}}>₹ {totalInterest.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>
+            Total interest
+          </span>
+          <span style={{ color: secondaryColor }}>
+            ₹ {totalInterest.toLocaleString("en-IN")}
+          </span>
         </div>
 
         <div className="values">
-          <span style={{ fontWeight: "600", color: primaryColor }}>Total amount</span>
-          <span style={{color: secondaryColor}}>₹ {totalAmount.toLocaleString("en-IN")}</span>
+          <span style={{ fontWeight: "600", color: primaryColor }}>
+            Total amount
+          </span>
+          <span style={{ color: secondaryColor }}>
+            ₹ {totalAmount.toLocaleString("en-IN")}
+          </span>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import {
   Button,
   Drawer,
   Modal,
+  Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
 import {
@@ -25,11 +26,16 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Calculator from "../../Components/Calculator";
 import HomeLoan from "../LoanTypes/HomeLoan/HomeLoan";
 import HelpIcon from "@mui/icons-material/Help";
-import HomeInfo from "../LoanTypes/HomeLoan/HomeInfo";
-import LAPInfo from "../LoanTypes/LAP/LAPInfo";
+// import HomeInfo from "../LoanTypes/HomeLoan/HomeInfo";
+// import LAPInfo from "../LoanTypes/LAP/LAPInfo";
 import LAP from "../LoanTypes/LAP/LAP";
 import BudgetLoan from "../LoanTypes/BudgetLoan/BudgetLoan";
-import BudgetInfo from "../LoanTypes/BudgetLoan/BudgetInfo";
+// import BudgetInfo from "../LoanTypes/BudgetLoan/BudgetInfo";
+import { Link } from "react-router-dom";
+import FAQ from "../../Components/FAQ";
+import { budgetFaq, emiCalcFaq, homeLoanFaq, lapFaq } from "../../faqs";
+import InfoIcon from "@mui/icons-material/Info";
+// const homeLoanFaqData = homeLoanFaq
 
 const style = {
   position: "absolute",
@@ -48,7 +54,7 @@ const style = {
   borderRadius: 6,
 };
 
-const infoStyle = {
+const faqStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -65,7 +71,7 @@ const infoStyle = {
   alignItems: "center",
   // background:"#feede6",
   background:
-    "linear-gradient(156deg, rgba(254,237,230,1) 86%, rgba(80,178,234,1) 100%)",
+    "linear-gradient(100deg, rgba(254,237,230,1) 86%, rgba(80,178,234,1) 100%)",
   // justifyContent: "center",
   borderRadius: 6,
 };
@@ -84,6 +90,7 @@ const LoanCard = (props) => {
         alignItems: "center",
         cursor: "pointer",
         transition: "0.4s",
+        gap: "4px",
         ":hover": {
           boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
           background: secondaryColor,
@@ -91,6 +98,9 @@ const LoanCard = (props) => {
       }}
     >
       {props.children}
+      <Tooltip title={props.tooltip} placement="right">
+        <InfoIcon />
+      </Tooltip>
     </Box>
   );
 };
@@ -114,6 +124,110 @@ const Dashboard = () => {
         sx={{ font: mainHeading, marginBottom: "50px", color: primaryColor }}
       >
         Dashboard
+      </Box>
+      <Box
+        sx={{
+          marginBottom: "50px",
+          display: "flex",
+          justifyContent: "center",
+          marginRight: "110px",
+        }}
+      >
+        <Box
+          sx={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1500214439798-ef148e2fa93e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: 5,
+            font: mainSubHeading,
+            p: "20px 50px",
+            color: "#FFFFFF",
+            boxShadow:
+              "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+          }}
+        >
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "16px",
+              boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              //  p:"20px 25px"
+              height: "120px",
+              width: "300px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            EMI Calculator
+          </Box>
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            gap={"12px"}
+            marginTop={"22px"}
+          >
+            <Button
+              variant="outlined"
+              sx={{
+                color: "#ffffff",
+                border: "2px solid #FFFFFF",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "16px",
+                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                backdropFilter: "blur(5px)",
+                WebkitBackdropFilter: "blur(5px)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                ":hover": {
+                  border: "1px solid #FF4500 ",
+                },
+              }}
+            >
+              <Link to={"/calculator"}>Open</Link>
+            </Button>
+            <Tooltip title='EMI Calculator Info'>
+              <Button
+                variant="contained"
+                sx={{
+                  background: "#FFFFFF",
+                  color: secondaryColor,
+                  borderRadius: "16px",
+                  ":hover": {
+                    background: "#FFFFFF",
+                  },
+                }}
+              >
+                Info
+              </Button>
+            </Tooltip>
+            <Button
+              onClick={() => {
+                setLoanType("emiCalculator");
+                setInfoModal(true);
+              }}
+              variant="contained"
+              sx={{
+                background: "#FFFFFF",
+                color: secondaryColor,
+                borderRadius: "16px",
+                ":hover": {
+                  background: "#FFFFFF",
+                },
+              }}
+            >
+              FAQ's
+            </Button>
+          </Box>
+        </Box>
       </Box>
       <Box sx={{ marginBottom: "50px", marginRight: "60px" }}>
         <Accordion
@@ -146,22 +260,26 @@ const Dashboard = () => {
               }}
             >
               <div onClick={() => handleLoanClick("home")}>
-                <LoanCard>Home Loan</LoanCard>
+                <LoanCard tooltip="Home Loan Info">Home Loan</LoanCard>
               </div>
               <div onClick={() => handleLoanClick("car")}>
-                <LoanCard>Car Loan</LoanCard>
+                <LoanCard tooltip="Car Loan Info">Car Loan</LoanCard>
               </div>
               <div onClick={() => handleLoanClick("edu")}>
-                <LoanCard>Education Loan</LoanCard>
+                <LoanCard tooltip="Education Loan Info">
+                  Education Loan
+                </LoanCard>
               </div>
               <div onClick={() => handleLoanClick("personal")}>
-                <LoanCard>Personal Loan</LoanCard>
+                <LoanCard tooltip="Personal Loan Info">Personal Loan</LoanCard>
               </div>
               <div onClick={() => handleLoanClick("lap")}>
-                <LoanCard>Loan Against Property</LoanCard>
+                <LoanCard tooltip="LAP Info">Loan Against Property</LoanCard>
               </div>
               <div onClick={() => handleLoanClick("budget")}>
-                <LoanCard>Loan as per Budget</LoanCard>
+                <LoanCard tooltip="Loan as per budget Info">
+                  Loan as per Budget
+                </LoanCard>
               </div>
             </div>
           </AccordionDetails>
@@ -311,10 +429,11 @@ const Dashboard = () => {
           setInfoModal(false);
         }}
       >
-        <Box sx={infoStyle}>
-          {loanType === "home" && <HomeInfo />}
-          {loanType === "lap" && <LAPInfo />}
-          {loanType === "budget" && <BudgetInfo />}
+        <Box sx={faqStyle}>
+          {loanType === "home" && <FAQ data={homeLoanFaq} />}
+          {loanType === "lap" && <FAQ data={lapFaq} />}
+          {loanType === "budget" && <FAQ data={budgetFaq} />}
+          {loanType === "emiCalculator" && <FAQ data={emiCalcFaq} />}
         </Box>
       </Modal>
     </Box>

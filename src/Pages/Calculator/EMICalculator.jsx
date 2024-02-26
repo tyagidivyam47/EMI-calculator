@@ -5,9 +5,11 @@ import PieChart from "../../Components/PieChart";
 import Particle from "../../Components/Particle";
 import BarChart from "../../Components/BarChart";
 import downloadIcon from "../../assets/download-icon.png";
-
+import WestIcon from "@mui/icons-material/West";
 import "./EMICalculator.css";
-import { primaryColor } from "../../Theme";
+import { lightPrimaryColor, mainHeading, primaryColor } from "../../Theme";
+import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(1000000);
@@ -17,7 +19,7 @@ const EMICalculator = () => {
   const [totalInterest, setTotalInterest] = useState();
   const [showParticles, setShowParticles] = useState(true);
   const [loanType, setLoanType] = useState("home");
-  const [upperLimits, setUpperLimits] = useState([10000000, 9, 35])
+  const [upperLimits, setUpperLimits] = useState([10000000, 9, 35]);
 
   const handleChange = (
     loanAmountI,
@@ -42,31 +44,25 @@ const EMICalculator = () => {
   };
 
   const loanTypeClick = (type) => {
-    setLoanType(type)
-    if(type === 'home'){
+    setLoanType(type);
+    if (type === "home") {
       setUpperLimits([10000000, 9, 35]);
-    }
-    else if( type === 'car'){
+    } else if (type === "car") {
       setUpperLimits([5000000, 10, 8]);
-    }
-    else if( type === 'edu'){
+    } else if (type === "edu") {
       setUpperLimits([4000000, 12, 10]);
-    }
-    else if( type === 'car'){
+    } else if (type === "car") {
       setUpperLimits([7500000, 15, 5]);
     }
   };
 
   return (
-    <div style={{ background: "", width: "100%", height: "100vh" }}>
+    <div style={{ background: "", width: "80%", height: "100vh", paddingBottom:"300px" }}>
       {/* {showParticles && <Particle />} */}
       <div
         style={{
           textAlign: "center",
-          // fontFamily: "Sixtyfour, sans-serif",
-          // fontSize: "32px",
           marginTop: "30px",
-          // backgroundColor: "#E5F9F5",
           color: "#FFFFFF",
           width: "500px",
           height: "50px",
@@ -74,13 +70,12 @@ const EMICalculator = () => {
           marginRight: "auto",
           borderRadius: "15px",
           paddingTop: "12px",
-          display: "flex",
+          display: "none",
           justifyContent: "space-between",
           paddingLeft: "10px",
           paddingRight: "10px",
-          background: primaryColor
+          background: primaryColor,
         }}
-        // className="bg-teal-800"
       >
         <div
           onClick={() => loanTypeClick("home")}
@@ -124,12 +119,50 @@ const EMICalculator = () => {
         </div>
         {/* EMI Calculator */}
       </div>
-      <div
-        style={{
+
+      <Link to={"/Dashboard"} style={{ maxWidth: "190px", background: "red" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            padding: "8px 15px",
+            // background:"red",
+            maxWidth: "190px",
+          }}
+        >
+          <WestIcon sx={{ color: lightPrimaryColor }} />
+          <div
+            style={{
+              font: "600 14px Raleway, serif",
+              color: lightPrimaryColor,
+              textDecoration: "underline",
+            }}
+          >
+            Back to Dashboard
+          </div>
+        </div>
+      </Link>
+
+      <Box
+        sx={{
+          font: mainHeading,
+          marginBottom: "50px",
+          color: primaryColor,
+          marginLeft: "70px",
+          marginTop: "30px",
+        }}
+      >
+        EMI Calculator
+      </Box>
+
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "space-evenly",
           alignItems: "center",
           marginTop: "50px",
+          flexDirection: { xs: "column", md: "column", lg: "row" },
         }}
       >
         <div className="app">
@@ -155,7 +188,7 @@ const EMICalculator = () => {
         >
           <PieChart loanAmount={loanAmount} totalInterest={totalInterest} />
         </div>
-      </div>
+      </Box>
       <div style={{ marginTop: "50px", padding: "0px 60px" }}>
         <BarChart
           interest={interest}
@@ -167,7 +200,7 @@ const EMICalculator = () => {
       </div>
 
       <div>
-        {showParticles && (
+        {/* {showParticles && (
           <div
             onClick={handlePrint}
             style={{
@@ -182,7 +215,7 @@ const EMICalculator = () => {
               style={{ width: "35px", cursor: "pointer" }}
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
