@@ -129,7 +129,7 @@ const Dashboard = () => {
     "user_id",
     "curr_sign",
   ]);
-  const currency = cookies.curr_sign;
+  const currency = cookies.curr_sign || "₹";
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [warnModal, setWarnModal] = useState(false);
