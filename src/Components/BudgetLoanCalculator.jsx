@@ -1,21 +1,50 @@
-import { Box, Grid, Slider, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Slider,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { lightSecondaryColor, primaryColor } from "../Theme";
-import { Input } from "postcss";
+import {
+  extraLPrimaryColor,
+  lightPrimaryColor,
+  lightSecondaryColor,
+  primaryColor,
+  secondaryColor,
+  smText,
+} from "../Theme";
+// import { Input } from "postcss";
+import InfoIcon from "@mui/icons-material/Info";
 
-const BudgetLoanCalculator = ({sendData}) => {
+const BudgetLoanCalculator = ({ sendData }) => {
   const [budget, setBudget] = useState(0);
   const [tenure, setTenure] = useState(0);
+  const [interest, setInterest] = useState(0);
+  const [tenureType, setTenureType] = useState("Years");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "budget") {
       setBudget(+value);
-    } else {
-      if (value > 50) {
+      return;
+    }
+    if (name === "tenure") {
+      if (value > 50 && tenureType === "Years") {
+        return;
+      }
+      if (value > 300 && tenureType === "Months") {
+        return;
+      }
+      if (tenureType === "Months" && !Number.isInteger(+value)) {
         return;
       }
       setTenure(+value);
+      return;
+    }
+    if (name === "interest") {
+      setInterest(+value);
     }
   };
 
@@ -23,19 +52,74 @@ const BudgetLoanCalculator = ({sendData}) => {
     setTenure(newValue);
   };
 
-  useEffect(()=>{
-    if(budget < 1 || tenure < 1){
-        return;
+  const calculateEMI = (
+    budget,
+    totalTenure,
+    totalLoanAmount,
+    rateOfInterest
+  ) => {
+    if (!Number(totalTenure) || !Number(totalLoanAmount)) {
+      // console.log("heree");
+      return;
     }
-    const totalAmount = (budget * 12) * tenure;
-    sendData(budget, tenure, totalAmount)
-  },[budget, tenure])
+    let tenureConvHelper = tenureType === "Years" ? 1 : 12;
 
-  console.log(tenure)
+    let interest = rateOfInterest / 12 / 100;
+    let tenureInMonths = Math.ceil((totalTenure * 12) / tenureConvHelper);
+    let emi = (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
+    (Math.pow(1 + interest, tenureInMonths) - 1);
+    // console.log(emi)
+    let totalAmt = emi * tenureInMonths;
+    // console.log(totalAmt)
+    let totalInt = totalAmt - totalLoanAmount;
+    sendData(
+      budget,
+      Math.ceil(totalTenure),
+      totalLoanAmount,
+      rateOfInterest,
+      Math.ceil(totalInt),
+      tenureType
+    );
+  };
+
+  const toggleTenureType = (tType) => {
+    if (tenureType === tType) {
+      return;
+    }
+    setTenureType(tType);
+    let tempTenure;
+    if (tType === "Years") {
+      tempTenure = Math.ceil(tenure / 12);
+    } else {
+      tempTenure = Math.ceil(tenure * 12);
+    }
+    setTenure(tempTenure);
+  };
+
+  useEffect(() => {
+    if (budget < 1 || tenure < 1) {
+      return;
+    }
+    if (tenure.toString().includes(".")) {
+      const tenureArr = tenure.toString().split(".");
+      const yr = +tenureArr[0];
+      const month = +tenureArr[1];
+      const totalAmount_1 = budget * 12 * yr + budget * month;
+      // sendData(budget, tenure, totalAmount_1);
+      calculateEMI(budget, tenure, totalAmount_1, interest);
+      return;
+    }
+    const totalAmount =
+      tenureType === "Years" ? budget * 12 * tenure : budget * tenure;
+    calculateEMI(budget, tenure, totalAmount, interest);
+    // sendData(budget, tenure, totalAmount);
+  }, [budget, tenure, interest]);
+
+  // console.log(tenure);
 
   return (
     <Box>
-      <Box>
+      <Box sx={{ width: "350px" }}>
         <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
           <Box>
             <div
@@ -53,9 +137,9 @@ const BudgetLoanCalculator = ({sendData}) => {
               type="number"
               label="In ₹"
               name="budget"
-              onFocus={(e)=>e.target.select()}
+              onFocus={(e) => e.target.select()}
               //   disabled={disableAmount}
-              sx={{ background: "#FFFFFF" }}
+              sx={{ background: "#FFFFFF", display: "flex" }}
             />
           </Box>
           <Box>
@@ -76,42 +160,130 @@ const BudgetLoanCalculator = ({sendData}) => {
                 width={"100%"}
                 alignItems={"center"}
               >
-                <Box display={'flex'} alignItems={'end'} gap={'6px'}>
+                <Box display={"flex"} alignItems={"end"} gap={"6px"}>
                   <TextField
                     onChange={handleChange}
                     value={tenure}
                     name="tenure"
                     type="number"
-                    onFocus={(e)=>e.target.select()}
+                    onFocus={(e) => e.target.select()}
                     sx={{ background: "#FFFFFF", width: "60px" }}
-                    inputProps={{ style: { height: "10px" } }}
+                    inputProps={{ style: { height: "10px", width: "100px" } }}
                   />
-                  <div style={{color: lightSecondaryColor, fontWeight: 600}}>
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    marginLeft={"8px"}
+                  >
+                    <div
+                      onClick={() => toggleTenureType("Years")}
+                      style={{
+                        font: smText,
+                        background:
+                          tenureType === "Years"
+                            ? primaryColor
+                            : extraLPrimaryColor,
+                        color: lightPrimaryColor,
+                        height: "25px",
+                        border: "1px solid #007BA7",
+                        width: "34px",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        paddingTop: "3px",
+                      }}
+                    >
+                      Yrs
+                    </div>
+                    <div
+                      onClick={() => toggleTenureType("Months")}
+                      style={{
+                        font: smText,
+                        background:
+                          tenureType === "Months"
+                            ? primaryColor
+                            : extraLPrimaryColor,
+                        color: lightPrimaryColor,
+                        height: "25px",
+                        border: "1px solid #007BA7",
+                        width: "34px",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        paddingTop: "3px",
+                      }}
+                    >
+                      Mon
+                    </div>
+                  </Box>
+                  {/* <div style={{ color: lightSecondaryColor, fontWeight: 600 }}>
                     Yrs
-                  </div>
+                    <Tooltip
+                      title={
+                        "To enter months, enter the tenure in decimal format: For example, if you want to specify 2 years and 6 months, type 2.6"
+                      }
+                      placement="right-end"
+                      arrow
+                      sx={{ marginLeft: "10px" }}
+                      componentsProps={{
+                        tooltip: {
+                          sx: {
+                            bgcolor: primaryColor,
+                            "& .MuiTooltip-arrow": {
+                              color: "rgba(255, 69, 0, 0.7)",
+                            },
+                            background: "rgba(255, 69, 0, 0.7)",
+                            font: "600 15px Raleway, serif",
+                          },
+                        },
+                      }}
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  </div> */}
                 </Box>
                 <Slider
                   min={0}
-                  max={50}
+                  max={tenureType === "Years" ? 50 : 300}
                   value={typeof tenure === "number" ? tenure : 0}
                   onChange={handleSliderChange}
                   aria-labelledby="input-slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 50, label: "50" },
-                  ]}
+                  marks={
+                    tenureType === "Years"
+                      ? [
+                          { value: 0, label: "0" },
+                          { value: 50, label: "50" },
+                        ]
+                      : [
+                          { value: 0, label: "0" },
+                          { value: 300, label: "300" },
+                        ]
+                  }
                 />
               </Box>
             </Grid>
 
-            {/* <TextField
-              onChange={handleChange}
-              value={tenure}
-              name="tenure"
-              type="number"
-              label="In Yrs"
-              sx={{ background: "#FFFFFF" }}
-            /> */}
+            <Box>
+              <div
+                style={{
+                  fontWeight: "600",
+                  color: primaryColor,
+                  paddingBottom: "6px",
+                }}
+              >
+                Enter the Interest Rate
+              </div>
+              <TextField
+                onChange={handleChange}
+                value={interest}
+                type="number"
+                label="In %"
+                name="interest"
+                onFocus={(e) => e.target.select()}
+                //   disabled={disableAmount}
+                sx={{ background: "#FFFFFF", display: "flex" }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>

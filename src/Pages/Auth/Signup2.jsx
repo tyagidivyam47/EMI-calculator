@@ -41,7 +41,11 @@ const style = {
 const Signup2 = ({ first_name, last_name, email, phone }) => {
   const API_ENDPOINT = import.meta.env.VITE_BASE_URL;
 
-  const [cookie, setCookie] = useCookies(["auth_token", "user_id"]);
+  const [cookie, setCookie] = useCookies([
+    "auth_token",
+    "user_id",
+    "curr_sign",
+  ]);
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState();
   const [unfilled, setUnfilled] = useState(false);
@@ -86,8 +90,11 @@ const Signup2 = ({ first_name, last_name, email, phone }) => {
       setLoading(true);
       const response = await axios.post(`${API_ENDPOINT}signup`, details);
       // console.log(response)
-      setCookie("auth_token", response?.data.token, {maxAge: 86400});
-      setCookie("user_id", response?.data.userId, {maxAge: 86400});
+      setCookie("auth_token", response?.data.token, { maxAge: 86400 });
+      setCookie("user_id", response?.data.userId, { maxAge: 86400 });
+      setCookie("curr_sign", response?.data.currencySign, {
+        maxAge: 86400,
+      });
       setSuccModal(true);
       //   navigate('/login');
       setLoading(false);

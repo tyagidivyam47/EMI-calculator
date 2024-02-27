@@ -8,7 +8,7 @@ import {
   Modal,
   Tooltip,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   extraLPrimaryColor,
   extraLSecondaryColor,
@@ -35,6 +35,7 @@ import { Link } from "react-router-dom";
 import FAQ from "../../Components/FAQ";
 import { budgetFaq, emiCalcFaq, homeLoanFaq, lapFaq } from "../../faqs";
 import InfoIcon from "@mui/icons-material/Info";
+import { useCookies } from "react-cookie";
 // const homeLoanFaqData = homeLoanFaq
 
 const style = {
@@ -86,7 +87,7 @@ const LoanCard = (props) => {
         color: "#FFFFFF",
         borderRadius: 2,
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         cursor: "pointer",
         transition: "0.4s",
@@ -97,19 +98,43 @@ const LoanCard = (props) => {
         },
       }}
     >
-      {props.children}
-      <Tooltip title={props.tooltip} placement="right">
-        <InfoIcon />
+      <span style={{paddingLeft:"8px"}}>{props.children}</span>
+      <Tooltip
+        title={props.tooltip}
+        placement="right"
+        arrow
+        componentsProps={{
+          tooltip: {
+            sx: {
+              bgcolor: primaryColor,
+              "& .MuiTooltip-arrow": {
+                color: primaryColor,
+              },
+              background: "rgba(0,123,167,0.9)",
+              font: "600 15px Raleway, serif",
+            },
+          },
+        }}
+      >
+        <InfoIcon sx={{marginRight:"10px"}} />
       </Tooltip>
     </Box>
   );
 };
 
 const Dashboard = () => {
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "auth_token",
+    "user_id",
+    "curr_sign",
+  ]);
+  const currency = cookies.curr_sign;
+
   const [openDrawer, setOpenDrawer] = useState(false);
   const [warnModal, setWarnModal] = useState(false);
   const [loanType, setLoanType] = useState();
   const [infoModal, setInfoModal] = useState(false);
+  // const [currSign, setCurrSign] = useState('₹');
 
   const handleLoanClick = (type) => {
     setOpenDrawer(true);
@@ -117,6 +142,12 @@ const Dashboard = () => {
   };
 
   const handleChangeTemp = () => {};
+
+  // useEffect(() => {
+  //   if (currency) {
+  //     setCurrSign(currency)
+  //   }
+  // }, [cookies]);
 
   return (
     <Box sx={{ marginLeft: "70px", marginTop: "30px" }}>
@@ -194,7 +225,22 @@ const Dashboard = () => {
             >
               <Link to={"/calculator"}>Open</Link>
             </Button>
-            <Tooltip title='EMI Calculator Info'>
+            <Tooltip
+              arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: primaryColor,
+                    "& .MuiTooltip-arrow": {
+                      color: secondaryColor,
+                    },
+                    background: "rgba(255, 69, 0, 1)",
+                    font: "600 15px Raleway, serif",
+                  },
+                },
+              }}
+              title="This EMI calculator helps you estimate your monthly loan installments for home loans, car loans, or personal loans. Simply input the loan amount, interest rate, and tenure, and it will compute your EMIs instantly"
+            >
               <Button
                 variant="contained"
                 sx={{
@@ -260,7 +306,9 @@ const Dashboard = () => {
               }}
             >
               <div onClick={() => handleLoanClick("home")}>
-                <LoanCard tooltip="Home Loan Info">Home Loan</LoanCard>
+                <LoanCard tooltip="A home loan is a credit to buy, build, or renovate a home from a financial institution. The interest rate and fee depend on your profile, loan amount, tenure, etc. You can compare and apply online for the best offers.">
+                  Home Loan
+                </LoanCard>
               </div>
               <div onClick={() => handleLoanClick("car")}>
                 <LoanCard tooltip="Car Loan Info">Car Loan</LoanCard>
@@ -274,10 +322,12 @@ const Dashboard = () => {
                 <LoanCard tooltip="Personal Loan Info">Personal Loan</LoanCard>
               </div>
               <div onClick={() => handleLoanClick("lap")}>
-                <LoanCard tooltip="LAP Info">Loan Against Property</LoanCard>
+                <LoanCard tooltip=" A Loan against Property (LAP) is a type of loan facility availed by individuals and businesses against the mortgage of a commercial or residential property">
+                  Loan Against Property
+                </LoanCard>
               </div>
               <div onClick={() => handleLoanClick("budget")}>
-                <LoanCard tooltip="Loan as per budget Info">
+                <LoanCard tooltip="Calculate your loan details on the basis of your monthly budget.">
                   Loan as per Budget
                 </LoanCard>
               </div>
@@ -351,7 +401,7 @@ const Dashboard = () => {
           </div>
           {loanType === "home" ? (
             <div style={{}}>
-              <HomeLoan />
+              <HomeLoan currency={currency} />
             </div>
           ) : loanType === "lap" ? (
             <LAP />

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   Radio,
@@ -7,8 +8,15 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { primaryColor } from "../Theme";
+import {
+  extraLPrimaryColor,
+  lightPrimaryColor,
+  primaryColor,
+  smText,
+} from "../Theme";
 import { CheckBox } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const salRes = 75;
 const empRes = 70;
@@ -25,17 +33,21 @@ const LTVInputCalculator = ({ sendData }) => {
   const [propType, setPropType] = useState("residential");
   const [ltvRatio, setLtvRatio] = useState(75);
   const [ltvActive, setLtvActive] = useState(false);
+  const [tenureType, setTenureType] = useState("Years");
+  const [extraProperties, setExtraProperties] = useState([]);
+  const [allPropValue, setAllPropValue] = useState(0);
 
   const calculateEMI = () => {
     if (!Number(inInterest) || !Number(inTenure) || !Number(inAmount)) {
       // console.log("reject")
       return;
     }
+    let tenureConvHelper = tenureType === "Years" ? 1 : 12;
+
     // console.log("allowed")
     let interest = inInterest / 12 / 100;
-    let tenureInMonths = inTenure * 12;
+    let tenureInMonths = (inTenure * 12) / tenureConvHelper;
 
-    // Sample: 1000000*0.006*(1+0.006)**120 / ((1+0.006) ** 120 -1)
     let emi =
       (inAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
       (Math.pow(1 + interest, tenureInMonths) - 1);
@@ -46,7 +58,8 @@ const LTVInputCalculator = ({ sendData }) => {
     sendData(
       Math.floor(emi),
       Math.ceil(totalInt),
-      inAmount
+      inAmount,
+      allPropValue
       // inTenure,
       // inInterest,
     );
@@ -95,10 +108,44 @@ const LTVInputCalculator = ({ sendData }) => {
     }
   };
 
+  const toggleTenureType = (tType) => {
+    if (tenureType === tType) {
+      return;
+    }
+    setTenureType(tType);
+    let tempTenure;
+    if (tType === "Years") {
+      tempTenure = inTenure / 12;
+    } else {
+      tempTenure = inTenure * 12;
+    }
+    setInTenure(tempTenure);
+  };
+
+  const propertyAddHandler = () => {
+    let tempProperty = [...extraProperties];
+    tempProperty.push({ value: 0 });
+    setExtraProperties(tempProperty);
+  };
+
+  const extraPropChangeHandler = (index, value) => {
+    let tempProperty = [...extraProperties];
+    tempProperty[index].value = +value;
+    setExtraProperties(tempProperty);
+  };
+
+  console.log(extraProperties)
+
   useEffect(() => {
-    const tempAmount = (ltvRatio / 100) * propValue;
+    let extraTotal = 0;
+    for(let i = 0; i < extraProperties.length; i++){
+      extraTotal += +extraProperties[i].value;
+    }
+    const totalPropValue = +propValue + +extraTotal;
+    const tempAmount = (ltvRatio / 100) * totalPropValue;
+    setAllPropValue(totalPropValue);
     setInAmount(tempAmount);
-  }, [inInterest, inTenure, propValue, ltvRatio]);
+  }, [inInterest, inTenure, propValue, ltvRatio, extraProperties]);
 
   useEffect(() => {
     if (!inAmount) {
@@ -108,166 +155,291 @@ const LTVInputCalculator = ({ sendData }) => {
   }, [inAmount, inInterest, inTenure]);
 
   return (
-    <Box display={"flex"}>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        gap={"10px"}
-        borderRight={"2px solid #d3d3d3"}
-        paddingRight={"15px"}
-      >
-        <Box>
-          <div
-            style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
-            }}
-          >
-            Property Value
-          </div>
-          <TextField
-            onChange={handleChange}
-            value={propValue}
-            type="number"
-            label="In ₹"
-            name="propValue"
-            //   disabled={disableAmount}
-            sx={{ background: "#FFFFFF" }}
-          />
+    <Box>
+      <Box display={"flex"}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          gap={"10px"}
+          borderRight={"2px solid #d3d3d3"}
+          paddingRight={"15px"}
+        >
+          <Box>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Property Value
+            </div>
+            <TextField
+              onChange={(e) => {
+                if (e.target.value > 100000000000) {
+                  return;
+                }
+                handleChange(e);
+              }}
+              onFocus={(e) => e.target.select()}
+              value={propValue}
+              type="number"
+              label="In ₹"
+              name="propValue"
+              //   disabled={disableAmount}
+              sx={{ background: "#FFFFFF" }}
+            />
+          </Box>
+          <Box>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Interest Rate
+            </div>
+            <TextField
+              onChange={(e) => {
+                if (e.target.value > 40) {
+                  return;
+                }
+                handleChange(e);
+              }}
+              onFocus={(e) => e.target.select()}
+              value={inInterest}
+              name="inInterest"
+              type="number"
+              label="In %"
+              sx={{ background: "#FFFFFF" }}
+            />
+          </Box>
+          <Box>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Loan Tenure
+            </div>
+            <Box display={"flex"}>
+              <TextField
+                onChange={(e) => {
+                  if (e.target.value > 40 && tenureType === "Years") {
+                    return;
+                  }
+                  if (e.target.value > 480 && tenureType === "Months") {
+                    return;
+                  }
+                  handleChange(e);
+                }}
+                onFocus={(e) => e.target.select()}
+                value={inTenure}
+                name="inTenure"
+                type="number"
+                label="In Years"
+                sx={{ background: "#FFFFFF" }}
+              />
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                marginLeft={"8px"}
+              >
+                <div
+                  onClick={() => toggleTenureType("Years")}
+                  style={{
+                    font: smText,
+                    background:
+                      tenureType === "Years"
+                        ? primaryColor
+                        : extraLPrimaryColor,
+                    color: lightPrimaryColor,
+                    height: "25px",
+                    border: "1px solid #007BA7",
+                    width: "34px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    paddingTop: "3px",
+                  }}
+                >
+                  Yrs
+                </div>
+                <div
+                  onClick={() => toggleTenureType("Months")}
+                  style={{
+                    font: smText,
+                    background:
+                      tenureType === "Months"
+                        ? primaryColor
+                        : extraLPrimaryColor,
+                    color: lightPrimaryColor,
+                    height: "25px",
+                    border: "1px solid #007BA7",
+                    width: "34px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    paddingTop: "3px",
+                  }}
+                >
+                  Mon
+                </div>
+              </Box>
+            </Box>
+          </Box>
         </Box>
-        <Box>
-          <div
-            style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
-            }}
-          >
-            Interest Rate
-          </div>
-          <TextField
-            onChange={handleChange}
-            value={inInterest}
-            name="inInterest"
-            type="number"
-            label="In %"
-            sx={{ background: "#FFFFFF" }}
-          />
-        </Box>
-        <Box>
-          <div
-            style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
-            }}
-          >
-            Loan Tenure
-          </div>
-          <TextField
-            onChange={handleChange}
-            value={inTenure}
-            name="inTenure"
-            type="number"
-            label="In Years"
-            sx={{ background: "#FFFFFF" }}
-          />
+
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          gap={"10px"}
+          paddingLeft={"15px"}
+        >
+          <Box marginBottom={"14px"}>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Employment Type
+            </div>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="empType"
+              onChange={handleChange}
+              value={empType}
+            >
+              <FormControlLabel
+                value="salaried"
+                control={<Radio disabled={ltvActive} />}
+                label="Salaried"
+              />
+              <FormControlLabel
+                value="selfEmployed"
+                control={<Radio disabled={ltvActive} />}
+                label="Self-Employed"
+              />
+            </RadioGroup>
+          </Box>
+
+          <Box marginBottom={"14px"}>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Property Type
+            </div>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="propType"
+              onChange={handleChange}
+              value={propType}
+            >
+              <FormControlLabel
+                value="residential"
+                control={<Radio disabled={ltvActive} />}
+                label="Residential Property"
+              />
+              <FormControlLabel
+                value="commercial"
+                control={<Radio disabled={ltvActive} />}
+                label="Commercial Property"
+              />
+            </RadioGroup>
+          </Box>
+
+          <Box>
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              LTV Ratio
+            </div>
+            <TextField
+              // onChange={(e) => setInTenure(e.target.value)}
+              value={ltvRatio}
+              type="number"
+              label="In %"
+              sx={{ background: "#FFFFFF" }}
+              disabled={!ltvActive}
+              onChange={(e) => setLtvRatio(e.target.value)}
+            />
+            <FormControlLabel
+              sx={{ marginLeft: "10px", marginTop: "5px" }}
+              label="Custom LTV ratio"
+              control={<Checkbox onChange={() => setLtvActive(!ltvActive)} />}
+            />
+          </Box>
         </Box>
       </Box>
-
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        gap={"10px"}
-        paddingLeft={"15px"}
-      >
-        <Box marginBottom={"14px"}>
+      <Box>
+        {extraProperties?.map((prop, index) => (
           <div
             style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            Employment Type
+            <div
+              style={{
+                fontWeight: "600",
+                color: primaryColor,
+                paddingBottom: "6px",
+              }}
+            >
+              Property Value
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                cursor: "pointer",
+              }}
+            >
+              <TextField
+                value={prop.value}
+                type="number"
+                label="In Rs"
+                sx={{ background: "#FFFFFF" }}
+                onFocus={(e)=>e.target.select()}
+                // disabled={!ltvActive}
+                onChange={(e) => extraPropChangeHandler(index, e.target.value)}
+              />
+              <div onClick={() => {
+                let tempProperty = [...extraProperties];
+                tempProperty.splice(index, 1);
+                setExtraProperties(tempProperty);
+              }}>
+              <RemoveIcon sx={{ background: primaryColor, color: "#FFFFFF" }} />
+              </div>
+            </div>
           </div>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="empType"
-            onChange={handleChange}
-            value={empType}
-          >
-            <FormControlLabel
-              value="salaried"
-              control={<Radio />}
-              label="Salaried"
-            />
-            <FormControlLabel
-              value="selfEmployed"
-              control={<Radio />}
-              label="Self-Employed"
-            />
-          </RadioGroup>
-        </Box>
-
-        <Box marginBottom={"14px"}>
-          <div
-            style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
-            }}
-          >
-            Property Type
-          </div>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="propType"
-            onChange={handleChange}
-            value={propType}
-          >
-            <FormControlLabel
-              value="residential"
-              control={<Radio />}
-              label="Residential Property"
-            />
-            <FormControlLabel
-              value="commercial"
-              control={<Radio />}
-              label="Commercial Property"
-            />
-          </RadioGroup>
-        </Box>
-
-        <Box>
-          <div
-            style={{
-              fontWeight: "600",
-              color: primaryColor,
-              paddingBottom: "6px",
-            }}
-          >
-            LTV Ratio
-          </div>
-          <TextField
-            // onChange={(e) => setInTenure(e.target.value)}
-            value={ltvRatio}
-            type="number"
-            label="In %"
-            sx={{ background: "#FFFFFF" }}
-            disabled={!ltvActive}
-            onChange={(e) => setLtvRatio(e.target.value)}
-          />
-          <FormControlLabel
-            sx={{ marginLeft: "10px", marginTop: "5px" }}
-            label="Custom LTV ratio"
-            control={<Checkbox onChange={() => setLtvActive(!ltvActive)} />}
-          />
-        </Box>
+        ))}
       </Box>
+      <Button
+        onClick={propertyAddHandler}
+        variant="contained"
+        sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
+      >
+        <AddIcon />
+        Add Another Property
+      </Button>
     </Box>
   );
 };

@@ -1,21 +1,36 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import BudgetLoanCalculator from "../../../Components/BudgetLoanCalculator";
+import { Doughnut } from "react-chartjs-2";
+import { primaryColor, secondaryColor } from "../../../Theme";
 
 const BudgetLoan = () => {
   const [emi, setEmi] = useState(0);
   const [tenure, setTenure] = useState(0);
   const [amount, setAmount] = useState(0);
-//   const [interest, setInterest] = useState(0);
+  const [interest, setInterest] = useState(0);
+  const [totalInterest, setTotalInterest] = useState(0);
+  const [tenureType, setTenureType] = useState("Years")
 
-  const getData = (emiValue, tenureValue, amountValue) => {
+  const getData = (
+    emiValue,
+    tenureValue,
+    amountValue,
+    interestRate,
+    totalInterest,
+    currTenureType
+  ) => {
+    // console.log(currTenureType)
     setEmi(+emiValue);
     setTenure(+tenureValue);
     setAmount(+amountValue);
+    setInterest(+interestRate);
+    setTotalInterest(+totalInterest);
+    setTenureType(currTenureType)
   };
 
   return (
-    <Box>
+    <Box sx={{marginTop:"-50px"}}>
       <Box
         sx={{
           background: "",
@@ -55,7 +70,14 @@ const BudgetLoan = () => {
         </div>
       </Box>
 
-      <Box sx={{ width: "730px", height: "auto", marginX:"auto", paddingBottom:"50px" }}>
+      <Box
+        sx={{
+          width: "730px",
+          height: "auto",
+          marginX: "auto",
+          paddingBottom: "50px",
+        }}
+      >
         <Box
           sx={{
             backgroundImage:
@@ -96,28 +118,104 @@ const BudgetLoan = () => {
             <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
               Your EMI is ₹ {emi}
             </Box>
-            <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
-              Your total loan tenure is {tenure} Years
-            </Box>
-            {/* <Box
+            <Box
               width={"100%"}
               display={"flex"}
-              justifyContent={"space-evenly"}
+              justifyContent={"center"}
+              gap={"60px"}
             >
-              <div style={{ fontSize: "18px", fontWeight: 700 }}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: 700,
+                  borderRight: "2px solid #FFFFFF",
+                  paddingRight:"60px"
+                }}
+              >
                 <div>Total Interest</div>
                 <div>
-                  ₹ <span style={{ fontSize: "32px" }}>{interest}</span>
+                  ₹ <span style={{ fontSize: "32px" }}>{totalInterest}</span>
                 </div>
               </div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>
-                <div>Principal Amount</div>
+                <div>Total loan tenure</div>
                 <div>
-                  ₹ <span style={{ fontSize: "32px" }}>{amount}</span>
+                  <span style={{ fontSize: "32px" }}>{tenure}</span> {tenureType}
                 </div>
+                {/* <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
+                  Your total loan tenure is {tenure} Years
+                </Box> */}
               </div>
-            </Box> */}
+            </Box>
           </Box>
+        </Box>
+      </Box>
+
+      <Box display={"flex"} justifyContent={"center"} marginTop={"0px"}>
+        <Box>
+          <Doughnut
+            data={{
+              labels: ["Total Loan", "Total Interest"],
+              datasets: [
+                {
+                  label: "",
+                  data: [amount, totalInterest],
+                  backgroundColor: [primaryColor, secondaryColor],
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Loan Amount Break Up",
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Box>
+          {/* <Doughnut
+            data={{
+              labels: [
+                "Principal Amount",
+                "Total Interest",
+                "One Time Expenses",
+              ],
+              datasets: [
+                {
+                  label: "1 Time Expenses",
+                  data: [
+                    loanAmount,
+                    totalInterest,
+                    advancedInfo.loanCharges + advancedInfo.dp,
+                  ],
+                  backgroundColor: [
+                    primaryColor,
+                    secondaryColor,
+                    tertiaryColor,
+                  ],
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Total of all payments",
+                },
+              },
+            }}
+          /> */}
         </Box>
       </Box>
     </Box>

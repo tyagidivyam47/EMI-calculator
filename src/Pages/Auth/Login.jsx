@@ -45,7 +45,7 @@ const defaultTheme = createTheme();
 const Login = () => {
   const API_ENDPOINT = import.meta.env.VITE_BASE_URL;
 
-  const [cookie, setCookie] = useCookies(["auth_token", "user_id"]);
+  const [cookie, setCookie] = useCookies(["auth_token", "user_id", "curr_sign"]);
   const navigate = useNavigate();
   const [errorMsg, setErrMsg] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -79,6 +79,9 @@ const Login = () => {
         maxAge: 86400
       });
       setCookie("user_id", resp?.data.userId, {
+        maxAge: 86400
+      });
+      setCookie("curr_sign", resp?.data.currencySign, {
         maxAge: 86400
       });
       navigate("/Dashboard");

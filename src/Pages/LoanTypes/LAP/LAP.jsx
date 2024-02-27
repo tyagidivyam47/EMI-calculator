@@ -10,12 +10,14 @@ const LAP = () => {
     const [emiOp, setEmiOp] = useState(0);
     const [totalInterest, setTotalInterest] = useState(0);
     const [principalAmount, setPrincipalAmount] = useState(0);
+    const [allPropValue, setAllPropValue] = useState(0)
 
-    const getData = (emi, interest, principal) => {
+    const getData = (emi, interest, principal, allProp) => {
         // console.log(emi, " : ", interest, " : ", principal);
         setEmiOp(+emi);
         setTotalInterest(+interest);
         setPrincipalAmount(+principal);
+        setAllPropValue(allProp);
     };
     return (
         <Box>
@@ -54,7 +56,7 @@ const LAP = () => {
                     <LTVInputCalculator sendData={getData} />
                 </div>
                 <div>
-                    <LTVCard emi={emiOp} interest={totalInterest} principal={principalAmount} />
+                    <LTVCard emi={emiOp} interest={totalInterest} principal={principalAmount} allPropValue={allPropValue}/>
                 </div>
             </Box>
         </Box>

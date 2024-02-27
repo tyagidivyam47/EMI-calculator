@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import React from 'react'
 import { lightSecondaryColor, primaryColor, secondaryColor } from '../Theme'
 
-const LTVCard = ({ emi, interest, principal }) => {
+const LTVCard = ({ emi, interest, principal, allPropValue }) => {
     // console.log(emi)
     return (
         <Box sx={{ width: "730px", height: "auto" }}>
@@ -31,8 +31,12 @@ const LTVCard = ({ emi, interest, principal }) => {
                             <div>₹ <span style={{ fontSize: "32px"}}>{interest}</span></div>
                         </div>
                         <div style={{ fontSize: "18px", fontWeight: 700 }}>
-                            <div >Principal Amount</div>
-                            <div >₹ <span style={{ fontSize: "32px"}}>{principal}</span></div>
+                            <div >Total Amount</div>
+                            <div >₹ <span style={{ fontSize: "32px"}}>{principal + interest}</span></div>
+                        </div>
+                        <div style={{ fontSize: "18px", fontWeight: 700 }}>
+                            <div >Total Properties Value</div>
+                            <div >₹ <span style={{ fontSize: "32px"}}>{allPropValue}</span></div>
                         </div>
                     </Box>
                 </Box>

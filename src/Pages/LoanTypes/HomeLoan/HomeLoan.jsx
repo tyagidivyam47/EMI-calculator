@@ -15,7 +15,8 @@ import { Doughnut } from "react-chartjs-2";
 import InputCalculator from "../../../Components/InputCalculator";
 import PaymentList from "../../../Components/PaymentList";
 
-const HomeLoan = () => {
+const HomeLoan = ({currency}) => {
+  console.log(currency)
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
   const [interest, setInterest] = useState(6.5);
@@ -312,7 +313,7 @@ const HomeLoan = () => {
                 <TextField
                   name="hv"
                   value={advancedInfo.hv}
-                  label={"Home Value(HV) in ₹"}
+                  label={`Home Value(HV) in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -320,7 +321,7 @@ const HomeLoan = () => {
                 <TextField
                   name="dp"
                   value={advancedInfo.dp}
-                  label={"Down Payment (DP) in ₹"}
+                  label={`Down Payment (DP) in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -328,7 +329,7 @@ const HomeLoan = () => {
                 <TextField
                   name="li"
                   value={advancedInfo.li}
-                  label={"Loan Insurance (LI) in ₹"}
+                  label={`Loan Insurance (LI) in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -336,7 +337,7 @@ const HomeLoan = () => {
                 <TextField
                   name="loanCharges"
                   value={advancedInfo.loanCharges}
-                  label={"Loan Fees & Charges in ₹"}
+                  label={`Loan Fees & Charges in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -344,7 +345,7 @@ const HomeLoan = () => {
                 <TextField
                   name="propertyTaxes"
                   value={advancedInfo.propertyTaxes}
-                  label={"Property Taxes / year in ₹"}
+                  label={`Property Taxes / year in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -352,7 +353,7 @@ const HomeLoan = () => {
                 <TextField
                   name="homeInsurance"
                   value={advancedInfo.homeInsurance}
-                  label={"Home Insurance / year in ₹"}
+                  label={`Home Insurance / year in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -360,7 +361,7 @@ const HomeLoan = () => {
                 <TextField
                   name="maintenence"
                   value={advancedInfo.maintenence}
-                  label={"Maintenance Expenses / month in ₹"}
+                  label={`Maintenance Expenses / month in ${currency}`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"
@@ -434,10 +435,11 @@ const HomeLoan = () => {
             totalLoanAmount={loanAmount}
             sendData={getData}
             disableAmount={accOpen}
+            currency={currency}
           />
         </div>
         <div>
-          <PaymentList paymentList={monthlyPayList} />
+          <PaymentList paymentList={monthlyPayList} currency={currency} />
         </div>
       </Box>
 

@@ -13,7 +13,7 @@ function createData(key, value) {
   return { key, value };
 }
 
-const PaymentList = ({ paymentList }) => {
+const PaymentList = ({ paymentList, currency }) => {
 
     const [rows, setRows] = useState([]);
     // console.log(rows)
@@ -44,7 +44,7 @@ const PaymentList = ({ paymentList }) => {
                 <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} component="th" scope="row">
                   {row.key}
                 </TableCell>
-                <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} align="right">₹{row.value}</TableCell>
+                <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} align="right">{currency}{row.value}</TableCell>
               </TableRow>
             ))}
           </TableBody>
