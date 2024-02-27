@@ -3,6 +3,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  MenuItem,
   Radio,
   RadioGroup,
   TextField,
@@ -17,6 +18,7 @@ import {
 import { CheckBox } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useSelector } from "react-redux";
 
 const salRes = 75;
 const empRes = 70;
@@ -24,6 +26,8 @@ const salCom = 70;
 const empCom = 65;
 
 const LTVInputCalculator = ({ sendData }) => {
+  const currency = useSelector((state)=> state.currency.currency);
+
   // console.log(totalLoanAmount)
   const [inInterest, setInInterest] = useState(0);
   const [inTenure, setInTenure] = useState(0);
@@ -134,11 +138,11 @@ const LTVInputCalculator = ({ sendData }) => {
     setExtraProperties(tempProperty);
   };
 
-  console.log(extraProperties)
+  // console.log(extraProperties)
 
   useEffect(() => {
     let extraTotal = 0;
-    for(let i = 0; i < extraProperties.length; i++){
+    for (let i = 0; i < extraProperties.length; i++) {
       extraTotal += +extraProperties[i].value;
     }
     const totalPropValue = +propValue + +extraTotal;
@@ -184,7 +188,7 @@ const LTVInputCalculator = ({ sendData }) => {
               onFocus={(e) => e.target.select()}
               value={propValue}
               type="number"
-              label="In ₹"
+              label={`In ${currency}`}
               name="propValue"
               //   disabled={disableAmount}
               sx={{ background: "#FFFFFF" }}
@@ -240,7 +244,7 @@ const LTVInputCalculator = ({ sendData }) => {
                 value={inTenure}
                 name="inTenure"
                 type="number"
-                label="In Years"
+                label={`In ${tenureType}`}
                 sx={{ background: "#FFFFFF" }}
               />
               <Box
@@ -250,43 +254,22 @@ const LTVInputCalculator = ({ sendData }) => {
                 justifyContent={"center"}
                 marginLeft={"8px"}
               >
-                <div
-                  onClick={() => toggleTenureType("Years")}
-                  style={{
-                    font: smText,
-                    background:
-                      tenureType === "Years"
-                        ? primaryColor
-                        : extraLPrimaryColor,
-                    color: lightPrimaryColor,
-                    height: "25px",
-                    border: "1px solid #007BA7",
-                    width: "34px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    paddingTop: "3px",
-                  }}
-                >
-                  Yrs
-                </div>
-                <div
-                  onClick={() => toggleTenureType("Months")}
-                  style={{
-                    font: smText,
-                    background:
-                      tenureType === "Months"
-                        ? primaryColor
-                        : extraLPrimaryColor,
-                    color: lightPrimaryColor,
-                    height: "25px",
-                    border: "1px solid #007BA7",
-                    width: "34px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    paddingTop: "3px",
-                  }}
-                >
-                  Mon
+                <div>
+                  <TextField
+                    select
+                    label="Select"
+                    defaultValue="Years"
+                    helperText=""
+                    onChange={(e) => toggleTenureType(e.target.value)}
+                    value={tenureType}
+                  >
+                    <MenuItem value={"Years"}>
+                      Yr
+                    </MenuItem>
+                    <MenuItem value={"Months"}>
+                      Mo
+                    </MenuItem>
+                  </TextField>
                 </div>
               </Box>
             </Box>
@@ -393,6 +376,7 @@ const LTVInputCalculator = ({ sendData }) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              marginTop:"10px"
             }}
           >
             <div
@@ -415,9 +399,9 @@ const LTVInputCalculator = ({ sendData }) => {
               <TextField
                 value={prop.value}
                 type="number"
-                label="In Rs"
+                label={`In ${currency}`}
                 sx={{ background: "#FFFFFF" }}
-                onFocus={(e)=>e.target.select()}
+                onFocus={(e) => e.target.select()}
                 // disabled={!ltvActive}
                 onChange={(e) => extraPropChangeHandler(index, e.target.value)}
               />
@@ -426,7 +410,7 @@ const LTVInputCalculator = ({ sendData }) => {
                 tempProperty.splice(index, 1);
                 setExtraProperties(tempProperty);
               }}>
-              <RemoveIcon sx={{ background: primaryColor, color: "#FFFFFF" }} />
+                <RemoveIcon sx={{ background: primaryColor, color: "#FFFFFF" }} />
               </div>
             </div>
           </div>

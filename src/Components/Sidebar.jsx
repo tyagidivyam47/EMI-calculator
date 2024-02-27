@@ -7,6 +7,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
+  TextField,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import React, { useEffect, useState } from "react";
@@ -25,6 +27,8 @@ import logo from "../assets/EMI-logo1.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./components.css";
 import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { userActions } from "../store/user-slice";
 // import d from "../assets/"
 
 const drawerWidth = 250;
@@ -85,7 +89,28 @@ const links = [
   "Profile",
   "Settings",
 ];
+
+const currencies = [
+  {
+    value: '₹',
+    label: '₹ Rupee',
+  },
+  {
+    value: '$',
+    label: '$ Dollar',
+  },
+  {
+    value: '€',
+    label: '€ Euro',
+  },
+  {
+    value: '¥',
+    label: '¥ Yen',
+  },
+];
+
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [cookies, setCookie, removeCookie] = useCookies([
     "auth_token",
@@ -98,6 +123,12 @@ const Sidebar = () => {
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
+
+  const currencyChangeHandler = (e) => {
+    dispatch(userActions.changeCurrency({
+      currency: e.target.value
+    }))
+  }
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -135,15 +166,15 @@ const Sidebar = () => {
             {/* <div>EMI</div> */}
           </Box>
         </DrawerHeader>
-        <Divider  />
+        <Divider />
         <List>
           {links.map((text, index) => (
             <NavLink
-            key={index}
+              key={index}
               to={links[index]}
               style={{ background: "red" }}
               onClick={() => setIndexActive(index)}
-              // className={({ isActive }) => (isActive ? "activeLink" : "")}
+            // className={({ isActive }) => (isActive ? "activeLink" : "")}
             >
               {/* <span
                 style={{
@@ -213,11 +244,11 @@ const Sidebar = () => {
           <IconButton
             onClick={handleDrawerToggle}
             style={{
-              display:"flex",
+              display: "flex",
               // justifyContent:"center",
               marginLeft: "auto",
-              marginRight:"7px",
-              marginTop:"35px",
+              marginRight: "7px",
+              marginTop: "35px",
               border: `1px solid ${primaryColor}`,
               // background: primaryColor,
               color: primaryColor,
@@ -227,6 +258,32 @@ const Sidebar = () => {
           >
             {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
+
+          {open && <ListItem
+            // key={"Sign out"}
+            // onClick={logoutHandler}
+            disablePadding
+            sx={{ display: "block", marginTop: "20px", marginLeft: "20px" }}
+          >
+            <div>
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="Select"
+                defaultValue="₹"
+                helperText="Please select your currency"
+                onChange={currencyChangeHandler}
+              >
+                {currencies.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+          </ListItem>}
+
+
           <ListItem
             key={"Sign out"}
             onClick={logoutHandler}
@@ -235,7 +292,7 @@ const Sidebar = () => {
               background: "#c61a09",
               borderTopLeftRadius: 10,
               borderBottomLeftRadius: 10,
-              marginTop: "200px",
+              marginTop: "100px",
             }}
             sx={{ display: "block", marginTop: "20px", marginLeft: "20px" }}
           >
@@ -268,7 +325,7 @@ const Sidebar = () => {
               />
             </ListItemButton>
           </ListItem>
-          
+
         </List>
       </Drawer>
     </Box>

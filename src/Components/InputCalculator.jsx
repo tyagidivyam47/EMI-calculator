@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, MenuItem, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   extraLPrimaryColor,
@@ -37,6 +37,7 @@ const InputCalculator = ({
 
     let totalAmt = emi * tenureInMonths;
     let totalInt = totalAmt - inAmount;
+    // console.log(totalInt)
     sendData(
       inAmount,
       inTenure,
@@ -57,6 +58,7 @@ const InputCalculator = ({
     } else {
       tempTenure = inTenure * 12;
     }
+    // console.log(tempTenure)
     setInTenure(tempTenure);
   };
 
@@ -82,7 +84,7 @@ const InputCalculator = ({
         </div>
         <TextField
           onChange={(e) => {
-            if(e.target.value > 100000000000){
+            if (e.target.value > 100000000000) {
               return;
             }
             setInAmount(e.target.value)
@@ -131,15 +133,15 @@ const InputCalculator = ({
         </div>
         <Box display={"flex"}>
           <TextField
-            onChange={(e) =>{
-              if(tenureType === "Years" && e.target.value > 40){
+            onChange={(e) => {
+              if (tenureType === "Years" && e.target.value > 40) {
                 return;
               }
-              if(tenureType === "Months" && e.target.value > 480){
+              if (tenureType === "Months" && e.target.value > 480) {
                 return;
               }
               setInTenure(e.target.value)
-              }}
+            }}
             value={inTenure}
             type="number"
             label={`in ${tenureType}`}
@@ -153,40 +155,22 @@ const InputCalculator = ({
             justifyContent={"center"}
             marginLeft={"8px"}
           >
-            <div
-              onClick={() => toggleTenureType("Years")}
-              style={{
-                font: smText,
-                background:
-                  tenureType === "Years" ? primaryColor : extraLPrimaryColor,
-                color: lightPrimaryColor,
-                height: "30px",
-                width: "54px",
-                border: "1px solid #007BA7",
-                textAlign: "center",
-                cursor: "pointer",
-                paddingTop: "3px",
-              }}
-            >
-              Yr
-            </div>
-            <div
-              onClick={() => toggleTenureType("Months")}
-              style={{
-                font: smText,
-                background:
-                  tenureType === "Months" ? primaryColor : extraLPrimaryColor,
-                color: lightPrimaryColor,
-                height: "30px",
-                width: "54px",
-                border: "1px solid #007BA7",
-                // width: "34px",
-                textAlign: "center",
-                cursor: "pointer",
-                paddingTop: "3px",
-              }}
-            >
-              Mn
+            <div>
+              <TextField
+                select
+                label="Select"
+                defaultValue="₹"
+                helperText=""
+                onChange={(e)=>toggleTenureType(e.target.value)}
+                value={tenureType}
+              >
+                  <MenuItem value={"Years"}>
+                    Yr
+                  </MenuItem>
+                  <MenuItem value={"Months"}>
+                    Mo
+                  </MenuItem>
+              </TextField>
             </div>
           </Box>
         </Box>

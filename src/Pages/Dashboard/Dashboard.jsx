@@ -36,6 +36,7 @@ import FAQ from "../../Components/FAQ";
 import { budgetFaq, emiCalcFaq, homeLoanFaq, lapFaq } from "../../faqs";
 import InfoIcon from "@mui/icons-material/Info";
 import { useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
 // const homeLoanFaqData = homeLoanFaq
 
 const style = {
@@ -124,12 +125,14 @@ const LoanCard = (props) => {
 };
 
 const Dashboard = () => {
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "auth_token",
-    "user_id",
-    "curr_sign",
-  ]);
-  const currency = cookies.curr_sign || "₹";
+  // const [cookies, setCookie, removeCookie] = useCookies([
+  //   "auth_token",
+  //   "user_id",
+  //   "curr_sign",
+  // ]);
+  // const currency = cookies.curr_sign || "₹";
+  const currency = useSelector((state)=> state.currency.currency);
+  // console.log(currency)
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [warnModal, setWarnModal] = useState(false);

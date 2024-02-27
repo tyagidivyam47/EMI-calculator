@@ -1,8 +1,10 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import { lightSecondaryColor, primaryColor, secondaryColor } from '../Theme'
+import { useSelector } from 'react-redux';
 
-const LTVCard = ({ emi, interest, principal, allPropValue }) => {
+const LTVCard = ({ emi, interest, principal, allPropValue, }) => {
+    const currency = useSelector((state) => state.currency.currency);
     // console.log(emi)
     return (
         <Box sx={{ width: "730px", height: "auto" }}>
@@ -16,27 +18,28 @@ const LTVCard = ({ emi, interest, principal, allPropValue }) => {
                         : t.palette.grey[900],
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                borderRadius:5
+                borderRadius: 5
             }}>
                 <Box display={'flex'} flexDirection={'column'} alignItems={'center'} color={"#FFFFFF"} paddingX={'40px'} paddingY={'10px'} gap={'15px'}>
                     <Box sx={{ fontSize: "22px", fontWeight: 600, borderBottom: "2px solid #d3d3d3", width: "100%", textAlign: "center" }}>
-                        Your EMI is ₹ <span style={{ fontSize: "48px", fontWeight: 700 }}>{emi}</span>
+                        Your EMI is {currency} <span style={{ fontSize: "48px", fontWeight: 700 }}>{emi}</span>
+                        <div>Bank Equity is {currency} <span style={{ fontSize: "32px", fontWeight: 600 }}>{Math.ceil(allPropValue - principal)}</span></div>
                     </Box>
                     <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
-                        Your eligible loan amount is ₹ {principal}
+                        Your eligible loan amount is {currency} {Math.ceil(principal)}
                     </Box>
                     <Box width={'100%'} display={'flex'} justifyContent={'space-evenly'}>
                         <div style={{ fontSize: "18px", fontWeight: 700 }}>
                             <div>Total Interest</div>
-                            <div>₹ <span style={{ fontSize: "32px"}}>{interest}</span></div>
+                            <div>{currency} <span style={{ fontSize: "32px" }}>{interest}</span></div>
                         </div>
                         <div style={{ fontSize: "18px", fontWeight: 700 }}>
                             <div >Total Amount</div>
-                            <div >₹ <span style={{ fontSize: "32px"}}>{principal + interest}</span></div>
+                            <div >{currency} <span style={{ fontSize: "32px" }}>{principal + interest}</span></div>
                         </div>
                         <div style={{ fontSize: "18px", fontWeight: 700 }}>
-                            <div >Total Properties Value</div>
-                            <div >₹ <span style={{ fontSize: "32px"}}>{allPropValue}</span></div>
+                            <div >Total Mortgage Value</div>
+                            <div >{currency} <span style={{ fontSize: "32px" }}>{allPropValue}</span></div>
                         </div>
                     </Box>
                 </Box>

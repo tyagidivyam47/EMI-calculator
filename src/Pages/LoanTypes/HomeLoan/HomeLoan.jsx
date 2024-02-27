@@ -16,7 +16,7 @@ import InputCalculator from "../../../Components/InputCalculator";
 import PaymentList from "../../../Components/PaymentList";
 
 const HomeLoan = ({ currency }) => {
-  console.log(currency);
+  // console.log(currency);
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
   const [interest, setInterest] = useState(6.5);
@@ -40,10 +40,6 @@ const HomeLoan = ({ currency }) => {
       key: "EMI",
       value: 19566,
     },
-    // {
-    //   key: "Monthly Extra Pay",
-    //   value: 0,
-    // },
     {
       key: "Property Taxes",
       value: 0,
@@ -72,10 +68,6 @@ const HomeLoan = ({ currency }) => {
       value: 1000000,
     },
     {
-      key: "Prepayments",
-      value: 0,
-    },
-    {
       key: "Interest",
       value: 0,
     },
@@ -89,8 +81,8 @@ const HomeLoan = ({ currency }) => {
     },
   ]);
 
-  const setTable = (emi, extraPay, taxes, insurance, maintenence) => {
-    const total = +emi + +extraPay + +taxes + +insurance + +maintenence;
+  const setTable = (emi, taxes, insurance, maintenence) => {
+    const total = emi + taxes + insurance + maintenence;
     setMonthlyPayList([
       {
         key: "EMI",
@@ -122,12 +114,11 @@ const HomeLoan = ({ currency }) => {
   const setTotalTable = (
     oneTime,
     principal,
-    prepay,
     interestLocal,
     TaxInsurMain
   ) => {
     const total =
-      +oneTime + +principal + +prepay + +interestLocal + +TaxInsurMain;
+      +oneTime + +principal + +interestLocal + +TaxInsurMain;
     setTotalPayList([
       {
         key: "Down Payment, Fees & One-time Expenses",
@@ -136,10 +127,6 @@ const HomeLoan = ({ currency }) => {
       {
         key: "Principal",
         value: principal,
-      },
-      {
-        key: "Prepayments",
-        value: prepay,
       },
       {
         key: "Interest",
@@ -163,6 +150,7 @@ const HomeLoan = ({ currency }) => {
     monthlyEMII,
     totalInterestI
   ) => {
+
     setLoanAmount(+loanAmountI);
     setTenure(+tenureI);
     setInterest(+interestI);
@@ -171,16 +159,15 @@ const HomeLoan = ({ currency }) => {
     setTotalTable(
       totalPayList[0].value,
       +loanAmountI,
-      totalPayList[2].value,
       +totalInterestI,
-      totalPayList[4].value
+      totalPayList[3].value
     );
     setTable(
       +monthlyEMII,
       monthlyPayList[1].value,
       monthlyPayList[2].value,
       monthlyPayList[3].value,
-      monthlyPayList[4].value
+      // monthlyPayList[4].value
     );
   };
 
@@ -213,17 +200,16 @@ const HomeLoan = ({ currency }) => {
       loanChargesNumber + dpNumber,
       totalPayList[1].value,
       totalPayList[2].value,
-      totalPayList[3].value,
       +propertyTaxes * tenure +
-        homeInsurance * tenure +
-        maintenence * 12 * tenure
+      homeInsurance * tenure +
+      maintenence * 12 * tenure
     );
     setTable(
       monthlyPayList[0].value,
-      monthlyPayList[1].value,
-      propertyTaxes / 12,
-      homeInsurance / 12,
+      propertyTaxes / tenure,
+      homeInsurance / tenure,
       maintenence
+      // propertyTaxes / 12,
     );
   };
 
@@ -250,6 +236,14 @@ const HomeLoan = ({ currency }) => {
     // if (e.target.name === "hv" || e.target.name === "lv" || e.target.name === "dp") {
     //   setLoanAmount(e.target.value);
     // }
+    if (e.target.value / 10 < 1) {
+      setAdvancedInfo({
+        ...advancedInfo,
+        [e.target.name]: null,
+      });
+      return;
+    }
+
     setAdvancedInfo({ ...advancedInfo, [e.target.name]: +e.target.value });
   };
 
@@ -296,8 +290,8 @@ const HomeLoan = ({ currency }) => {
           >
             Advanced Details
           </AccordionSummary>
-          <AccordionDetails sx={{ borderRadius: 10}}>
-            <div style={{borderRadius: 10}}>
+          <AccordionDetails sx={{ borderRadius: 10 }}>
+            <div style={{ borderRadius: 10 }}>
               <div
                 style={{
                   display: "flex",
@@ -442,7 +436,7 @@ const HomeLoan = ({ currency }) => {
       </Box>
 
       <Box sx={{ paddingX: "50px" }}>
-        <PaymentList paymentList={totalPayList} />
+        <PaymentList paymentList={totalPayList} currency={currency} />
       </Box>
 
       <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>

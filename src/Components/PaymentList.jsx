@@ -44,7 +44,7 @@ const PaymentList = ({ paymentList, currency }) => {
                 <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} component="th" scope="row">
                   {row.key}
                 </TableCell>
-                <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} align="right">{currency}{Math.ceil(row.value)}</TableCell>
+                <TableCell sx={{fontWeight: index === rows.length - 1 ? "600" : ""}} align="right">{currency}{Math.ceil(row.value) || 0}</TableCell>
               </TableRow>
             ))}
           </TableBody>

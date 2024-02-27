@@ -1,6 +1,7 @@
 import {
   Box,
   Grid,
+  MenuItem,
   Slider,
   TextField,
   Tooltip,
@@ -17,8 +18,11 @@ import {
 } from "../Theme";
 // import { Input } from "postcss";
 import InfoIcon from "@mui/icons-material/Info";
+import { useSelector } from "react-redux";
 
 const BudgetLoanCalculator = ({ sendData }) => {
+  const currency = useSelector((state) => state.currency.currency);
+
   const [budget, setBudget] = useState(0);
   const [tenure, setTenure] = useState(0);
   const [interest, setInterest] = useState(0);
@@ -67,7 +71,7 @@ const BudgetLoanCalculator = ({ sendData }) => {
     let interest = rateOfInterest / 12 / 100;
     let tenureInMonths = Math.ceil((totalTenure * 12) / tenureConvHelper);
     let emi = (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
-    (Math.pow(1 + interest, tenureInMonths) - 1);
+      (Math.pow(1 + interest, tenureInMonths) - 1);
     // console.log(emi)
     let totalAmt = emi * tenureInMonths;
     // console.log(totalAmt)
@@ -135,7 +139,7 @@ const BudgetLoanCalculator = ({ sendData }) => {
               onChange={handleChange}
               value={budget}
               type="number"
-              label="In ₹"
+              label={`In ${currency}`}
               name="budget"
               onFocus={(e) => e.target.select()}
               //   disabled={disableAmount}
@@ -166,9 +170,10 @@ const BudgetLoanCalculator = ({ sendData }) => {
                     value={tenure}
                     name="tenure"
                     type="number"
+                    label={`in ${tenureType}`}
                     onFocus={(e) => e.target.select()}
-                    sx={{ background: "#FFFFFF", width: "60px" }}
-                    inputProps={{ style: { height: "10px", width: "100px" } }}
+                    sx={{ background: "#FFFFFF", width: "120px" }}
+                    inputProps={{ style: {width: "800px" } }}
                   />
                   <Box
                     display={"flex"}
@@ -177,43 +182,22 @@ const BudgetLoanCalculator = ({ sendData }) => {
                     justifyContent={"center"}
                     marginLeft={"8px"}
                   >
-                    <div
-                      onClick={() => toggleTenureType("Years")}
-                      style={{
-                        font: smText,
-                        background:
-                          tenureType === "Years"
-                            ? primaryColor
-                            : extraLPrimaryColor,
-                        color: lightPrimaryColor,
-                        height: "25px",
-                        border: "1px solid #007BA7",
-                        width: "34px",
-                        textAlign: "center",
-                        cursor: "pointer",
-                        paddingTop: "3px",
-                      }}
-                    >
-                      Yrs
-                    </div>
-                    <div
-                      onClick={() => toggleTenureType("Months")}
-                      style={{
-                        font: smText,
-                        background:
-                          tenureType === "Months"
-                            ? primaryColor
-                            : extraLPrimaryColor,
-                        color: lightPrimaryColor,
-                        height: "25px",
-                        border: "1px solid #007BA7",
-                        width: "34px",
-                        textAlign: "center",
-                        cursor: "pointer",
-                        paddingTop: "3px",
-                      }}
-                    >
-                      Mon
+                    <div>
+                      <TextField
+                        select
+                        label="Select"
+                        defaultValue="Years"
+                        helperText=""
+                        onChange={(e) => toggleTenureType(e.target.value)}
+                        value={tenureType}
+                      >
+                        <MenuItem value={"Years"}>
+                          Yr
+                        </MenuItem>
+                        <MenuItem value={"Months"}>
+                          Mo
+                        </MenuItem>
+                      </TextField>
                     </div>
                   </Box>
                   {/* <div style={{ color: lightSecondaryColor, fontWeight: 600 }}>
@@ -251,13 +235,13 @@ const BudgetLoanCalculator = ({ sendData }) => {
                   marks={
                     tenureType === "Years"
                       ? [
-                          { value: 0, label: "0" },
-                          { value: 50, label: "50" },
-                        ]
+                        { value: 0, label: "0" },
+                        { value: 50, label: "50" },
+                      ]
                       : [
-                          { value: 0, label: "0" },
-                          { value: 300, label: "300" },
-                        ]
+                        { value: 0, label: "0" },
+                        { value: 300, label: "300" },
+                      ]
                   }
                 />
               </Box>

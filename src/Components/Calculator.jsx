@@ -1,9 +1,10 @@
-import { Tooltip } from "@mui/material";
+import { Box, MenuItem, TextField, Tooltip } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../Theme";
+import { useSelector } from "react-redux";
 
 const Calculator = ({
   inputLoanAmount,
@@ -15,6 +16,8 @@ const Calculator = ({
   tenureUl,
   loanCharges,
 }) => {
+  const currency = useSelector((state)=> state.currency.currency);
+
   const [totalLoanAmount, setTotalLoanAmount] = useState(inputLoanAmount);
   const [tenure, setTenure] = useState(inputTenure);
   const [rateOfInterest, setRateOfInterest] = useState(inputInterest);
@@ -46,8 +49,10 @@ const Calculator = ({
     } else {
       tempTenure = tenure * 12;
     }
-    setTenure(tempTenure);
+    setTenure(Math.ceil(tempTenure));
   };
+
+  // console.log(tenure)
 
   const calculateEMI = () => {
     // console.log("second")
@@ -58,8 +63,10 @@ const Calculator = ({
     ) {
       return;
     }
+    let tenureConvHelper = tenureType === "Years" ? 1 : 12;
+
     let interest = rateOfInterest / 12 / 100;
-    let tenureInMonths = tenure * 12;
+    let tenureInMonths = (tenure * 12) / tenureConvHelper;
 
     // Sample: 1000000*0.006*(1+0.006)**120 / ((1+0.006) ** 120 -1)
     let emi =
@@ -75,7 +82,7 @@ const Calculator = ({
     }
     onChange(
       totalLoanAmount,
-      tenure,
+      tenureType === "Years" ? tenure : tenure/12,
       rateOfInterest,
       Math.floor(emi),
       Math.ceil(totalInt)
@@ -143,7 +150,7 @@ const Calculator = ({
     setTotalLoanAmount(inputLoanAmount);
   }, [inputLoanAmount]);
 
-  console.log(inputLoanAmount);
+  // console.log(inputLoanAmount);
   return (
     <div>
       <div className="loan-container">
@@ -152,9 +159,8 @@ const Calculator = ({
             Loan amount
           </label>
           <div
-            className={`value-container ${
-              totalLoanError.includes("error") ? "error" : ""
-            }`}
+            className={`value-container ${totalLoanError.includes("error") ? "error" : ""
+              }`}
           >
             <Tooltip
               open={totalLoanError.includes("error")}
@@ -178,7 +184,7 @@ const Calculator = ({
                 onFocus={(e) => e.target.select()}
               />
             </Tooltip>
-            <span>₹</span>
+            <span>{currency}</span>
           </div>
         </div>
         <div style={{ display: "flex" }}>
@@ -221,9 +227,8 @@ const Calculator = ({
             Rate of interest (p.a)
           </label>
           <div
-            className={`value-container ${
-              rateOfInterestError.includes("error") ? "error" : ""
-            }`}
+            className={`value-container ${rateOfInterestError.includes("error") ? "error" : ""
+              }`}
           >
             <Tooltip
               open={rateOfInterestError.includes("error")}
@@ -248,9 +253,8 @@ const Calculator = ({
               />
             </Tooltip>
             <span
-              className={`${
-                rateOfInterestError.includes("error") ? "error" : ""
-              }`}
+              className={`${rateOfInterestError.includes("error") ? "error" : ""
+                }`}
             >
               %
             </span>
@@ -292,12 +296,39 @@ const Calculator = ({
       <div className="tenure-container">
         <div className="title-container">
           <label htmlFor="tenure" className="label">
-            Loan tenure
+            Loan tenure <span style={{ color: primaryColor, fontWeight: 800 }}>in</span>
           </label>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            // sx={{height:"10px"}} 
+            marginLeft={"-130px"}
+            marginTop={'-5px'}
+          >
+            <div>
+              <TextField
+                select
+                // label="Select"
+                defaultValue="Years"
+                helperText=""
+                onChange={(e) => toggleTenureType(e.target.value)}
+                value={tenureType}
+                variant="standard"
+              >
+                <MenuItem value={"Years"}>
+                  Yr
+                </MenuItem>
+                <MenuItem value={"Months"}>
+                  Mo
+                </MenuItem>
+              </TextField>
+            </div>
+          </Box>
           <div
-            className={`value-container ${
-              tenureError.includes("error") ? "error" : ""
-            }`}
+            className={`value-container ${tenureError.includes("error") ? "error" : ""
+              }`}
           >
             <Tooltip
               open={tenureError.includes("error")}
@@ -321,7 +352,9 @@ const Calculator = ({
                 onFocus={(e) => e.target.select()}
               />
             </Tooltip>
-            <span>Yr</span>
+            <span>
+              {tenureType}
+            </span>
           </div>
         </div>
 
@@ -341,7 +374,7 @@ const Calculator = ({
             type="range"
             step="1"
             className="input"
-            max="40"
+            max={tenureType === "Years" ? 40 : 480}
             min="1"
             value={tenure}
             onChange={handleTenureChange}
@@ -353,7 +386,7 @@ const Calculator = ({
               marginLeft: "20px",
             }}
           >
-            40
+            {tenureType === "Years" ? 40 : 480}
           </div>
         </div>
       </div>
@@ -364,7 +397,7 @@ const Calculator = ({
             Monthly EMI
           </span>
           <span style={{ color: secondaryColor }}>
-            ₹ {monthlyEMI.toLocaleString("en-IN")}
+            {currency} {monthlyEMI.toLocaleString("en-IN")}
           </span>
         </div>
 
@@ -373,7 +406,7 @@ const Calculator = ({
             Principal amount
           </span>
           <span style={{ color: secondaryColor }}>
-            ₹ {totalLoanAmount ? totalLoanAmount.toLocaleString("en-IN") : 0}
+            {currency} {totalLoanAmount ? totalLoanAmount.toLocaleString("en-IN") : 0}
           </span>
         </div>
 
@@ -382,7 +415,7 @@ const Calculator = ({
             Total interest
           </span>
           <span style={{ color: secondaryColor }}>
-            ₹ {totalInterest.toLocaleString("en-IN")}
+            {currency} {totalInterest.toLocaleString("en-IN")}
           </span>
         </div>
 
@@ -391,7 +424,7 @@ const Calculator = ({
             Total amount
           </span>
           <span style={{ color: secondaryColor }}>
-            ₹ {totalAmount.toLocaleString("en-IN")}
+            {currency} {totalAmount.toLocaleString("en-IN")}
           </span>
         </div>
       </div>

@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import BudgetLoanCalculator from "../../../Components/BudgetLoanCalculator";
 import { Doughnut } from "react-chartjs-2";
 import { primaryColor, secondaryColor } from "../../../Theme";
+import { useSelector } from "react-redux";
 
 const BudgetLoan = () => {
+  const currency = useSelector((state) => state.currency.currency);
+
   const [emi, setEmi] = useState(0);
   const [tenure, setTenure] = useState(0);
   const [amount, setAmount] = useState(0);
@@ -110,13 +113,13 @@ const BudgetLoan = () => {
                 textAlign: "center",
               }}
             >
-              Your total loan amount is ₹{" "}
+              Your total loan amount is {currency}{" "}
               <span style={{ fontSize: "48px", fontWeight: 700 }}>
                 {amount}
               </span>
             </Box>
             <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
-              Your EMI is ₹ {emi}
+              Your EMI is {currency} {emi}
             </Box>
             <Box
               width={"100%"}
@@ -134,7 +137,20 @@ const BudgetLoan = () => {
               >
                 <div>Total Interest</div>
                 <div>
-                  ₹ <span style={{ fontSize: "32px" }}>{totalInterest}</span>
+                  {currency} <span style={{ fontSize: "32px" }}>{totalInterest || 0}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: 700,
+                  borderRight: "2px solid #FFFFFF",
+                  paddingRight:"60px"
+                }}
+              >
+                <div>Loan Amount</div>
+                <div>
+                  {currency} <span style={{ fontSize: "32px" }}>{amount - totalInterest || 0}</span>
                 </div>
               </div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>
