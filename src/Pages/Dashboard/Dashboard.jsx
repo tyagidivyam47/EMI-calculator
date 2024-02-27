@@ -62,11 +62,12 @@ const faqStyle = {
   transform: "translate(-50%, -50%)",
   maxWidth: 1800,
   height: 600,
-  overflowY: "auto",
+  overflowY: "hidden",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  paddingRight: "-300px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -98,7 +99,7 @@ const LoanCard = (props) => {
         },
       }}
     >
-      <span style={{paddingLeft:"8px"}}>{props.children}</span>
+      <span style={{ paddingLeft: "8px" }}>{props.children}</span>
       <Tooltip
         title={props.tooltip}
         placement="right"
@@ -116,7 +117,7 @@ const LoanCard = (props) => {
           },
         }}
       >
-        <InfoIcon sx={{marginRight:"10px"}} />
+        <InfoIcon sx={{ marginRight: "10px" }} />
       </Tooltip>
     </Box>
   );
@@ -277,7 +278,7 @@ const Dashboard = () => {
       </Box>
       <Box sx={{ marginBottom: "50px", marginRight: "60px" }}>
         <Accordion
-          sx={{ minHeight: "100px", borderRadius: "10px", marginRight: "60px" }}
+          sx={{ minHeight: "100px", marginRight: "60px" }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
@@ -291,7 +292,7 @@ const Dashboard = () => {
               color: "#FFFFFF",
               background:
                 "linear-gradient(90deg, rgba(80,178,234,1) 88%, rgba(255,141,0,1) 100%)",
-              borderRadius: "10px",
+              // borderRadius: "10px",
             }}
           >
             Loan Types
@@ -480,10 +481,12 @@ const Dashboard = () => {
         }}
       >
         <Box sx={faqStyle}>
-          {loanType === "home" && <FAQ data={homeLoanFaq} />}
-          {loanType === "lap" && <FAQ data={lapFaq} />}
-          {loanType === "budget" && <FAQ data={budgetFaq} />}
-          {loanType === "emiCalculator" && <FAQ data={emiCalcFaq} />}
+          <Box sx={{ overflowY: "auto", height: 600, width: "100%" }}>
+            {loanType === "home" && <FAQ data={homeLoanFaq} />}
+            {loanType === "lap" && <FAQ data={lapFaq} />}
+            {loanType === "budget" && <FAQ data={budgetFaq} />}
+            {loanType === "emiCalculator" && <FAQ data={emiCalcFaq} />}
+          </Box>
         </Box>
       </Modal>
     </Box>

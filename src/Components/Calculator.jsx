@@ -24,6 +24,8 @@ const Calculator = ({
   const [totalLoanError, setTotalLoanError] = useState("input");
   const [tenureError, setTenureError] = useState("input");
   const [rateOfInterestError, setRateOfInterestError] = useState("input");
+  const [tenureType, setTenureType] = useState("Years");
+
   const [cookies, setCookie, removeCookie] = useCookies([
     "auth_token",
     "user_id",
@@ -32,6 +34,20 @@ const Calculator = ({
   const navigate = useNavigate();
 
   // console.log("Inside Calculator")
+
+  const toggleTenureType = (tType) => {
+    if (tenureType === tType) {
+      return;
+    }
+    setTenureType(tType);
+    let tempTenure;
+    if (tType === "Years") {
+      tempTenure = tenure / 12;
+    } else {
+      tempTenure = tenure * 12;
+    }
+    setTenure(tempTenure);
+  };
 
   const calculateEMI = () => {
     // console.log("second")

@@ -7,4 +7,4 @@ export const extraLSecondaryColor = "#FDC9B6";
 export const tertiaryColor = "#98FF98";
 export const mainHeading = "600 38px/30px Raleway, serif";
 export const mainSubHeading = "600 30px/30px Raleway, serif";
-export const smText = "600 14px Raleway, serif";
+export const smText = "600 18px Raleway, serif";

@@ -23,6 +23,7 @@ const FAQ = ({ data }) => {
       justifyContent={"center"}
       margin={"auto"}
       gap={"16px"}
+      paddingRight={'20px'}
     >
       <div style={{ font: mainSubHeading, color: secondaryColor, marginBottom:"16px" }}>
         Frequently Asked Questions
@@ -33,7 +34,7 @@ const FAQ = ({ data }) => {
             <Accordion
               sx={{
                 minHeight: "100px",
-                borderRadius: "10px",
+                // borderRadius: "10px",
                 marginRight: "60px",
               }}
             >
@@ -48,7 +49,7 @@ const FAQ = ({ data }) => {
                   font: "500 22px Raleway, serif",
                   color: "#FFFFFF",
                   background: lightSecondaryColor,
-                  borderRadius: "10px",
+                  // borderRadius: "10px",
                 }}
               >
                 {e.summary}

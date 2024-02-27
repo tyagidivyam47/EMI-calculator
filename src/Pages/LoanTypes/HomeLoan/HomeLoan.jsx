@@ -15,8 +15,8 @@ import { Doughnut } from "react-chartjs-2";
 import InputCalculator from "../../../Components/InputCalculator";
 import PaymentList from "../../../Components/PaymentList";
 
-const HomeLoan = ({currency}) => {
-  console.log(currency)
+const HomeLoan = ({ currency }) => {
+  console.log(currency);
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
   const [interest, setInterest] = useState(6.5);
@@ -40,10 +40,10 @@ const HomeLoan = ({currency}) => {
       key: "EMI",
       value: 19566,
     },
-    {
-      key: "Monthly Extra Pay",
-      value: 0,
-    },
+    // {
+    //   key: "Monthly Extra Pay",
+    //   value: 0,
+    // },
     {
       key: "Property Taxes",
       value: 0,
@@ -96,10 +96,10 @@ const HomeLoan = ({currency}) => {
         key: "EMI",
         value: emi,
       },
-      {
-        key: "Monthly Extra Pay",
-        value: extraPay,
-      },
+      // {
+      //   key: "Monthly Extra Pay",
+      //   value: extraPay,
+      // },
       {
         key: "Property Taxes",
         value: taxes,
@@ -195,8 +195,6 @@ const HomeLoan = ({currency}) => {
       maintenence,
     } = advancedInfo;
 
-
-
     if (dp >= hv) {
       setUnfilled(true);
       setErrorMsg("Home Value should always be greater than Down Payment");
@@ -234,15 +232,15 @@ const HomeLoan = ({currency}) => {
   // },[loanAmount])
 
   const advancedChangeHandler = (e) => {
-    if (e.target.value / 10 < 1) {
-      // console.log(+e.target.value%10)
-      console.log({ ...advancedInfo, [e.target.name]: +e.target.value % 10 });
-      setAdvancedInfo({
-        ...advancedInfo,
-        [e.target.name]: +e.target.value % 10,
-      });
-      return;
-    }
+    // if (e.target.value / 10 < 1) {
+    //   // console.log(+e.target.value%10)
+    //   console.log({ ...advancedInfo, [e.target.name]: +e.target.value % 10 });
+    //   setAdvancedInfo({
+    //     ...advancedInfo,
+    //     [e.target.name]: +e.target.value % 10,
+    //   });
+    //   return;
+    // }
     // if (e.target.value > 1000000000) {
     //   return;
     // }
@@ -293,13 +291,13 @@ const HomeLoan = ({currency}) => {
               color: "#FFFFFF",
               background:
                 "linear-gradient(90deg, rgba(80,178,234,1) 88%, rgba(255,141,0,1) 100%)",
-              borderRadius: "10px",
+              // borderRadius: "10px",
             }}
           >
             Advanced Details
           </AccordionSummary>
-          <AccordionDetails>
-            <div>
+          <AccordionDetails sx={{ borderRadius: 10}}>
+            <div style={{borderRadius: 10}}>
               <div
                 style={{
                   display: "flex",
@@ -448,7 +446,7 @@ const HomeLoan = ({currency}) => {
       </Box>
 
       <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
-        <Box>
+        {advancedInfo.dp && loanCharges && <Box>
           <Doughnut
             data={{
               labels: ["Down Payment", "Loan Charges"],
@@ -473,7 +471,7 @@ const HomeLoan = ({currency}) => {
               },
             }}
           />
-        </Box>
+        </Box>}
 
         <Box>
           <Doughnut

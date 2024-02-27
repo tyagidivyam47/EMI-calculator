@@ -160,15 +160,15 @@ const InputCalculator = ({
                 background:
                   tenureType === "Years" ? primaryColor : extraLPrimaryColor,
                 color: lightPrimaryColor,
-                height: "25px",
+                height: "30px",
+                width: "54px",
                 border: "1px solid #007BA7",
-                width: "34px",
                 textAlign: "center",
                 cursor: "pointer",
                 paddingTop: "3px",
               }}
             >
-              Yrs
+              Yr
             </div>
             <div
               onClick={() => toggleTenureType("Months")}
@@ -177,15 +177,16 @@ const InputCalculator = ({
                 background:
                   tenureType === "Months" ? primaryColor : extraLPrimaryColor,
                 color: lightPrimaryColor,
-                height: "25px",
+                height: "30px",
+                width: "54px",
                 border: "1px solid #007BA7",
-                width: "34px",
+                // width: "34px",
                 textAlign: "center",
                 cursor: "pointer",
                 paddingTop: "3px",
               }}
             >
-              Mon
+              Mn
             </div>
           </Box>
         </Box>
