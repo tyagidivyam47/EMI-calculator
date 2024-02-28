@@ -187,12 +187,38 @@ const HomeLoan = ({ currency }) => {
       setErrorMsg("Home Value should always be greater than Down Payment");
       return;
     }
+    if(li >= hv){
+      setUnfilled(true);
+      setErrorMsg("Loan Insurance can not be greater than Home Value");
+      return;
+    }
+    if(loanCharges >= hv){
+      setUnfilled(true);
+      setErrorMsg("Loan fees & Charges can not be greater than Home Value");
+      return;
+    }
+    if(propertyTaxes >= hv){
+      setUnfilled(true);
+      setErrorMsg("Property Taxes can not be greater than Home Value");
+      return;
+    }
+    if(homeInsurance >= hv){
+      setUnfilled(true);
+      setErrorMsg("Home Insurance can not be greater than Home Value");
+      return;
+    }
+    if(maintenence >= hv){
+      setUnfilled(true);
+      setErrorMsg("Maintenence can not be greater than Home Value");
+      return;
+    }
 
     const hvNumber = parseInt(hv, 10);
-    const dpNumber = parseInt(dp, 10);
-    const liNumber = parseInt(li, 10);
+    const dpNumber = parseInt(dp, 10) || 0;
+    const liNumber = parseInt(li, 10) || 0;
     const loanChargesNumber = parseInt(loanCharges, 10);
     setLoanCharges(loanChargesNumber);
+    console.log(liNumber)
     const tempLoanAmount = hvNumber + liNumber - dpNumber;
     // console.log(tempLoanAmount);
     setLoanAmount(tempLoanAmount);
@@ -200,42 +226,29 @@ const HomeLoan = ({ currency }) => {
       loanChargesNumber + dpNumber,
       totalPayList[1].value,
       totalPayList[2].value,
-      +propertyTaxes * tenure +
-      homeInsurance * tenure +
-      maintenence * 12 * tenure
+      +(propertyTaxes * tenure) +
+      +(homeInsurance * tenure) +
+      +(maintenence * 12 * tenure)
     );
     setTable(
       monthlyPayList[0].value,
-      propertyTaxes / tenure,
-      homeInsurance / tenure,
+      propertyTaxes / 12,
+      homeInsurance / 12,
       maintenence
       // propertyTaxes / 12,
     );
   };
+
+  // console.log(advancedInfo)
 
   // useEffect(()=>{
   //   setAdvancedInfo({ ...advancedInfo, ['hv']: e.target.value });
   // },[loanAmount])
 
   const advancedChangeHandler = (e) => {
-    // if (e.target.value / 10 < 1) {
-    //   // console.log(+e.target.value%10)
-    //   console.log({ ...advancedInfo, [e.target.name]: +e.target.value % 10 });
-    //   setAdvancedInfo({
-    //     ...advancedInfo,
-    //     [e.target.name]: +e.target.value % 10,
-    //   });
-    //   return;
-    // }
-    // if (e.target.value > 1000000000) {
-    //   return;
-    // }
-    // if (e.target.value.length < 1) {
-    //   return;
-    // }
-    // if (e.target.name === "hv" || e.target.name === "lv" || e.target.name === "dp") {
-    //   setLoanAmount(e.target.value);
-    // }
+    if((e.target.name === 'hv' || e.target.name === 'dp') && e.target.value > 99999999999){
+      return;
+    }
     if (e.target.value / 10 < 1) {
       setAdvancedInfo({
         ...advancedInfo,
