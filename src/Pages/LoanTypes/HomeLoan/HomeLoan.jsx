@@ -367,7 +367,7 @@ const HomeLoan = ({ currency }) => {
                 <TextField
                   name="maintenence"
                   value={advancedInfo.maintenence}
-                  label={`Maintenance Expenses / month in ${currency}`}
+                  label={`Maintenance Expenses / month`}
                   onChange={advancedChangeHandler}
                   onFocus={(e) => e.target.select()}
                   type="number"

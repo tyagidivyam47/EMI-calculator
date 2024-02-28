@@ -83,8 +83,8 @@ const LoanCard = (props) => {
   return (
     <Box
       sx={{
-        height: "50px",
-        width: "200px",
+        height: "60px",
+        width: "215px",
         background: lightSecondaryColor,
         color: "#FFFFFF",
         borderRadius: 2,
@@ -131,7 +131,7 @@ const Dashboard = () => {
   //   "curr_sign",
   // ]);
   // const currency = cookies.curr_sign || "₹";
-  const currency = useSelector((state)=> state.currency.currency);
+  const currency = useSelector((state) => state.currency.currency);
   // console.log(currency)
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -211,24 +211,26 @@ const Dashboard = () => {
             gap={"12px"}
             marginTop={"22px"}
           >
-            <Button
-              variant="outlined"
-              sx={{
-                color: "#ffffff",
-                border: "2px solid #FFFFFF",
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "16px",
-                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-                backdropFilter: "blur(5px)",
-                WebkitBackdropFilter: "blur(5px)",
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                ":hover": {
-                  border: "1px solid #FF4500 ",
-                },
-              }}
-            >
-              <Link to={"/calculator"}>Open</Link>
-            </Button>
+            <Link to={"/calculator"}>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: "#ffffff",
+                  // border: "2px solid #FFFFFF",
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  borderRadius: "16px",
+                  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                  backdropFilter: "blur(5px)",
+                  WebkitBackdropFilter: "blur(5px)",
+                  border: "1px solid rgba(255, 255, 255, 0.3)",
+                  ":hover": {
+                    border: "1px solid #FF4500 ",
+                  },
+                }}
+              >
+                Open
+              </Button>
+            </Link>
             <Tooltip
               arrow
               componentsProps={{
@@ -280,9 +282,7 @@ const Dashboard = () => {
         </Box>
       </Box>
       <Box sx={{ marginBottom: "50px", marginRight: "60px" }}>
-        <Accordion
-          sx={{ minHeight: "100px", marginRight: "60px" }}
-        >
+        <Accordion sx={{ minHeight: "100px", marginRight: "60px" }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
             aria-controls="panel1-content"

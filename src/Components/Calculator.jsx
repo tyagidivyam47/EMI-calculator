@@ -355,7 +355,7 @@ const Calculator = ({
                 type="number"
                 className={tenureError}
                 style={{
-                  width: "100px",
+                  width: "70px",
                   textAlign: "right",
                   borderBottom: "2px solid #007BA7",
                 }}

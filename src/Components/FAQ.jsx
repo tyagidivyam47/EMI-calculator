@@ -42,7 +42,7 @@ const FAQ = ({ data }) => {
                 sx={{
                   minHeight: "100px",
                   // borderRadius: "10px",
-                  marginRight: "60px",
+                  // marginRight: "60px",
                   marginTop:"30px",
                   marginBottom:"10px",
                   marginRight:"10px"
