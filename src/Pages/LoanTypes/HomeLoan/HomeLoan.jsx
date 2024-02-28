@@ -150,7 +150,7 @@ const HomeLoan = ({ currency }) => {
     monthlyEMII,
     totalInterestI
   ) => {
-
+    console.log(tenureI)
     setLoanAmount(+loanAmountI);
     setTenure(+tenureI);
     setInterest(+interestI);
@@ -220,8 +220,9 @@ const HomeLoan = ({ currency }) => {
     setLoanCharges(loanChargesNumber);
     console.log(liNumber)
     const tempLoanAmount = hvNumber + liNumber - dpNumber;
-    // console.log(tempLoanAmount);
+    console.log(tenure);
     setLoanAmount(tempLoanAmount);
+    // if()
     setTotalTable(
       loanChargesNumber + dpNumber,
       totalPayList[1].value,

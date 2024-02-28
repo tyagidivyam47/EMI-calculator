@@ -40,7 +40,7 @@ const InputCalculator = ({
     // console.log(totalInt)
     sendData(
       inAmount,
-      inTenure,
+      inTenure / tenureConvHelper,
       inInterest,
       Math.floor(emi),
       Math.ceil(totalInt)
