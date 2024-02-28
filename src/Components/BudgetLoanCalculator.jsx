@@ -30,6 +30,9 @@ const BudgetLoanCalculator = ({ sendData }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "budget" && value > 9999999999) {
+      return;
+    }
     if (name === "budget") {
       setBudget(+value);
       return;
@@ -38,13 +41,16 @@ const BudgetLoanCalculator = ({ sendData }) => {
       if (value > 50 && tenureType === "Years") {
         return;
       }
-      if (value > 300 && tenureType === "Months") {
+      if (value > 600 && tenureType === "Months") {
         return;
       }
       if (tenureType === "Months" && !Number.isInteger(+value)) {
         return;
       }
       setTenure(+value);
+      return;
+    }
+    if (name === "interest" && value > 99) {
       return;
     }
     if (name === "interest") {
@@ -70,12 +76,16 @@ const BudgetLoanCalculator = ({ sendData }) => {
 
     let interest = rateOfInterest / 12 / 100;
     let tenureInMonths = Math.ceil((totalTenure * 12) / tenureConvHelper);
-    let emi = (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
+    let emi =
+      (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
       (Math.pow(1 + interest, tenureInMonths) - 1);
     // console.log(emi)
     let totalAmt = emi * tenureInMonths;
     // console.log(totalAmt)
-    let totalInt = totalAmt - totalLoanAmount;
+    // let totalInt = totalAmt - totalLoanAmount;
+
+    let totalInt = (emi * tenureInMonths) - totalLoanAmount;
+    // console.log(totalInt)
     sendData(
       budget,
       Math.ceil(totalTenure),
@@ -138,7 +148,7 @@ const BudgetLoanCalculator = ({ sendData }) => {
             <TextField
               onChange={handleChange}
               value={budget}
-              type="number"
+              type="tel"
               label={`In ${currency}`}
               name="budget"
               onFocus={(e) => e.target.select()}
@@ -169,11 +179,11 @@ const BudgetLoanCalculator = ({ sendData }) => {
                     onChange={handleChange}
                     value={tenure}
                     name="tenure"
-                    type="number"
+                    type="tel"
                     label={`in ${tenureType}`}
                     onFocus={(e) => e.target.select()}
                     sx={{ background: "#FFFFFF", width: "120px" }}
-                    inputProps={{ style: {width: "800px" } }}
+                    inputProps={{ step: "any", style: { width: "800px" } }}
                   />
                   <Box
                     display={"flex"}
@@ -187,16 +197,11 @@ const BudgetLoanCalculator = ({ sendData }) => {
                         select
                         label="Select"
                         defaultValue="Years"
-                        helperText=""
                         onChange={(e) => toggleTenureType(e.target.value)}
                         value={tenureType}
                       >
-                        <MenuItem value={"Years"}>
-                          Yr
-                        </MenuItem>
-                        <MenuItem value={"Months"}>
-                          Mo
-                        </MenuItem>
+                        <MenuItem value={"Years"}>Yr</MenuItem>
+                        <MenuItem value={"Months"}>Mo</MenuItem>
                       </TextField>
                     </div>
                   </Box>
@@ -228,20 +233,20 @@ const BudgetLoanCalculator = ({ sendData }) => {
                 </Box>
                 <Slider
                   min={0}
-                  max={tenureType === "Years" ? 50 : 300}
+                  max={tenureType === "Years" ? 50 : 600}
                   value={typeof tenure === "number" ? tenure : 0}
                   onChange={handleSliderChange}
                   aria-labelledby="input-slider"
                   marks={
                     tenureType === "Years"
                       ? [
-                        { value: 0, label: "0" },
-                        { value: 50, label: "50" },
-                      ]
+                          { value: 0, label: "0" },
+                          { value: 50, label: "50" },
+                        ]
                       : [
-                        { value: 0, label: "0" },
-                        { value: 300, label: "300" },
-                      ]
+                          { value: 0, label: "0" },
+                          { value: 600, label: "600" },
+                        ]
                   }
                 />
               </Box>
@@ -258,9 +263,10 @@ const BudgetLoanCalculator = ({ sendData }) => {
                 Enter the Interest Rate
               </div>
               <TextField
+                helperText={""}
                 onChange={handleChange}
                 value={interest}
-                type="number"
+                type="tel"
                 label="In %"
                 name="interest"
                 onFocus={(e) => e.target.select()}

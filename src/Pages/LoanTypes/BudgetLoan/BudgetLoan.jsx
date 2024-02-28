@@ -150,7 +150,7 @@ const BudgetLoan = () => {
               >
                 <div>Loan Amount</div>
                 <div>
-                  {currency} <span style={{ fontSize: "32px" }}>{amount - totalInterest || 0}</span>
+                  {currency} <span style={{ fontSize: "32px" }}>{amount - totalInterest > 0 ? amount - totalInterest: amount }</span>
                 </div>
               </div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>
