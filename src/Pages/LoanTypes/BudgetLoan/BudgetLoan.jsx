@@ -113,7 +113,7 @@ const BudgetLoan = () => {
                 textAlign: "center",
               }}
             >
-              Your total loan amount is {currency}{" "}
+              Your total principal amount is {currency}{" "}
               <span style={{ fontSize: "48px", fontWeight: 700 }}>
                 {amount}
               </span>

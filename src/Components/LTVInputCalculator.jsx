@@ -422,7 +422,7 @@ const LTVInputCalculator = ({ sendData }) => {
         sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
       >
         <AddIcon />
-        Add Another Property
+        Add Another Property Value
       </Button>
     </Box>
   );

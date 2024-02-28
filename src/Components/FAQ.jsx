@@ -23,52 +23,64 @@ const FAQ = ({ data }) => {
       justifyContent={"center"}
       margin={"auto"}
       gap={"16px"}
-      paddingRight={'20px'}
+      paddingRight={"20px"}
     >
-      <div style={{ font: mainSubHeading, color: secondaryColor, marginBottom:"16px" }}>
+      <div
+        style={{
+          font: mainSubHeading,
+          color: secondaryColor,
+          marginBottom: "16px",
+        }}
+      >
         Frequently Asked Questions
       </div>
-      {data &&
-        data?.map((e) => (
-          <div style={{}}>
-            <Accordion
-              sx={{
-                minHeight: "100px",
-                // borderRadius: "10px",
-                marginRight: "60px",
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<SouthIcon style={{ color: "#FFFFFF" }} />}
-                aria-controls="panel1-content"
-                id="panel1-header"
+      <div style={{overflowY:"auto", height:"500px"}}>
+        {data &&
+          data?.map((e) => (
+            <div style={{}}>
+              <Accordion
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
                   minHeight: "100px",
-                  font: "500 22px Raleway, serif",
-                  color: "#FFFFFF",
-                  background: lightSecondaryColor,
                   // borderRadius: "10px",
+                  marginRight: "60px",
+                  marginTop:"30px",
+                  marginBottom:"10px",
+                  marginRight:"10px"
                 }}
               >
-                {e.summary}
-              </AccordionSummary>
-              <AccordionDetails>
-                <div
-                  style={{
+                <AccordionSummary
+                  expandIcon={<SouthIcon style={{ color: "#FFFFFF" }} />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                  sx={{
                     display: "flex",
-                    flexWrap: "wrap",
-                    gap: "50px",
-                    rowGap: "10px",
+                    alignItems: "center",
+                    minHeight: "100px",
+                    font: "500 22px Raleway, serif",
+                    color: "#FFFFFF",
+                    background: lightSecondaryColor,
+                    // borderRadius: "10px",
                   }}
                 >
-                  {e.details}
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        ))}
+                  {e.summary}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "50px",
+                      rowGap: "10px",
+                      marginBottom:"10px"
+                    }}
+                  >
+                    {e.details}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          ))}
+      </div>
     </Box>
   );
 };

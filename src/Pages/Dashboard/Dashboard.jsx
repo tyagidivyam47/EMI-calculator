@@ -484,7 +484,7 @@ const Dashboard = () => {
         }}
       >
         <Box sx={faqStyle}>
-          <Box sx={{ overflowY: "auto", height: 600, width: "100%" }}>
+          <Box sx={{ height: 600, width: "100%" }}>
             {loanType === "home" && <FAQ data={homeLoanFaq} />}
             {loanType === "lap" && <FAQ data={lapFaq} />}
             {loanType === "budget" && <FAQ data={budgetFaq} />}

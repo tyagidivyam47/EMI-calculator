@@ -49,26 +49,59 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <Box display={"flex"}>
-          {loggedIn && <Box>
-            <Sidebar />
-          </Box>}
+          {loggedIn && (
+            <Box>
+              <Sidebar />
+            </Box>
+          )}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/calculator" element={<EMICalculator />} />
-            <Route path="/login" element={loggedIn ? <Navigate to={'/Dashboard'} /> : <Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/passwordReset" element={<ForgotPassword />} />
-            <Route path="/forgotPassword" element={<SetupForgotPass />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Loan Types" element={<LoanTypes />} />
-            <Route path="/Request Management" element={<ReqManagment />} />
-            <Route path="/Profile" element={<Profile />} />
-            <Route path="/Settings" element={<Settings />} />
+            <Route
+              path="/login"
+              element={loggedIn ? <Navigate to={"/Dashboard"} /> : <Login />}
+            />
+            <Route
+              path="/signup"
+              element={loggedIn ? <Navigate to={"/Dashboard"} /> : <SignUp />}
+            />
+            <Route
+              path="/passwordReset"
+              element={
+                loggedIn ? <Navigate to={"/Dashboard"} /> : <ForgotPassword />
+              }
+            />
+            <Route
+              path="/forgotPassword"
+              element={
+                loggedIn ? <Navigate to={"/Dashboard"} /> : <SetupForgotPass />
+              }
+            />
+            <Route
+              path="/Dashboard"
+              element={!loggedIn ? <Navigate to={"/login"} /> : <Dashboard />}
+            />
+            <Route
+              path="/Loan Types"
+              element={!loggedIn ? <Navigate to={"/login"} /> : <LoanTypes />}
+            />
+            <Route
+              path="/Request Management"
+              element={
+                !loggedIn ? <Navigate to={"/login"} /> : <ReqManagment />
+              }
+            />
+            <Route
+              path="/Profile"
+              element={!loggedIn ? <Navigate to={"/login"} /> : <Profile />}
+            />
+            <Route
+              path="/Settings"
+              element={!loggedIn ? <Navigate to={"/login"} /> : <Settings />}
+            />
           </Routes>
         </Box>
       </ThemeProvider>
-      {/* <Routes>
-      </Routes> */}
     </div>
   );
 }

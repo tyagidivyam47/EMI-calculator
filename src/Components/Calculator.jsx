@@ -98,10 +98,12 @@ const Calculator = ({
   }, [tenure, rateOfInterest, loanCharges]);
 
   const handleTotalLoanChange = (e) => {
+    if(e.target.value > 9999999999){
+      return;
+    }
     if (
       e.target.value.length < 6 ||
-      e.target.value.length > 8 ||
-      e.target.value > amountUl
+      e.target.value.length > 8 
     ) {
       // setTotalLoanError("input error");
     } else {
@@ -111,6 +113,13 @@ const Calculator = ({
   };
 
   const handleTenureChange = (e) => {
+    if(tenureType === "Years" && e.target.value > 40){
+      return;
+    }
+    if(tenureType === "Months" && e.target.value > 480){
+      return;
+    }
+
     if (
       e.target.value > 40 ||
       e.target.value < 1 ||
@@ -124,6 +133,9 @@ const Calculator = ({
   };
 
   const handleRateOfInterestChange = (e) => {
+    if(e.target.value > 45){
+      return;
+    }
     if (
       e.target.value > 45 ||
       e.target.value < 1 ||
