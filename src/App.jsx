@@ -36,7 +36,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState();
 
   useEffect(() => {
-    const isLoggedIn = cookies.auth_token;
+    const isLoggedIn = true;
     if (isLoggedIn) {
       setLoggedIn(true);
     } else {
@@ -79,11 +79,11 @@ function App() {
             />
             <Route
               path="/Dashboard"
-              element={!loggedIn ? <Navigate to={"/login"} /> : <Dashboard />}
+              element={ <Dashboard />}
             />
             <Route
               path="/Loan Types"
-              element={!loggedIn ? <Navigate to={"/login"} /> : <LoanTypes />}
+              element={ <LoanTypes />}
             />
             <Route
               path="/Request Management"

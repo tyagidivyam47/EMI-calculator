@@ -4,7 +4,7 @@ export const giveEMI = (principle, rateOfInterest, tenure, tenureType) =>{
         !Number(tenure) ||
         !Number(principle)
       ) {
-        return "Noo";
+        return;
       }
       if (tenure.toString().includes(".") && tenureType === "Years") {
           const tempArr = tenure.toString().split('.');
@@ -44,8 +44,9 @@ export const giveEMI = (principle, rateOfInterest, tenure, tenureType) =>{
 
 export const toggleTenure = (tenureType, tenure) =>{
     // console.log(tenure.toString().includes("."))
+    // console.log(tenure, " : ", tenureType)
     if (tenure.toString().includes(".")) {
-        console.log("here")
+        // console.log("here")
         const tempArr = tenure.toString().split('.');
           const yrs = tempArr[0];
           const mns = tempArr[1];
@@ -53,14 +54,15 @@ export const toggleTenure = (tenureType, tenure) =>{
           return Math.floor(+tenureInMonths);
     }
     if(tenureType === "Years"){
-        // console.log("monss")
+        // console.log("yrs")
         var years = Math.floor(tenure / 12);
         var remainingMonths = tenure % 12;
         var result = years + "." + remainingMonths;
         return parseFloat(+result);
         // return (tenure / 12)
-    }
-    else{
+      }
+      else{
+      // console.log("mos")
         return(tenure * 12)
     } 
 }

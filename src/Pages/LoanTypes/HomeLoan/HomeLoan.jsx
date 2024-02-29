@@ -86,7 +86,7 @@ const HomeLoan = ({ currency }) => {
     setMonthlyPayList([
       {
         key: "EMI",
-        value: emi,
+        value: emi || 0,
       },
       // {
       //   key: "Monthly Extra Pay",
@@ -117,6 +117,7 @@ const HomeLoan = ({ currency }) => {
     interestLocal,
     TaxInsurMain
   ) => {
+    // console.log(interestLocal)
     const total =
       +oneTime + +principal + +interestLocal + +TaxInsurMain;
     setTotalPayList([
@@ -130,7 +131,7 @@ const HomeLoan = ({ currency }) => {
       },
       {
         key: "Interest",
-        value: interestLocal,
+        value: interestLocal || 0,
       },
       {
         key: "Taxes, Home Insurance & Maintenance",
@@ -138,7 +139,7 @@ const HomeLoan = ({ currency }) => {
       },
       {
         key: "Total of all Payments	",
-        value: total,
+        value: total || 0,
       },
     ]);
   };
@@ -150,7 +151,7 @@ const HomeLoan = ({ currency }) => {
     monthlyEMII,
     totalInterestI
   ) => {
-    console.log(tenureI)
+    // console.log(tenureI)
     setLoanAmount(+loanAmountI);
     setTenure(+tenureI);
     setInterest(+interestI);

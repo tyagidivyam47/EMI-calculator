@@ -6,6 +6,7 @@ import {
   primaryColor,
   smText,
 } from "../Theme";
+import { giveEMI, toggleTenure } from "./calculate-emi";
 
 const InputCalculator = ({
   amountLabel,
@@ -48,22 +49,44 @@ const InputCalculator = ({
   };
 
   const toggleTenureType = (tType) => {
+    // if (tenureType === tType) {
+    //   return;
+    // }
+    // setTenureType(tType);
+    // let tempTenure;
+    // if (tType === "Years") {
+    //   tempTenure = inTenure / 12;
+    // } else {
+    //   tempTenure = inTenure * 12;
+    // }
+    // // console.log(tempTenure)
+    // setInTenure(tempTenure);
+
     if (tenureType === tType) {
       return;
     }
-    setTenureType(tType);
-    let tempTenure;
+    // console.log(toggleTenure(tType, tenure))
     if (tType === "Years") {
-      tempTenure = inTenure / 12;
+      setInTenure(+toggleTenure(tType, inTenure));
     } else {
-      tempTenure = inTenure * 12;
+      setInTenure(+toggleTenure(tType, inTenure));
     }
-    // console.log(tempTenure)
-    setInTenure(tempTenure);
+    setTenureType(tType);
   };
 
   useEffect(() => {
-    calculateEMI();
+    // calculateEMI();
+    const details = giveEMI(inAmount, inInterest, inTenure, tenureType);
+    let totalAmt = details?.emi * details?.tenureInMonths;
+    let totalInt = totalAmt - totalLoanAmount;
+
+    sendData(
+      inAmount,
+      tenureType === "Years" ? inTenure : inTenure / 12,
+      inInterest,
+      details?.emi || 0,
+      totalInt
+    );
   }, [inInterest, inTenure, inAmount]);
 
   useEffect(() => {
@@ -87,7 +110,7 @@ const InputCalculator = ({
             if (e.target.value > 100000000000) {
               return;
             }
-            setInAmount(e.target.value)
+            setInAmount(e.target.value);
           }}
           value={inAmount}
           type="number"
@@ -140,7 +163,7 @@ const InputCalculator = ({
               if (tenureType === "Months" && e.target.value > 480) {
                 return;
               }
-              setInTenure(e.target.value)
+              setInTenure(e.target.value);
             }}
             value={inTenure}
             type="number"
@@ -161,15 +184,11 @@ const InputCalculator = ({
                 label="Select"
                 defaultValue="₹"
                 helperText=""
-                onChange={(e)=>toggleTenureType(e.target.value)}
+                onChange={(e) => toggleTenureType(e.target.value)}
                 value={tenureType}
               >
-                  <MenuItem value={"Years"}>
-                    Yr
-                  </MenuItem>
-                  <MenuItem value={"Months"}>
-                    Mo
-                  </MenuItem>
+                <MenuItem value={"Years"}>Yr</MenuItem>
+                <MenuItem value={"Months"}>Mo</MenuItem>
               </TextField>
             </div>
           </Box>

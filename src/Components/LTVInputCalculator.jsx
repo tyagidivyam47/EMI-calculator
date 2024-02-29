@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -17,8 +18,11 @@ import {
 } from "../Theme";
 import { CheckBox } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+// import RemoveIcon from '@mui/icons-material/Cancel';
+import CloseIcon from "@mui/icons-material/Close";
+// import RemoveIcon from "@mui/icons-material/Remove";
 import { useSelector } from "react-redux";
+import { giveEMI, toggleTenure } from "./calculate-emi";
 
 const salRes = 75;
 const empRes = 70;
@@ -26,20 +30,28 @@ const salCom = 70;
 const empCom = 65;
 
 const LTVInputCalculator = ({ sendData }) => {
-  const currency = useSelector((state)=> state.currency.currency);
+  const currency = useSelector((state) => state.currency.currency);
 
   // console.log(totalLoanAmount)
   const [inInterest, setInInterest] = useState(0);
   const [inTenure, setInTenure] = useState(0);
   const [inAmount, setInAmount] = useState();
   const [empType, setEmpType] = useState("salaried");
-  const [propValue, setPropValue] = useState(0);
   const [propType, setPropType] = useState("residential");
   const [ltvRatio, setLtvRatio] = useState(75);
   const [ltvActive, setLtvActive] = useState(false);
   const [tenureType, setTenureType] = useState("Years");
-  const [extraProperties, setExtraProperties] = useState([]);
+  const [errorMsg, setErrorMsg] = useState();
+  const [unfilled, setUnfilled] = useState(false);
+  const [extraProperties, setExtraProperties] = useState([
+    {
+      value: 0,
+    },
+  ]);
+  const [totalMortgage, setTotalMortgage] = useState(0);
   const [allPropValue, setAllPropValue] = useState(0);
+  const [totalLoanAmount, setTotalLoanAmount] = useState(0);
+  const [eligible, setEligible] = useState(false);
 
   const calculateEMI = () => {
     if (!Number(inInterest) || !Number(inTenure) || !Number(inAmount)) {
@@ -71,59 +83,42 @@ const LTVInputCalculator = ({ sendData }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "propValue":
-        setPropValue(value);
-        break;
-      case "inInterest":
-        setInInterest(value);
-        break;
-      case "inTenure":
-        setInTenure(value);
-        break;
-      case "empType":
-        setEmpType(value);
-        if (!ltvActive) {
-          if (value === "salaried" && propType === "residential") {
-            setLtvRatio(salRes);
-          } else if (value === "selfEmployed" && propType === "residential") {
-            setLtvRatio(empRes);
-          } else if (value === "selfEmployed" && propType === "commercial") {
-            setLtvRatio(empCom);
-          } else if (value === "salaried" && propType === "commercial") {
-            setLtvRatio(salCom);
-          }
-        }
-        break;
-      case "propType":
-        setPropType(value);
-        if (!ltvActive) {
-          if (empType === "salaried" && value === "residential") {
-            setLtvRatio(salRes);
-          } else if (empType === "selfEmployed" && value === "residential") {
-            setLtvRatio(empRes);
-          } else if (empType === "selfEmployed" && value === "commercial") {
-            setLtvRatio(empCom);
-          } else if (empType === "salaried" && value === "commercial") {
-            setLtvRatio(salCom);
-          }
-        }
-        break;
+    if (name === "inAmount" && value > 99999999999) {
+      return;
+    }
+    if (name === "inAmount") {
+      setInAmount(value);
+    }
+    if (name === "inInterest") {
+      setInInterest(value);
+    }
+    if (name === "inTenure") {
+      setInTenure(value);
     }
   };
 
   const toggleTenureType = (tType) => {
+    // if (tenureType === tType) {
+    //   return;
+    // }
+    // setTenureType(tType);
+    // let tempTenure;
+    // if (tType === "Years") {
+    //   tempTenure = inTenure / 12;
+    // } else {
+    //   tempTenure = inTenure * 12;
+    // }
+    // setInTenure(tempTenure);
+
     if (tenureType === tType) {
       return;
     }
-    setTenureType(tType);
-    let tempTenure;
     if (tType === "Years") {
-      tempTenure = inTenure / 12;
+      setInTenure(+toggleTenure(tType, inTenure));
     } else {
-      tempTenure = inTenure * 12;
+      setInTenure(+toggleTenure(tType, inTenure));
     }
-    setInTenure(tempTenure);
+    setTenureType(tType);
   };
 
   const propertyAddHandler = () => {
@@ -138,25 +133,83 @@ const LTVInputCalculator = ({ sendData }) => {
     setExtraProperties(tempProperty);
   };
 
-  // console.log(extraProperties)
-
-  useEffect(() => {
-    let extraTotal = 0;
-    for (let i = 0; i < extraProperties.length; i++) {
-      extraTotal += +extraProperties[i].value;
-    }
-    const totalPropValue = +propValue + +extraTotal;
-    const tempAmount = (ltvRatio / 100) * totalPropValue;
-    setAllPropValue(totalPropValue);
-    setInAmount(tempAmount);
-  }, [inInterest, inTenure, propValue, ltvRatio, extraProperties]);
-
-  useEffect(() => {
-    if (!inAmount) {
+  const submitClickHandler = () => {
+    if (!inAmount || inAmount < 1) {
+      setUnfilled(true);
+      setErrorMsg("Enter Amount correctly");
       return;
     }
-    calculateEMI();
-  }, [inAmount, inInterest, inTenure]);
+    if (!inInterest || inInterest < 1) {
+      setUnfilled(true);
+      setErrorMsg("Enter Interest correctly");
+      return;
+    }
+    if (!inTenure || inTenure < 1) {
+      setUnfilled(true);
+      setErrorMsg("Enter Tenure correctly");
+      return;
+    }
+    if (extraProperties.length < 1) {
+      setUnfilled(true);
+      setErrorMsg("Add a Mortgage to continue");
+      return;
+    }
+    for (let i = 0; i < extraProperties.length; i++) {
+      if (extraProperties[i].value < 0) {
+        setUnfilled(true);
+        setErrorMsg("Mortgage can not be negative.");
+        return;
+      }
+    }
+    const details = giveEMI(inAmount, inInterest, inTenure, tenureType);
+    // let totalAmt = details?.emi * details?.tenureInMonths;
+    let totalAmt = details?.totalAmt;
+    let totalMortgageAmount = 0;
+    for (let i = 0; i < extraProperties.length; i++) {
+      totalMortgageAmount += extraProperties[i].value;
+    }
+    if (totalAmt < totalMortgageAmount) {
+      setEligible(true);
+    } else {
+      setEligible(false);
+    }
+    setTotalMortgage(totalMortgageAmount);
+    setTotalLoanAmount(totalAmt);
+
+    sendData(
+      details?.emi || 0,
+      details?.totalInt || 0,
+      inAmount || 0,
+      totalAmt || 0,
+      totalMortgageAmount,
+      totalAmt < totalMortgageAmount
+    );
+  };
+
+  // console.log(extraProperties)
+
+  // useEffect(() => {
+  //   let extraTotal = 0;
+  //   for (let i = 0; i < extraProperties.length; i++) {
+  //     extraTotal += +extraProperties[i].value;
+  //   }
+  //   const totalPropValue = +propValue + +extraTotal;
+  //   const tempAmount = (ltvRatio / 100) * totalPropValue;
+  //   setAllPropValue(totalPropValue);
+  //   setInAmount(tempAmount);
+  // }, [inInterest, inTenure, propValue, ltvRatio, extraProperties]);
+
+  // useEffect(() => {
+  //   if (!inAmount) {
+  //     return;
+  //   }
+  //   calculateEMI();
+  // }, [inAmount, inInterest, inTenure]);
+  useEffect(() => {
+    setTimeout(() => {
+      setUnfilled(false);
+    }, [4000]);
+  }, [unfilled]);
 
   return (
     <Box>
@@ -176,7 +229,7 @@ const LTVInputCalculator = ({ sendData }) => {
                 paddingBottom: "6px",
               }}
             >
-              Property Value
+              Loan Amount
             </div>
             <TextField
               onChange={(e) => {
@@ -186,10 +239,10 @@ const LTVInputCalculator = ({ sendData }) => {
                 handleChange(e);
               }}
               onFocus={(e) => e.target.select()}
-              value={propValue}
+              value={inAmount}
               type="number"
               label={`In ${currency}`}
-              name="propValue"
+              name="inAmount"
               //   disabled={disableAmount}
               sx={{ background: "#FFFFFF" }}
             />
@@ -219,7 +272,7 @@ const LTVInputCalculator = ({ sendData }) => {
               sx={{ background: "#FFFFFF" }}
             />
           </Box>
-          <Box>
+          <Box display={""}>
             <div
               style={{
                 fontWeight: "600",
@@ -263,12 +316,8 @@ const LTVInputCalculator = ({ sendData }) => {
                     onChange={(e) => toggleTenureType(e.target.value)}
                     value={tenureType}
                   >
-                    <MenuItem value={"Years"}>
-                      Yr
-                    </MenuItem>
-                    <MenuItem value={"Months"}>
-                      Mo
-                    </MenuItem>
+                    <MenuItem value={"Years"}>Yr</MenuItem>
+                    <MenuItem value={"Months"}>Mo</MenuItem>
                   </TextField>
                 </div>
               </Box>
@@ -282,102 +331,8 @@ const LTVInputCalculator = ({ sendData }) => {
           gap={"10px"}
           paddingLeft={"15px"}
         >
-          <Box marginBottom={"14px"}>
-            <div
-              style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
-              }}
-            >
-              Employment Type
-            </div>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="empType"
-              onChange={handleChange}
-              value={empType}
-            >
-              <FormControlLabel
-                value="salaried"
-                control={<Radio disabled={ltvActive} />}
-                label="Salaried"
-              />
-              <FormControlLabel
-                value="selfEmployed"
-                control={<Radio disabled={ltvActive} />}
-                label="Self-Employed"
-              />
-            </RadioGroup>
-          </Box>
-
-          <Box marginBottom={"14px"}>
-            <div
-              style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
-              }}
-            >
-              Property Type
-            </div>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="propType"
-              onChange={handleChange}
-              value={propType}
-            >
-              <FormControlLabel
-                value="residential"
-                control={<Radio disabled={ltvActive} />}
-                label="Residential Property"
-              />
-              <FormControlLabel
-                value="commercial"
-                control={<Radio disabled={ltvActive} />}
-                label="Commercial Property"
-              />
-            </RadioGroup>
-          </Box>
-
-          <Box>
-            <div
-              style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
-              }}
-            >
-              LTV Ratio
-            </div>
-            <TextField
-              // onChange={(e) => setInTenure(e.target.value)}
-              value={ltvRatio}
-              type="number"
-              label="In %"
-              sx={{ background: "#FFFFFF" }}
-              disabled={!ltvActive}
-              onChange={(e) => setLtvRatio(e.target.value)}
-            />
-            <FormControlLabel
-              sx={{ marginLeft: "10px", marginTop: "5px" }}
-              label="Custom LTV ratio"
-              control={<Checkbox onChange={() => setLtvActive(!ltvActive)} />}
-            />
-          </Box>
-        </Box>
-      </Box>
-      <Box>
-        {extraProperties?.map((prop, index) => (
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop:"10px"
-            }}
+            style={{ height: "250px", overflowY: "auto", paddingRight: "5px" }}
           >
             <div
               style={{
@@ -386,44 +341,99 @@ const LTVInputCalculator = ({ sendData }) => {
                 paddingBottom: "6px",
               }}
             >
-              Property Value
+              Mortgages
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                cursor: "pointer",
-              }}
-            >
-              <TextField
-                value={prop.value}
-                type="number"
-                label={`In ${currency}`}
-                sx={{ background: "#FFFFFF" }}
-                onFocus={(e) => e.target.select()}
-                // disabled={!ltvActive}
-                onChange={(e) => extraPropChangeHandler(index, e.target.value)}
-              />
-              <div onClick={() => {
-                let tempProperty = [...extraProperties];
-                tempProperty.splice(index, 1);
-                setExtraProperties(tempProperty);
-              }}>
-                <RemoveIcon sx={{ background: primaryColor, color: "#FFFFFF" }} />
+            {extraProperties?.map((prop, index) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginTop: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "none",
+                    fontWeight: "600",
+                    color: primaryColor,
+                    paddingBottom: "6px",
+                  }}
+                >
+                  Mortgage Value
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <TextField
+                    value={prop.value}
+                    type="tel"
+                    label={`Morgage ${index + 1}, In ${currency}`}
+                    sx={{ background: "#FFFFFF" }}
+                    onFocus={(e) => e.target.select()}
+                    // disabled={!ltvActive}
+                    onChange={(e) => {
+                      if (isNaN(e.target.value)) {
+                        return;
+                      }
+                      extraPropChangeHandler(index, e.target.value);
+                    }}
+                  />
+                  {
+                    <div
+                      onClick={() => {
+                        let tempProperty = [...extraProperties];
+                        tempProperty.splice(index, 1);
+                        setExtraProperties(tempProperty);
+                      }}
+                    >
+                      <CloseIcon
+                        sx={{
+                          background: "darkred",
+                          color: "#FFFFFF",
+                          borderRadius: 100,
+                        }}
+                      />
+                    </div>
+                  }
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+          <div>
+            <Button
+              onClick={propertyAddHandler}
+              variant="contained"
+              sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
+            >
+              <AddIcon />
+              Add Another Mortgage
+            </Button>
+          </div>
+        </Box>
       </Box>
-      <Button
-        onClick={propertyAddHandler}
-        variant="contained"
-        sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
-      >
-        <AddIcon />
-        Add Another Property Value
-      </Button>
+
+      <Box display={"flex"} marginTop={"12px"} marginLeft={"25px"}>
+        <Button
+          onClick={submitClickHandler}
+          variant="contained"
+          sx={{ marginX: "auto" }}
+        >
+          Submit
+        </Button>
+      </Box>
+      {unfilled && (
+        <div className="absolute bottom-3 right-5">
+          <Alert variant="filled" severity="error">
+            {errorMsg}
+          </Alert>
+        </div>
+      )}
     </Box>
   );
 };

@@ -131,14 +131,14 @@ const BudgetLoanCalculator = ({ sendData }) => {
       // sendData(budget, tenure, totalAmount_1);
       // calculateEMI(budget, tenure, totalAmount_1, interest);
       const details = giveEMI(totalAmount_1, interest, tenure, tenureType)
-      let totalInt = ((details.emi * details.tenureInMonths) - totalAmount_1).toFixed(2);
+      let totalInt = ((details?.emi * details?.tenureInMonths) - totalAmount_1).toFixed(2);
       sendData(budget, tenure, totalAmount_1, interest, totalInt)
       return;
     }
     const totalAmount =
       tenureType === "Years" ? budget * 12 * tenure : budget * tenure;
       const details = giveEMI(totalAmount, interest, tenure, tenureType)
-      let totalInt = ((details.emi * details.tenureInMonths) - totalAmount).toFixed(2);
+      let totalInt = ((details?.emi * details?.tenureInMonths) - totalAmount).toFixed(2);
       sendData(budget, tenure, totalAmount, interest, totalInt)
     // calculateEMI(budget, tenure, totalAmount, interest);
     // sendData(budget, tenure, totalAmount);

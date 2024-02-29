@@ -107,24 +107,27 @@ const Calculator = ({
 
   useEffect(() => {
     const details = giveEMI(totalLoanAmount, rateOfInterest, tenure, tenureType);
-    let totalAmt = details.emi * details.tenureInMonths;
+    let totalAmt = details?.emi * details?.tenureInMonths;
     let totalInt = totalAmt - totalLoanAmount;
 
     onChange(
       totalLoanAmount,
       tenureType === "Years" ? tenure : tenure/12,
       rateOfInterest,
-      (details.emi),
+      (details?.emi),
       (totalInt)
     );
 
-    setMonthlyEMI((details.emi));
-    setTotalAmount((totalAmt));
-    setTotalInterest((totalInt));
+    setMonthlyEMI((details?.emi) || 0);
+    setTotalAmount((totalAmt || 0));
+    setTotalInterest((totalInt || 0));
     // calculateEMI();
-  }, [tenure, rateOfInterest, loanCharges]);
+  }, [tenure, rateOfInterest, totalLoanAmount]);
 
   const handleTotalLoanChange = (e) => {
+    // if(e.target.value < 0){
+    //   return;
+    // }
     if(e.target.value > 9999999999){
       return;
     }
@@ -173,11 +176,12 @@ const Calculator = ({
     } else {
       setRateOfInterestError("input");
     }
+    // console.log(parseFloat(e.target.value).toFixed(2))
     setRateOfInterest(parseFloat(e.target.value).toFixed(2));
   };
 
   useEffect(() => {
-    const isLoggedIn = cookies.auth_token;
+    const isLoggedIn = true;
     if (isLoggedIn) {
       // console.log("logged in");
     } else {
@@ -336,7 +340,7 @@ const Calculator = ({
       <div className="tenure-container">
         <div className="title-container">
           <label htmlFor="tenure" className="label">
-            Loan tenure <span style={{ color: primaryColor, fontWeight: 800 }}>in</span>
+            Loan tenure <span style={{}}>in</span>
           </label>
           <Box
             display={"flex"}
@@ -465,7 +469,7 @@ const Calculator = ({
             Total amount
           </span>
           <span style={{ color: secondaryColor }}>
-            {currency} {totalAmount?.toLocaleString("en-IN")}
+            {currency} {totalAmount?.toLocaleString("en-IN") || 0}
           </span>
         </div>
       </div>
