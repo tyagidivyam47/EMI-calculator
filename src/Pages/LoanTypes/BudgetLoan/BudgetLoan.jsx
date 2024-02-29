@@ -23,7 +23,7 @@ const BudgetLoan = () => {
     totalInterest,
     currTenureType
   ) => {
-    // console.log(currTenureType)
+    // console.log(emiValue, " : ", tenureValue, " : ",amountValue, " : ",interestRate, " : ",totalInterest )
     setEmi(+emiValue);
     setTenure(+tenureValue);
     setAmount(+amountValue);

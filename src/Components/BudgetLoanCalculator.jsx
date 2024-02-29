@@ -19,6 +19,7 @@ import {
 // import { Input } from "postcss";
 import InfoIcon from "@mui/icons-material/Info";
 import { useSelector } from "react-redux";
+import { giveEMI, toggleTenure } from "./calculate-emi";
 
 const BudgetLoanCalculator = ({ sendData }) => {
   const currency = useSelector((state) => state.currency.currency);
@@ -100,32 +101,46 @@ const BudgetLoanCalculator = ({ sendData }) => {
     if (tenureType === tType) {
       return;
     }
-    setTenureType(tType);
-    let tempTenure;
-    if (tType === "Years") {
-      tempTenure = Math.ceil(tenure / 12);
-    } else {
-      tempTenure = Math.ceil(tenure * 12);
+    if(tType === "Years"){
+      setTenure(+toggleTenure(tType, tenure));
     }
-    setTenure(tempTenure);
+    else{
+      setTenure(+toggleTenure(tType, tenure));
+    }
+    setTenureType(tType);
+    // let tempTenure;
+    // if (tType === "Years") {
+    //   tempTenure = Math.ceil(tenure / 12);
+    // } else {
+    //   tempTenure = Math.ceil(tenure * 12);
+    // }
+    // setTenure(tempTenure);
   };
 
   useEffect(() => {
     if (budget < 1 || tenure < 1) {
       return;
     }
+    // console.log(tenure.toString().includes("."))
     if (tenure.toString().includes(".")) {
+      // console.log("tenure : ", tenure)
       const tenureArr = tenure.toString().split(".");
       const yr = +tenureArr[0];
       const month = +tenureArr[1];
       const totalAmount_1 = budget * 12 * yr + budget * month;
       // sendData(budget, tenure, totalAmount_1);
-      calculateEMI(budget, tenure, totalAmount_1, interest);
+      // calculateEMI(budget, tenure, totalAmount_1, interest);
+      const details = giveEMI(totalAmount_1, interest, tenure, tenureType)
+      let totalInt = ((details.emi * details.tenureInMonths) - totalAmount_1).toFixed(2);
+      sendData(budget, tenure, totalAmount_1, interest, totalInt)
       return;
     }
     const totalAmount =
       tenureType === "Years" ? budget * 12 * tenure : budget * tenure;
-    calculateEMI(budget, tenure, totalAmount, interest);
+      const details = giveEMI(totalAmount, interest, tenure, tenureType)
+      let totalInt = ((details.emi * details.tenureInMonths) - totalAmount).toFixed(2);
+      sendData(budget, tenure, totalAmount, interest, totalInt)
+    // calculateEMI(budget, tenure, totalAmount, interest);
     // sendData(budget, tenure, totalAmount);
   }, [budget, tenure, interest]);
 
@@ -179,7 +194,7 @@ const BudgetLoanCalculator = ({ sendData }) => {
                     onChange={handleChange}
                     value={tenure}
                     name="tenure"
-                    type="tel"
+                    type="number"
                     label={`in ${tenureType}`}
                     onFocus={(e) => e.target.select()}
                     sx={{ background: "#FFFFFF", width: "120px" }}

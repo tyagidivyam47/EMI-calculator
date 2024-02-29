@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../Theme";
 import { useSelector } from "react-redux";
+import { giveEMI, toggleTenure } from "./calculate-emi";
 
 const Calculator = ({
   inputLoanAmount,
@@ -39,17 +40,28 @@ const Calculator = ({
   // console.log("Inside Calculator")
 
   const toggleTenureType = (tType) => {
+    // if (tenureType === tType) {
+    //   return;
+    // }
+    // setTenureType(tType);
+    // let tempTenure;
+    // if (tType === "Years") {
+    //   tempTenure = tenure / 12;
+    // } else {
+    //   tempTenure = tenure * 12;
+    // }
+    // setTenure(Math.ceil(tempTenure));
+
     if (tenureType === tType) {
       return;
     }
-    setTenureType(tType);
-    let tempTenure;
-    if (tType === "Years") {
-      tempTenure = tenure / 12;
-    } else {
-      tempTenure = tenure * 12;
+    if(tType === "Years"){
+      setTenure(+toggleTenure(tType, tenure));
     }
-    setTenure(Math.ceil(tempTenure));
+    else{
+      setTenure(+toggleTenure(tType, tenure));
+    }
+    setTenureType(tType);
   };
 
   // console.log(tenure)
@@ -94,7 +106,22 @@ const Calculator = ({
   };
 
   useEffect(() => {
-    calculateEMI();
+    const details = giveEMI(totalLoanAmount, rateOfInterest, tenure, tenureType);
+    let totalAmt = details.emi * details.tenureInMonths;
+    let totalInt = totalAmt - totalLoanAmount;
+
+    onChange(
+      totalLoanAmount,
+      tenureType === "Years" ? tenure : tenure/12,
+      rateOfInterest,
+      (details.emi),
+      (totalInt)
+    );
+
+    setMonthlyEMI((details.emi));
+    setTotalAmount((totalAmt));
+    setTotalInterest((totalInt));
+    // calculateEMI();
   }, [tenure, rateOfInterest, loanCharges]);
 
   const handleTotalLoanChange = (e) => {
@@ -119,17 +146,18 @@ const Calculator = ({
     if(tenureType === "Months" && e.target.value > 480){
       return;
     }
-
+    
     if (
       e.target.value > 40 ||
       e.target.value < 1 ||
       e.target.value > tenureUl
-    ) {
+      ) {
       // setTenureError("input error");
     } else {
       setTenureError("input");
     }
-    setTenure(parseInt(e.target.value));
+
+    setTenure((e.target.value));
   };
 
   const handleRateOfInterestChange = (e) => {
@@ -359,6 +387,7 @@ const Calculator = ({
                   textAlign: "right",
                   borderBottom: "2px solid #007BA7",
                 }}
+                step={0.1}
                 value={tenure}
                 onChange={handleTenureChange}
                 onFocus={(e) => e.target.select()}
@@ -409,7 +438,7 @@ const Calculator = ({
             Monthly EMI
           </span>
           <span style={{ color: secondaryColor }}>
-            {currency} {monthlyEMI.toLocaleString("en-IN")}
+            {currency} {monthlyEMI?.toLocaleString("en-IN")}
           </span>
         </div>
 
@@ -427,7 +456,7 @@ const Calculator = ({
             Total interest
           </span>
           <span style={{ color: secondaryColor }}>
-            {currency} {totalInterest.toLocaleString("en-IN")}
+            {currency} {totalInterest?.toLocaleString("en-IN")}
           </span>
         </div>
 
@@ -436,7 +465,7 @@ const Calculator = ({
             Total amount
           </span>
           <span style={{ color: secondaryColor }}>
-            {currency} {totalAmount.toLocaleString("en-IN")}
+            {currency} {totalAmount?.toLocaleString("en-IN")}
           </span>
         </div>
       </div>
