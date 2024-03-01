@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import logo from "../assets/EMI-logo1.png";
+// const logo =  require("../assets/EMI-logo1.png");
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { primaryColor, secondaryColor, tertiaryColor } from "../Theme";
@@ -13,7 +14,7 @@ const Header = () => {
     "user_id",
   ]);
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState();
+  const [loggedIn, setLoggedIn] = useState<boolean>();
 
   const logoutHandler = () => {
     removeCookie("auth_token");
@@ -82,7 +83,7 @@ const Header = () => {
               Calculator
             </NavLink>
           )} */}
-          <NavLink
+          {/* <NavLink
             href="#"
             style={{
               fontSize: "16px",
@@ -94,7 +95,7 @@ const Header = () => {
             className="text-[#00d09b] hover:text-teal-900 hidden"
           >
             Contact Us
-          </NavLink>
+          </NavLink> */}
         </div>
         {/* {!loggedIn && (
           <NavLink

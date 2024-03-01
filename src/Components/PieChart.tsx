@@ -3,7 +3,7 @@ import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { primaryColor, secondaryColor, tertiaryColor } from "../Theme";
 
-const PieChart = ({ loanAmount, totalInterest }) => {
+const PieChart: React.FC<any> = ({ loanAmount, totalInterest }) => {
   const data = {
     labels: ["Principal Loan", "Total Interest"],
     datasets: [
@@ -15,12 +15,14 @@ const PieChart = ({ loanAmount, totalInterest }) => {
     ],
   };
 
- 
-
   return (
     <div>
-      <Pie data={data}/>
-      <div style={{textAlign:"center", fontWeight:"bold", marginTop:"16px"}}>Break-up of Total Payment</div>
+      <Pie data={data} />
+      <div
+        style={{ textAlign: "center", fontWeight: "bold", marginTop: "16px" }}
+      >
+        Break-up of Total Payment
+      </div>
     </div>
   );
 };

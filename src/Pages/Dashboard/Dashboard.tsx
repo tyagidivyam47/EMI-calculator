@@ -37,6 +37,7 @@ import { budgetFaq, emiCalcFaq, homeLoanFaq, lapFaq } from "../../faqs";
 import InfoIcon from "@mui/icons-material/Info";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
+import { IRootState } from "../../store";
 // const homeLoanFaqData = homeLoanFaq
 
 const style = {
@@ -79,7 +80,7 @@ const faqStyle = {
   borderRadius: 6,
 };
 
-const LoanCard = (props) => {
+const LoanCard = (props:any) => {
   return (
     <Box
       sx={{
@@ -131,16 +132,16 @@ const Dashboard = () => {
   //   "curr_sign",
   // ]);
   // const currency = cookies.curr_sign || "₹";
-  const currency = useSelector((state) => state.currency.currency);
+  const currency = useSelector((state: IRootState) => state.currency.currency);
   // console.log(currency)
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [warnModal, setWarnModal] = useState(false);
-  const [loanType, setLoanType] = useState();
+  const [loanType, setLoanType] = useState<string>();
   const [infoModal, setInfoModal] = useState(false);
   // const [currSign, setCurrSign] = useState('₹');
 
-  const handleLoanClick = (type) => {
+  const handleLoanClick = (type: string) => {
     setOpenDrawer(true);
     setLoanType(type);
   };

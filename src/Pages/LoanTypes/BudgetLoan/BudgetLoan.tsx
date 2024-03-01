@@ -4,24 +4,25 @@ import BudgetLoanCalculator from "../../../Components/BudgetLoanCalculator";
 import { Doughnut } from "react-chartjs-2";
 import { primaryColor, secondaryColor } from "../../../Theme";
 import { useSelector } from "react-redux";
+import { IRootState } from "../../../store";
 
 const BudgetLoan = () => {
-  const currency = useSelector((state) => state.currency.currency);
+  const currency = useSelector((state: IRootState) => state.currency.currency);
 
   const [emi, setEmi] = useState(0);
   const [tenure, setTenure] = useState(0);
   const [amount, setAmount] = useState(0);
   const [interest, setInterest] = useState(0);
   const [totalInterest, setTotalInterest] = useState(0);
-  const [tenureType, setTenureType] = useState("Years")
+  const [tenureType, setTenureType] = useState("Years");
 
   const getData = (
-    emiValue,
-    tenureValue,
-    amountValue,
-    interestRate,
-    totalInterest,
-    currTenureType
+    emiValue: number,
+    tenureValue: number,
+    amountValue: number,
+    interestRate: number,
+    totalInterest: number,
+    currTenureType: string
   ) => {
     // console.log(emiValue, " : ", tenureValue, " : ",amountValue, " : ",interestRate, " : ",totalInterest )
     setEmi(+emiValue);
@@ -29,11 +30,11 @@ const BudgetLoan = () => {
     setAmount(+amountValue);
     setInterest(+interestRate);
     setTotalInterest(+totalInterest);
-    setTenureType(currTenureType)
+    setTenureType(currTenureType);
   };
 
   return (
-    <Box sx={{marginTop:"-50px"}}>
+    <Box sx={{ marginTop: "-50px" }}>
       <Box
         sx={{
           background: "",
@@ -132,12 +133,13 @@ const BudgetLoan = () => {
                   fontSize: "18px",
                   fontWeight: 700,
                   borderRight: "2px solid #FFFFFF",
-                  paddingRight:"60px"
+                  paddingRight: "60px",
                 }}
               >
                 <div>Total Interest</div>
                 <div>
-                  {currency} <span style={{ fontSize: "32px" }}>{totalInterest || 0}</span>
+                  {currency}{" "}
+                  <span style={{ fontSize: "32px" }}>{totalInterest || 0}</span>
                 </div>
               </div>
               <div
@@ -145,18 +147,24 @@ const BudgetLoan = () => {
                   fontSize: "18px",
                   fontWeight: 700,
                   borderRight: "2px solid #FFFFFF",
-                  paddingRight:"60px"
+                  paddingRight: "60px",
                 }}
               >
                 <div>Loan Amount</div>
                 <div>
-                  {currency} <span style={{ fontSize: "32px" }}>{amount - totalInterest > 0 ? amount - totalInterest: amount }</span>
+                  {currency}{" "}
+                  <span style={{ fontSize: "32px" }}>
+                    {amount - totalInterest > 0
+                      ? amount - totalInterest
+                      : amount}
+                  </span>
                 </div>
               </div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>
                 <div>Total loan tenure</div>
                 <div>
-                  <span style={{ fontSize: "32px" }}>{tenure}</span> {tenureType}
+                  <span style={{ fontSize: "32px" }}>{tenure}</span>{" "}
+                  {tenureType}
                 </div>
                 {/* <Box sx={{ fontSize: "22px", fontWeight: 600 }}>
                   Your total loan tenure is {tenure} Years

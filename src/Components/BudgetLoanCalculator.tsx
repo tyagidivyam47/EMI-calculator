@@ -20,16 +20,17 @@ import {
 import InfoIcon from "@mui/icons-material/Info";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
+import { IRootState } from "../store";
 
-const BudgetLoanCalculator = ({ sendData }) => {
-  const currency = useSelector((state) => state.currency.currency);
+const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
+  const currency = useSelector((state:IRootState) => state.currency.currency);
 
   const [budget, setBudget] = useState(0);
   const [tenure, setTenure] = useState(0);
   const [interest, setInterest] = useState(0);
   const [tenureType, setTenureType] = useState("Years");
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     if(isNaN(value) || value < 0){
       return;
@@ -68,45 +69,45 @@ const BudgetLoanCalculator = ({ sendData }) => {
     }
   };
 
-  const handleSliderChange = (event, newValue) => {
+  const handleSliderChange = (event:any, newValue:any) => {
     setTenure(newValue);
   };
 
-  const calculateEMI = (
-    budget,
-    totalTenure,
-    totalLoanAmount,
-    rateOfInterest
-  ) => {
-    if (!Number(totalTenure) || !Number(totalLoanAmount)) {
-      // console.log("heree");
-      return;
-    }
-    let tenureConvHelper = tenureType === "Years" ? 1 : 12;
+  // const calculateEMI = (
+  //   budget,
+  //   totalTenure,
+  //   totalLoanAmount,
+  //   rateOfInterest
+  // ) => {
+  //   if (!Number(totalTenure) || !Number(totalLoanAmount)) {
+  //     // console.log("heree");
+  //     return;
+  //   }
+  //   let tenureConvHelper = tenureType === "Years" ? 1 : 12;
 
-    let interest = rateOfInterest / 12 / 100;
-    let tenureInMonths = Math.ceil((totalTenure * 12) / tenureConvHelper);
-    let emi =
-      (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
-      (Math.pow(1 + interest, tenureInMonths) - 1);
-    // console.log(emi)
-    let totalAmt = emi * tenureInMonths;
-    // console.log(totalAmt)
-    // let totalInt = totalAmt - totalLoanAmount;
+  //   let interest = rateOfInterest / 12 / 100;
+  //   let tenureInMonths = Math.ceil((totalTenure * 12) / tenureConvHelper);
+  //   let emi =
+  //     (totalLoanAmount * interest * Math.pow(1 + interest, tenureInMonths)) /
+  //     (Math.pow(1 + interest, tenureInMonths) - 1);
+  //   // console.log(emi)
+  //   let totalAmt = emi * tenureInMonths;
+  //   // console.log(totalAmt)
+  //   // let totalInt = totalAmt - totalLoanAmount;
 
-    let totalInt = (emi * tenureInMonths) - totalLoanAmount;
-    // console.log(totalInt)
-    sendData(
-      budget,
-      Math.ceil(totalTenure),
-      totalLoanAmount,
-      rateOfInterest,
-      Math.ceil(totalInt),
-      tenureType
-    );
-  };
+  //   let totalInt = (emi * tenureInMonths) - totalLoanAmount;
+  //   // console.log(totalInt)
+  //   sendData(
+  //     budget,
+  //     Math.ceil(totalTenure),
+  //     totalLoanAmount,
+  //     rateOfInterest,
+  //     Math.ceil(totalInt),
+  //     tenureType
+  //   );
+  // };
 
-  const toggleTenureType = (tType) => {
+  const toggleTenureType = (tType:string) => {
     if (tenureType === tType) {
       return;
     }

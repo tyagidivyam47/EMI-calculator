@@ -1,29 +1,30 @@
-
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 
 import { useCallback } from "react";
 const Particle = () => {
-    const particlesInit = useCallback(async engine => {
-        await loadSlim(engine);
-      }, []);
-    
-      const particlesLoaded = useCallback(async container => {
-        // console.log(container);
-      }, []);
-    
+  const particlesInit = useCallback(async (engine:any) => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container:any) => {
+    // console.log(container);
+  }, []);
+
   return (
     <>
       <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        style={{
-        //   transform: "rotateZ(20deg)",
-        //   maxHeight: "550px",
-        //   maxWidth: "70%",
-        //   marginTop: "100px",
-        }}
+        style={
+          {
+            //   transform: "rotateZ(20deg)",
+            //   maxHeight: "550px",
+            //   maxWidth: "70%",
+            //   marginTop: "100px",
+          }
+        }
         options={{
           background: {
             color: {

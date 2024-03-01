@@ -1,4 +1,4 @@
-export const giveEMI = (principle, rateOfInterest, tenure, tenureType) =>{
+export const giveEMI = (principle:any, rateOfInterest:any, tenure:any, tenureType:string) =>{
     if (
         !Number(rateOfInterest) ||
         !Number(tenure) ||
@@ -13,12 +13,12 @@ export const giveEMI = (principle, rateOfInterest, tenure, tenureType) =>{
           
           let interest = rateOfInterest / 12 / 100;
           const tenureInMonths = +yrs * 12 + +mns;
-          let emi =
+          let emi:any =
         (principle * interest * Math.pow(1 + interest, tenureInMonths)) /
         (Math.pow(1 + interest, tenureInMonths) - 1);
   
-          let totalAmt = emi * tenureInMonths;
-          let totalInt = totalAmt - principle;
+          let totalAmt:any = emi * tenureInMonths;
+          let totalInt:any = totalAmt - principle;
           
           emi = emi.toFixed(2);
           totalInt = totalInt.toFixed(2);
@@ -30,19 +30,19 @@ export const giveEMI = (principle, rateOfInterest, tenure, tenureType) =>{
       let interest = rateOfInterest / 12 / 100;
       let tenureInMonths = (tenure * 12) / tenureConvHelper;
   
-      let emi =
+      let emi:any =
         (principle * interest * Math.pow(1 + interest, tenureInMonths)) /
         (Math.pow(1 + interest, tenureInMonths) - 1);
   
-      let totalAmt = emi * tenureInMonths;
-      let totalInt = totalAmt - principle;
+      let totalAmt: any = emi * tenureInMonths;
+      let totalInt: any = totalAmt - principle;
      emi = emi.toFixed(2);
     totalInt = totalInt.toFixed(2);
           totalAmt = totalAmt.toFixed(2);
       return {emi, totalInt, totalAmt, tenureInMonths}
 }
 
-export const toggleTenure = (tenureType, tenure) =>{
+export const toggleTenure = (tenureType:string, tenure:any) =>{
     // console.log(tenure.toString().includes("."))
     // console.log(tenure, " : ", tenureType)
     if (tenure.toString().includes(".")) {
@@ -57,8 +57,8 @@ export const toggleTenure = (tenureType, tenure) =>{
         // console.log("yrs")
         var years = Math.floor(tenure / 12);
         var remainingMonths = tenure % 12;
-        var result = years + "." + remainingMonths;
-        return parseFloat(+result);
+        var result:any = years + "." + remainingMonths;
+        return parseFloat(result);
         // return (tenure / 12)
       }
       else{

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { primaryColor, secondaryColor } from "../Theme";
 
-const BarChart = ({
+const BarChart:React.FC<any> = ({
   loanAmount,
   tenure,
   interest,

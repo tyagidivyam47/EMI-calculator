@@ -14,7 +14,7 @@ import {
   secondaryColor,
 } from "../Theme";
 
-const FAQ = ({ data }) => {
+const FAQ: React.FC<any> = ({ data }) => {
   return (
     <Box
       display={"flex"}
@@ -34,18 +34,18 @@ const FAQ = ({ data }) => {
       >
         Frequently Asked Questions
       </div>
-      <div style={{overflowY:"auto", height:"500px"}}>
+      <div style={{ overflowY: "auto", height: "500px" }}>
         {data &&
-          data?.map((e) => (
+          data?.map((e:any) => (
             <div style={{}}>
               <Accordion
                 sx={{
                   minHeight: "100px",
                   // borderRadius: "10px",
                   // marginRight: "60px",
-                  marginTop:"30px",
-                  marginBottom:"10px",
-                  marginRight:"10px"
+                  marginTop: "30px",
+                  marginBottom: "10px",
+                  marginRight: "10px",
                 }}
               >
                 <AccordionSummary
@@ -71,7 +71,7 @@ const FAQ = ({ data }) => {
                       flexWrap: "wrap",
                       gap: "50px",
                       rowGap: "10px",
-                      marginBottom:"10px"
+                      marginBottom: "10px",
                     }}
                   >
                     {e.details}

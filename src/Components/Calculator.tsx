@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { primaryColor, secondaryColor } from "../Theme";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
+import { IRootState } from "../store";
 
-const Calculator = ({
+const Calculator:React.FC<any> = ({
   inputLoanAmount,
   inputTenure,
   inputInterest,
@@ -15,9 +16,8 @@ const Calculator = ({
   amountUl,
   interestUl,
   tenureUl,
-  loanCharges,
 }) => {
-  const currency = useSelector((state)=> state.currency.currency);
+  const currency = useSelector((state:IRootState)=> state.currency.currency);
 
   const [totalLoanAmount, setTotalLoanAmount] = useState(inputLoanAmount);
   const [tenure, setTenure] = useState(inputTenure);
@@ -39,7 +39,7 @@ const Calculator = ({
 
   // console.log("Inside Calculator")
 
-  const toggleTenureType = (tType) => {
+  const toggleTenureType = (tType:string) => {
     // if (tenureType === tType) {
     //   return;
     // }
@@ -87,11 +87,11 @@ const Calculator = ({
 
     let totalAmt = emi * tenureInMonths;
     let totalInt = totalAmt - totalLoanAmount;
-    if (loanCharges && loanCharges > 0) {
-      const chargesNum = parseInt(loanCharges, 10);
-      const totalAmountNum = parseInt(totalAmt, 10);
-      totalAmt = totalAmountNum + chargesNum;
-    }
+    // if (loanCharges && loanCharges > 0) {
+    //   const chargesNum = parseInt(loanCharges, 10);
+    //   const totalAmountNum = parseInt(totalAmt, 10);
+    //   totalAmt = totalAmountNum + chargesNum;
+    // }
     onChange(
       totalLoanAmount,
       tenureType === "Years" ? tenure : tenure/12,
@@ -124,11 +124,11 @@ const Calculator = ({
     // calculateEMI();
   }, [tenure, rateOfInterest, totalLoanAmount]);
 
-  const handleTotalLoanChange = (e) => {
-    if(e.target.value < 0){
+  const handleTotalLoanChange = (e:any) => {
+    if(parseInt(e.target.value) < 0){
       return;
     }
-    if(e.target.value > 9999999999){
+    if(parseInt(e.target.value) > 9999999999){
       return;
     }
     if (
@@ -142,7 +142,7 @@ const Calculator = ({
     setTotalLoanAmount(parseInt(e.target.value));
   };
 
-  const handleTenureChange = (e) => {
+  const handleTenureChange = (e:any) => {
     // console.log(e.target.value,  " : ", typeof e.target.value)
     if((e.target.value < 0)){
       return;
@@ -167,7 +167,7 @@ const Calculator = ({
     setTenure((e.target.value));
   };
 
-  const handleRateOfInterestChange = (e) => {
+  const handleRateOfInterestChange = (e:any) => {
     if((e.target.value < 0)){
       return;
     }

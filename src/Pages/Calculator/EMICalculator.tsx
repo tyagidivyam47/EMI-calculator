@@ -4,30 +4,30 @@ import Calculator from "../../Components/Calculator";
 import PieChart from "../../Components/PieChart";
 import Particle from "../../Components/Particle";
 import BarChart from "../../Components/BarChart";
-import downloadIcon from "../../assets/download-icon.png";
 import WestIcon from "@mui/icons-material/West";
 import "./EMICalculator.css";
 import { lightPrimaryColor, mainHeading, primaryColor } from "../../Theme";
 import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import AmortizationTable from "../../Components/AmortizationTable";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
   const [interest, setInterest] = useState(6.5);
-  const [monthlyEMI, setMonthlyEMI] = useState();
-  const [totalInterest, setTotalInterest] = useState();
+  const [monthlyEMI, setMonthlyEMI] = useState<Number>();
+  const [totalInterest, setTotalInterest] = useState<Number>();
   const [showParticles, setShowParticles] = useState(true);
   const [loanType, setLoanType] = useState("home");
   const [upperLimits, setUpperLimits] = useState([10000000, 9, 35]);
 
   const handleChange = (
-    loanAmountI,
-    tenureI,
-    interestI,
-    monthlyEMII,
-    totalInterestI
-  ) => {
+    loanAmountI: number,
+    tenureI: number,
+    interestI: number,
+    monthlyEMII: number,
+    totalInterestI: number
+  ): void => {
     setLoanAmount(loanAmountI);
     setTenure(tenureI);
     setInterest(interestI);
@@ -40,10 +40,10 @@ const EMICalculator = () => {
     setTimeout(() => {
       window.print();
       setShowParticles(true);
-    }, [500]);
+    }, 500);
   };
 
-  const loanTypeClick = (type) => {
+  const loanTypeClick = (type: string) => {
     setLoanType(type);
     if (type === "home") {
       setUpperLimits([10000000, 9, 35]);
@@ -57,7 +57,14 @@ const EMICalculator = () => {
   };
 
   return (
-    <div style={{ background: "", width: "80%", height: "100vh", paddingBottom:"300px" }}>
+    <div
+      style={{
+        background: "",
+        width: "80%",
+        height: "100vh",
+        paddingBottom: "300px",
+      }}
+    >
       {/* {showParticles && <Particle />} */}
       <div
         style={{
@@ -200,6 +207,7 @@ const EMICalculator = () => {
       </div>
 
       <div>
+        <AmortizationTable />
         {/* {showParticles && (
           <div
             onClick={handlePrint}

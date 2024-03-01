@@ -4,7 +4,7 @@ const nameRagex = /^[a-zA-Z]+$/;
 
 const passRegex = /^(?=.*[A-Z])(?=.*[\W_])(?!.*\s).{8,}$/;
 
-export const verifyInput = (input, type) => {
+export const verifyInput = (input:any, type:any) => {
     if(input.length === 0){
         return true;
     }

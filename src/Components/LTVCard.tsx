@@ -2,8 +2,9 @@ import { Box } from "@mui/material";
 import React from "react";
 import { lightSecondaryColor, primaryColor, secondaryColor } from "../Theme";
 import { useSelector } from "react-redux";
+import { IRootState } from "../store";
 
-const LTVCard = ({
+const LTVCard:React.FC<any> = ({
   emi,
   interest,
   principal,
@@ -11,7 +12,7 @@ const LTVCard = ({
   totalMortAmt,
   eligibility,
 }) => {
-  const currency = useSelector((state) => state.currency.currency);
+  const currency = useSelector((state:IRootState) => state.currency.currency);
   // console.log(emi)
   return (
     <Box sx={{ width: "730px", height: "auto" }}>

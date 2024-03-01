@@ -7,9 +7,10 @@ import LTVCard from "../../../Components/LTVCard";
 import { mainSubHeading, primaryColor, secondaryColor } from "../../../Theme";
 import { Pie } from "react-chartjs-2";
 import { useSelector } from "react-redux";
+import { IRootState } from "../../../store";
 
 const LAP = () => {
-  const currency = useSelector((state) => state.currency.currency);
+  const currency = useSelector((state: IRootState) => state.currency.currency);
 
   const [emiOp, setEmiOp] = useState(0);
   const [totalInterest, setTotalInterest] = useState(0);
@@ -21,12 +22,12 @@ const LAP = () => {
   const [cusEquity, setCusEquity] = useState(0);
 
   const getData = (
-    emi,
-    interest,
-    principal,
-    totalLoan,
-    totalMortgage,
-    isEligibile
+    emi:number,
+    interest:number,
+    principal:number,
+    totalLoan:number,
+    totalMortgage:number,
+    isEligibile:boolean
   ) => {
     // console.log(emi, " : ", interest, " : ", principal);
     setEmiOp(+emi);

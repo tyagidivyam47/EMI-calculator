@@ -8,7 +8,7 @@ import {
 } from "../Theme";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 
-const InputCalculator = ({
+const InputCalculator:React.FC<any> = ({
   amountLabel,
   rateOfInterest,
   tenure,
@@ -48,7 +48,7 @@ const InputCalculator = ({
     );
   };
 
-  const toggleTenureType = (tType) => {
+  const toggleTenureType = (tType:string) => {
     // if (tenureType === tType) {
     //   return;
     // }
@@ -107,7 +107,7 @@ const InputCalculator = ({
         </div>
         <TextField
           onChange={(e) => {
-            if (e.target.value > 100000000000) {
+            if (parseInt(e.target.value) > 100000000000) {
               return;
             }
             setInAmount(e.target.value);
@@ -132,7 +132,7 @@ const InputCalculator = ({
         </div>
         <TextField
           onChange={(e) => {
-            if (e.target.value > 40) {
+            if (parseFloat(e.target.value) > 40) {
               return;
             }
             setInInterest(e.target.value);
@@ -157,10 +157,10 @@ const InputCalculator = ({
         <Box display={"flex"}>
           <TextField
             onChange={(e) => {
-              if (tenureType === "Years" && e.target.value > 40) {
+              if (tenureType === "Years" && parseFloat(e.target.value) > 40) {
                 return;
               }
-              if (tenureType === "Months" && e.target.value > 480) {
+              if (tenureType === "Months" && parseInt(e.target.value) > 480) {
                 return;
               }
               setInTenure(e.target.value);

@@ -23,25 +23,26 @@ import CloseIcon from "@mui/icons-material/Close";
 // import RemoveIcon from "@mui/icons-material/Remove";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
+import { IRootState } from "../store";
 
 const salRes = 75;
 const empRes = 70;
 const salCom = 70;
 const empCom = 65;
 
-const LTVInputCalculator = ({ sendData }) => {
-  const currency = useSelector((state) => state.currency.currency);
+const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
+  const currency = useSelector((state: IRootState) => state.currency.currency);
 
   // console.log(totalLoanAmount)
-  const [inInterest, setInInterest] = useState(0);
-  const [inTenure, setInTenure] = useState(0);
-  const [inAmount, setInAmount] = useState();
+  const [inInterest, setInInterest] = useState<any>(0);
+  const [inTenure, setInTenure] = useState<any>(0);
+  const [inAmount, setInAmount] = useState<any>();
   const [empType, setEmpType] = useState("salaried");
   const [propType, setPropType] = useState("residential");
   const [ltvRatio, setLtvRatio] = useState(75);
   const [ltvActive, setLtvActive] = useState(false);
   const [tenureType, setTenureType] = useState("Years");
-  const [errorMsg, setErrorMsg] = useState();
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [unfilled, setUnfilled] = useState(false);
   const [extraProperties, setExtraProperties] = useState([
     {
@@ -81,9 +82,9 @@ const LTVInputCalculator = ({ sendData }) => {
     );
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
-    if (name === "inAmount" && value > 99999999999) {
+    if (name === "inAmount" && parseInt(value) > 99999999999) {
       return;
     }
     if (name === "inAmount") {
@@ -97,19 +98,7 @@ const LTVInputCalculator = ({ sendData }) => {
     }
   };
 
-  const toggleTenureType = (tType) => {
-    // if (tenureType === tType) {
-    //   return;
-    // }
-    // setTenureType(tType);
-    // let tempTenure;
-    // if (tType === "Years") {
-    //   tempTenure = inTenure / 12;
-    // } else {
-    //   tempTenure = inTenure * 12;
-    // }
-    // setInTenure(tempTenure);
-
+  const toggleTenureType = (tType: string) => {
     if (tenureType === tType) {
       return;
     }
@@ -127,7 +116,7 @@ const LTVInputCalculator = ({ sendData }) => {
     setExtraProperties(tempProperty);
   };
 
-  const extraPropChangeHandler = (index, value) => {
+  const extraPropChangeHandler = (index: number, value: any) => {
     let tempProperty = [...extraProperties];
     tempProperty[index].value = +value;
     setExtraProperties(tempProperty);
@@ -208,7 +197,7 @@ const LTVInputCalculator = ({ sendData }) => {
   useEffect(() => {
     setTimeout(() => {
       setUnfilled(false);
-    }, [4000]);
+    }, 4000);
   }, [unfilled]);
 
   return (
@@ -233,7 +222,7 @@ const LTVInputCalculator = ({ sendData }) => {
             </div>
             <TextField
               onChange={(e) => {
-                if (e.target.value > 100000000000) {
+                if (parseInt(e.target.value) > 100000000000) {
                   return;
                 }
                 handleChange(e);
@@ -259,7 +248,7 @@ const LTVInputCalculator = ({ sendData }) => {
             </div>
             <TextField
               onChange={(e) => {
-                if (e.target.value > 40) {
+                if (parseFloat(e.target.value) > 40) {
                   return;
                 }
                 handleChange(e);
@@ -285,10 +274,10 @@ const LTVInputCalculator = ({ sendData }) => {
             <Box display={"flex"}>
               <TextField
                 onChange={(e) => {
-                  if (e.target.value > 40 && tenureType === "Years") {
+                  if (parseFloat(e.target.value) > 40 && tenureType === "Years") {
                     return;
                   }
-                  if (e.target.value > 480 && tenureType === "Months") {
+                  if (parseFloat(e.target.value) > 480 && tenureType === "Months") {
                     return;
                   }
                   handleChange(e);
@@ -378,7 +367,7 @@ const LTVInputCalculator = ({ sendData }) => {
                     onFocus={(e) => e.target.select()}
                     // disabled={!ltvActive}
                     onChange={(e) => {
-                      if (isNaN(e.target.value)) {
+                      if (isNaN(parseInt(e.target.value))) {
                         return;
                       }
                       extraPropChangeHandler(index, e.target.value);

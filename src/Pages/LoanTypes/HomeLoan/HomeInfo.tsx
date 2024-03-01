@@ -13,10 +13,10 @@ const HomeInfo = () => {
           and total expenditure you really incur by purchasing a home using your
           bank home loan.
         </p>
-        <o>
+        <p>
           Home Loan Details includes single premium loan insurance and
           processing fees.
-        </o>
+        </p>
         <List sx={{ listStyle: "decimal", pl: 4 }}>
           <ListItem sx={{ display: "list-item" }}>
             <ListItemText primary="Home Loan " />
