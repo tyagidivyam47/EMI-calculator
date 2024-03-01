@@ -85,9 +85,6 @@ const Drawer = styled(MuiDrawer, {
 const links = [
   "Dashboard",
   "Loan Types",
-  "Request Management",
-  "Profile",
-  "Settings",
 ];
 
 const currencies = [
@@ -167,6 +164,23 @@ const Sidebar = () => {
           </Box>
         </DrawerHeader>
         <Divider />
+        <IconButton
+            onClick={handleDrawerToggle}
+            style={{
+              display: "flex",
+              // justifyContent:"center",
+              marginLeft: "auto",
+              marginRight: "7px",
+              marginTop: "35px",
+              border: `1px solid ${primaryColor}`,
+              // background: primaryColor,
+              color: primaryColor,
+              // position:"absolute",
+              // left:"230px",
+            }}
+          >
+            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
         <List>
           {links.map((text, index) => (
             <NavLink
@@ -241,29 +255,13 @@ const Sidebar = () => {
               </ListItem>
             </NavLink>
           ))}
-          <IconButton
-            onClick={handleDrawerToggle}
-            style={{
-              display: "flex",
-              // justifyContent:"center",
-              marginLeft: "auto",
-              marginRight: "7px",
-              marginTop: "35px",
-              border: `1px solid ${primaryColor}`,
-              // background: primaryColor,
-              color: primaryColor,
-              // position:"absolute",
-              // left:"230px",
-            }}
-          >
-            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+          
 
           {open && <ListItem
             // key={"Sign out"}
             // onClick={logoutHandler}
             disablePadding
-            sx={{ display: "block", marginTop: "20px", marginLeft: "20px" }}
+            sx={{ display: "block", marginTop: "150px", marginLeft: "20px" }}
           >
             <div>
               <TextField
@@ -284,7 +282,7 @@ const Sidebar = () => {
           </ListItem>}
 
 
-          <ListItem
+          {/* <ListItem
             key={"Sign out"}
             onClick={logoutHandler}
             disablePadding
@@ -292,7 +290,7 @@ const Sidebar = () => {
               background: "#c61a09",
               borderTopLeftRadius: 10,
               borderBottomLeftRadius: 10,
-              marginTop: "100px",
+              marginTop: "200px",
             }}
             sx={{ display: "block", marginTop: "20px", marginLeft: "20px" }}
           >
@@ -324,7 +322,7 @@ const Sidebar = () => {
                 style={{ fontWeight: 800 }}
               />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
         </List>
       </Drawer>

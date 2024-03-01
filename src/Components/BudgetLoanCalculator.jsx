@@ -31,6 +31,15 @@ const BudgetLoanCalculator = ({ sendData }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(isNaN(value) || value < 0){
+      return;
+    }
+    // console.log(value)
+    // if (name === 'tenure' && e.target.value / 10 < 1) {
+    //  setTenure(null)
+    //  return;
+    //   }
+    
     if (name === "budget" && value > 9999999999) {
       return;
     }

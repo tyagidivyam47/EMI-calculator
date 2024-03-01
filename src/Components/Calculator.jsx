@@ -125,9 +125,9 @@ const Calculator = ({
   }, [tenure, rateOfInterest, totalLoanAmount]);
 
   const handleTotalLoanChange = (e) => {
-    // if(e.target.value < 0){
-    //   return;
-    // }
+    if(e.target.value < 0){
+      return;
+    }
     if(e.target.value > 9999999999){
       return;
     }
@@ -143,6 +143,10 @@ const Calculator = ({
   };
 
   const handleTenureChange = (e) => {
+    // console.log(e.target.value,  " : ", typeof e.target.value)
+    if((e.target.value < 0)){
+      return;
+    }
     if(tenureType === "Years" && e.target.value > 40){
       return;
     }
@@ -164,6 +168,9 @@ const Calculator = ({
   };
 
   const handleRateOfInterestChange = (e) => {
+    if((e.target.value < 0)){
+      return;
+    }
     if(e.target.value > 45){
       return;
     }
@@ -236,18 +243,18 @@ const Calculator = ({
             style={{
               fontSize: "15px",
               color: secondaryColor,
-              marginRight: "30px",
+              marginRight: "21px",
             }}
           >
-            1
+            1k
           </div>
           <input
             id="loan-amount"
             name="loan-amount"
             type="range"
-            min="100000"
-            max="10000000"
-            step="10000"
+            min="1000"
+            max="1000000000"
+            step="1000"
             className="input"
             placeholder="0"
             value={totalLoanAmount}
@@ -260,7 +267,7 @@ const Calculator = ({
               marginLeft: "5px",
             }}
           >
-            100
+            100Cr
           </div>
         </div>
       </div>
