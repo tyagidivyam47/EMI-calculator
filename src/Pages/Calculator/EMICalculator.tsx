@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Calculator from "../../Components/Calculator";
 import PieChart from "../../Components/PieChart";
@@ -10,10 +10,12 @@ import { lightPrimaryColor, mainHeading, primaryColor } from "../../Theme";
 import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import AmortizationTable from "../../Components/AmortizationTable";
+import { calcAmortization } from "../../Components/amortization";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
+  const [tenureInMos, setTenureInMos] = useState(60);
   const [interest, setInterest] = useState(6.5);
   const [monthlyEMI, setMonthlyEMI] = useState<Number>();
   const [totalInterest, setTotalInterest] = useState<Number>();
@@ -21,15 +23,18 @@ const EMICalculator = () => {
   const [loanType, setLoanType] = useState("home");
   const [upperLimits, setUpperLimits] = useState([10000000, 9, 35]);
 
+
   const handleChange = (
     loanAmountI: number,
     tenureI: number,
+    tenureMosI: number,
     interestI: number,
     monthlyEMII: number,
     totalInterestI: number
   ): void => {
     setLoanAmount(loanAmountI);
     setTenure(tenureI);
+    setTenureInMos(tenureMosI);
     setInterest(interestI);
     setMonthlyEMI(monthlyEMII);
     setTotalInterest(totalInterestI);
@@ -55,6 +60,12 @@ const EMICalculator = () => {
       setUpperLimits([7500000, 15, 5]);
     }
   };
+
+  useEffect(() =>{
+    // console.log("tenure : ", tenure)
+    const ans = calcAmortization(loanAmount, interest, tenureInMos, monthlyEMI)
+    console.log(ans);
+  },[loanAmount, tenure, interest])
 
   return (
     <div

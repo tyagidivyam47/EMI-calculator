@@ -14,7 +14,7 @@ const Home = () => {
     if (isLoggedIn) {
       navigate('/Dashboard')
     } else {
-      navigate('/login');
+      navigate('/Dashboard')
     }
   }, [cookies]);
   return (

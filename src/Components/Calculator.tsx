@@ -95,6 +95,7 @@ const Calculator:React.FC<any> = ({
     onChange(
       totalLoanAmount,
       tenureType === "Years" ? tenure : tenure/12,
+      tenureInMonths,
       rateOfInterest,
       Math.floor(emi),
       Math.ceil(totalInt)
@@ -113,6 +114,7 @@ const Calculator:React.FC<any> = ({
     onChange(
       totalLoanAmount,
       tenureType === "Years" ? tenure : tenure/12,
+      details?.tenureInMonths,
       rateOfInterest,
       (details?.emi),
       (totalInt)
