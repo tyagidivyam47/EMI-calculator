@@ -62,6 +62,7 @@ const Header = () => {
               textDecoration: "none",
               margin: "0 10px",
               transition: "color 0.3s ease",
+              display:"none"
             }}
             className="text-[#00d09b] hover:text-teal-900 hidden"
           >

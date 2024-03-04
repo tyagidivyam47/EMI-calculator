@@ -187,24 +187,10 @@ const Sidebar = () => {
             <NavLink
               key={index}
               to={links[index]}
-              style={{ background: "red" }}
+              style={{ background: "red", textDecoration:"none" }}
               onClick={() => setIndexActive(index)}
               // className={({ isActive }) => (isActive ? "activeLink" : "")}
             >
-              {/* <span
-                style={{
-                  height: "30px",
-                  width: "8px",
-                  backgroundColor:
-                    index === indexActive ? secondaryColor : "#FFFFFF",
-                  position: "absolute",
-                  marginTop: "28px",
-                  borderTopRightRadius: "10px",
-                  borderBottomRightRadius: "10px",
-                }}
-              >
-                .
-              </span> */}
               <ListItem
                 key={text}
                 disablePadding
@@ -249,8 +235,9 @@ const Sidebar = () => {
                       opacity: open ? 1 : 0,
                       color: index === indexActive ? "#FFFFFF" : primaryColor,
                       fontWeight: 800,
+                      textDecoration:"none"
                     }}
-                    style={{ fontWeight: 800 }}
+                    style={{ fontWeight: 800, textDecoration:"none" }}
                   />
                 </ListItemButton>
               </ListItem>
