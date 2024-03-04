@@ -22,6 +22,7 @@ const EMICalculator = () => {
   const [showParticles, setShowParticles] = useState(true);
   const [loanType, setLoanType] = useState("home");
   const [upperLimits, setUpperLimits] = useState([10000000, 9, 35]);
+  const [ammData, setAmmData] = useState<any>([]);
 
 
   const handleChange = (
@@ -64,7 +65,8 @@ const EMICalculator = () => {
   useEffect(() =>{
     // console.log("tenure : ", tenure)
     const ans = calcAmortization(loanAmount, interest, tenureInMos, monthlyEMI)
-    console.log(ans);
+    setAmmData(ans);
+    // console.log(ans);
   },[loanAmount, tenure, interest])
 
   return (
@@ -218,7 +220,7 @@ const EMICalculator = () => {
       </div>
 
       <div>
-        <AmortizationTable />
+        <AmortizationTable data={ammData} />
         {/* {showParticles && (
           <div
             onClick={handlePrint}
