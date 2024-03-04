@@ -2,46 +2,46 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { primaryColor, secondaryColor } from "../Theme";
 
-const BarChart:React.FC<any> = ({
-  loanAmount,
-  tenure,
-  interest,
-  monthlyEmi,
-  totalInterest,
-}) => {
+const BarChart: React.FC<any> = ({ ammData }: any) => {
   //   const years = ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"];
   //   const principalData = [50000, 60000, 70000, 80000, 90000];
   //   const interestData = [10000, 12000, 14000, 16000, 18000];
+
+  // console.log(ammData)
 
   const [years, setYears] = useState([]);
   const [principalData, setPrincipalData] = useState([]);
   const [interestData, setInterestData] = useState([]);
 
+  
   useEffect(() => {
-    let tempYears = [];
-    for (let i = 1; i <= tenure; i++) {
-      tempYears.push(`Year ${i}`);
-    }
-    const annualEmi = monthlyEmi * 12;
-    let currPercentage = 63;
-    let tempPincipalData = [];
-    let tempInterestData = [];
+    if (ammData?.length > 0) {
+      let tempPrinc = [];
+      let tempInt = [];
+      let tempYr = [];
+      for (let i = 1; i < ammData.length; i++) {
+        // console.log(ammData)
+        let currPrinc = 0;
+        let currInt = 0;
 
-    for (let i = 1; i <= tenure; i++) {
-      const currPrincipal = (currPercentage / 100) * annualEmi;
-      tempPincipalData.push(
-        currPrincipal > annualEmi ? annualEmi : currPrincipal
-      );
-      const currInterest =
-        annualEmi - currPrincipal < 0 ? 0 : annualEmi - currPrincipal;
-      tempInterestData.push(currInterest);
-      currPercentage += 8;
+        while (true) {
+          currInt += (ammData[i]?.interest || 0);
+          currPrinc += ammData[i]?.principal || 0;
+          if (i % 12 === 0) {
+            break;
+          }
+          // console.log(i," : ",ammData[i])
+          i++;
+        }
+        tempPrinc.push(currPrinc);
+        tempInt.push(currInt);
+        tempYr.push(`Year ${i / 12}`);
+      }
+      setPrincipalData(tempPrinc);
+      setInterestData(tempInt);
+      setYears(tempYr);
     }
-    setYears(tempYears);
-    setPrincipalData(tempPincipalData);
-    setInterestData(tempInterestData);
-    // console.log(tenure)
-  }, [monthlyEmi, tenure, interest, loanAmount, totalInterest]);
+  }, [ammData]);
 
   const data = {
     labels: years,
@@ -63,7 +63,7 @@ const BarChart:React.FC<any> = ({
     plugins: {
       title: {
         display: true,
-        text: "Yearly break-up of EMI",
+        text: "Yearly break-down of EMI",
       },
     },
     responsive: true,
@@ -80,7 +80,7 @@ const BarChart:React.FC<any> = ({
   };
 
   return (
-    <div style={{display:"flex", justifyContent:"center"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <Bar data={data} options={options} />
     </div>
   );

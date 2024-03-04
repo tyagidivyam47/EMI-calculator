@@ -10,7 +10,7 @@ const PieChart: React.FC<any> = ({ loanAmount, totalInterest }) => {
       {
         data: [loanAmount, totalInterest],
         backgroundColor: [primaryColor, secondaryColor],
-        hoverBackgroundColor: ["#36A2EB", "#36A2EB"],
+        // hoverBackgroundColor: ["#36A2EB", "#36A2EB"],
       },
     ],
   };
@@ -21,7 +21,7 @@ const PieChart: React.FC<any> = ({ loanAmount, totalInterest }) => {
       <div
         style={{ textAlign: "center", fontWeight: "bold", marginTop: "16px" }}
       >
-        Break-up of Total Payment
+        Break-down of Total Payment
       </div>
     </div>
   );

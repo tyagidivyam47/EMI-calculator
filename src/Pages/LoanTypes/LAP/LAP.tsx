@@ -94,7 +94,7 @@ const LAP = () => {
               marginBottom: "20px",
             }}
           >
-            Equity Breakup
+            Equity Breakdown
           </div>
           <div
             style={{
@@ -107,7 +107,7 @@ const LAP = () => {
               alignItems: "center",
             }}
           >
-            <div style={{ padding: "10px", borderRight: "2px solid #d3d3d3" }}>
+            <div style={{ padding: "10px", borderRight: "2px solid #d3d3d3", color:secondaryColor }}>
               <div
                 style={{
                   fontSize: "18px",
@@ -117,13 +117,13 @@ const LAP = () => {
               >
                 Bank's Equity ={" "}
                 <span>
-                  {currency} {bankEquity}
+                  {currency} {bankEquity.toFixed(2)}
                 </span>
               </div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>
                 Customer's Equity ={" "}
                 <span>
-                  {currency} {cusEquity}
+                  {currency} {cusEquity.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -135,7 +135,7 @@ const LAP = () => {
                     {
                       data: [bankEquity, cusEquity],
                       backgroundColor: [primaryColor, secondaryColor],
-                      hoverBackgroundColor: ["#36A2EB", "#36A2EB"],
+                      // hoverBackgroundColor: ["#36A2EB", "#36A2EB"],
                     },
                   ],
                 }}

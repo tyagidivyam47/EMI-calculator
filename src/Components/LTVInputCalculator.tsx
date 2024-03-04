@@ -36,7 +36,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
   // console.log(totalLoanAmount)
   const [inInterest, setInInterest] = useState<any>(0);
   const [inTenure, setInTenure] = useState<any>(0);
-  const [inAmount, setInAmount] = useState<any>();
+  const [inAmount, setInAmount] = useState<any>(0);
   const [empType, setEmpType] = useState("salaried");
   const [propType, setPropType] = useState("residential");
   const [ltvRatio, setLtvRatio] = useState(75);
@@ -362,7 +362,8 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                   <TextField
                     value={prop.value}
                     type="tel"
-                    label={`Morgage ${index + 1}, In ${currency}`}
+                    label={index === 0 ? "1st Mortgage" : index === 1 ? "2nd Mortgage" : index === 2 ? "3rd Mortgage" : `${index + 1}th Mortgage`}
+                    // label={`Morgage ${index + 1}, In ${currency}`}
                     sx={{ background: "#FFFFFF" }}
                     onFocus={(e) => e.target.select()}
                     // disabled={!ltvActive}

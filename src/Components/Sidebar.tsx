@@ -158,9 +158,10 @@ const Sidebar = () => {
     <Box sx={{ height: "100%", bgcolor: primaryColor }}>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <Box>
+          <Box display={'flex'} alignItems={'center'} gap={'5px'}>
             <img src={logo} style={{ height: "50px" }} />
-            {/* <div>EMI</div> */}
+            <span className="text-xl font-semibold text-white"
+            style={{ fontFamily: "Sixtyfour, sans-serif" }}>EMI Buddy</span>
           </Box>
         </DrawerHeader>
         <Divider />

@@ -12,39 +12,13 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { extraLSecondaryColor } from "../Theme";
+import { useSelector } from "react-redux";
+import { IRootState } from "../store";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-  price: number
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
-}
 
-function Row({ row, index, year}:any) {
-  // const { row } = props;
+function Row({ row, index, year }: any) {
+  const currency = useSelector((state:IRootState)=> state.currency.currency);
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -62,42 +36,50 @@ function Row({ row, index, year}:any) {
         <TableCell component="th" scope="row">
           {year}
         </TableCell>
-        <TableCell align="right">{parseFloat(row.annInterest).toFixed(2)}</TableCell>
-        <TableCell align="right">{parseFloat(row.annPrincipal).toFixed(2)}</TableCell>
-        <TableCell align="right">{row.annPayment}</TableCell>
-        <TableCell align="right">{row.annUnpaid}</TableCell>
+        <TableCell align="right">
+          {currency} {parseFloat(row.annInterest).toFixed(2)}
+        </TableCell>
+        <TableCell align="right">
+        {currency} {parseFloat(row.annPrincipal).toFixed(2)}
+        </TableCell>
+        <TableCell align="right">
+        {currency} {parseFloat(row.annPayment).toFixed(2)}
+        </TableCell>
+        <TableCell align="right">
+        {currency} {parseFloat(row.annUnpaid).toFixed(2)}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
+            <Box sx={{ margin: 1, background: extraLSecondaryColor }}>
               <Typography variant="h6" gutterBottom component="div">
                 Monthly
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Month</TableCell>
-                    <TableCell>Interest</TableCell>
-                    <TableCell align="right">Principal</TableCell>
-                    <TableCell align="right">Payment</TableCell>
-                    <TableCell align="right">Unpaid</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Month</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Interest</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Principal</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }} align="right">
+                      Payment
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }} align="right">
+                      Unpaid
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.monthWise.map((monRow:any, index:any) => (
+                  {row.monthWise.map((monRow: any, index: any) => (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">
-                        {index+1}
+                        {index + 1}
                       </TableCell>
-                      <TableCell>{monRow.interest}</TableCell>
-                      <TableCell align="right">{monRow.principal}</TableCell>
-                      <TableCell align="right">
-                        {monRow.payment}
-                      </TableCell>
-                      <TableCell align="right">
-                        {monRow.unpaid}
-                      </TableCell>
+                      <TableCell>{currency} {monRow.interest.toLocaleString("en-IN")}</TableCell>
+                      <TableCell>{currency} {monRow.principal.toLocaleString("en-IN")}</TableCell>
+                      <TableCell align="right">{currency} {monRow.payment.toLocaleString("en-IN")}</TableCell>
+                      <TableCell align="right">{currency} {monRow.unpaid.toLocaleString("en-IN")}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -110,25 +92,11 @@ function Row({ row, index, year}:any) {
   );
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 3.99),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 4.99),
-  createData("Eclair", 262, 16.0, 24, 6.0, 3.79),
-  createData("Cupcake", 305, 3.7, 67, 4.3, 2.5),
-  createData("Gingerbread", 356, 16.0, 49, 3.9, 1.5),
-];
-
 const AmortizationTable = ({ data }: any) => {
+
   const [ammData, setAmmData] = React.useState([]);
 
   React.useEffect(() => {
-    // let tempArr = [{
-    //   "interest":data[0].interest,
-    //   "payment": data[0].payment,
-    //   "principal":data[0].principal,
-    //   "unpaid":data[0].unpaid
-    // }]
-
     let tempArr = [];
     // let currYear
     for (let i = 1; i < data.length; i++) {
@@ -140,16 +108,16 @@ const AmortizationTable = ({ data }: any) => {
 
       while (true) {
         let tempObj = {
-          interest: data[i].interest,
-          payment: data[i].payment,
-          principal: data[i].principal,
-          unpaid: data[i].unpaid,
+          interest: data[i]?.interest || 0,
+          payment: data[i]?.payment || 0,
+          principal: data[i]?.principal || 0,
+          unpaid: data[i]?.unpaid > 0 ? data[i].unpaid : 0,
         };
         tempMonArr.push(tempObj);
         annInterest += +tempObj.interest;
         annPayment += +tempObj.payment;
         annPrincipal += +tempObj.principal;
-        if(i%12 === 0){
+        if (i % 12 === 0) {
           annUnpaid = tempObj.unpaid;
           break;
         }
@@ -160,8 +128,8 @@ const AmortizationTable = ({ data }: any) => {
         annPayment,
         annPrincipal,
         annUnpaid,
-        "monthWise":tempMonArr
-      }
+        monthWise: tempMonArr,
+      };
       tempArr.push(tempAnnObj);
     }
     setAmmData(tempArr);
@@ -174,17 +142,26 @@ const AmortizationTable = ({ data }: any) => {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Year</TableCell>
-            <TableCell align="right">Interest</TableCell>
-            <TableCell align="right">Principal</TableCell>
-            <TableCell align="right">Payment</TableCell>
-            <TableCell align="right">Unpaid</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Year</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Interest
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Principal
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Payment
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Unpaid
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {ammData && ammData?.map((row, index) => (
-            <Row key={index} year={index+1} row={row} />
-          ))}
+          {ammData &&
+            ammData?.map((row, index) => (
+              <Row key={index} year={index + 1} row={row} />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

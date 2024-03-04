@@ -17,13 +17,12 @@ const EMICalculator = () => {
   const [tenure, setTenure] = useState(5);
   const [tenureInMos, setTenureInMos] = useState(60);
   const [interest, setInterest] = useState(6.5);
-  const [monthlyEMI, setMonthlyEMI] = useState<Number>();
+  const [monthlyEMI, setMonthlyEMI] = useState<Number>(19566);
   const [totalInterest, setTotalInterest] = useState<Number>();
   const [showParticles, setShowParticles] = useState(true);
   const [loanType, setLoanType] = useState("home");
   const [upperLimits, setUpperLimits] = useState([10000000, 9, 35]);
   const [ammData, setAmmData] = useState<any>([]);
-
 
   const handleChange = (
     loanAmountI: number,
@@ -62,12 +61,11 @@ const EMICalculator = () => {
     }
   };
 
-  useEffect(() =>{
-    // console.log("tenure : ", tenure)
-    const ans = calcAmortization(loanAmount, interest, tenureInMos, monthlyEMI)
+  useEffect(() => {
+    const ans = calcAmortization(loanAmount, interest, tenureInMos, monthlyEMI);
+    // console.log(ans)
     setAmmData(ans);
-    // console.log(ans);
-  },[loanAmount, tenure, interest])
+  }, [loanAmount, tenure, interest]);
 
   return (
     <div
@@ -210,33 +208,11 @@ const EMICalculator = () => {
         </div>
       </Box>
       <div style={{ marginTop: "50px", padding: "0px 60px" }}>
-        <BarChart
-          interest={interest}
-          loanAmount={loanAmount}
-          monthlyEmi={monthlyEMI}
-          tenure={tenure}
-          totalInterest={totalInterest}
-        />
+        <BarChart ammData={ammData} />
       </div>
 
-      <div>
+      <div style={{marginTop:"25px", paddingBottom:"100px", paddingLeft:"30px"}}>
         <AmortizationTable data={ammData} />
-        {/* {showParticles && (
-          <div
-            onClick={handlePrint}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              paddingBottom: "50px",
-              paddingTop: "50px",
-            }}
-          >
-            <img
-              src={downloadIcon}
-              style={{ width: "35px", cursor: "pointer" }}
-            />
-          </div>
-        )} */}
       </div>
     </div>
   );
