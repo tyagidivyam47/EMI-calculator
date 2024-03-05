@@ -1,0 +1,7 @@
+{
+    "name": "emiCalculator",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+  }

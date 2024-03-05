@@ -1,0 +1,14 @@
+export const primaryColor = "#0057FF";
+export const lightPrimaryColor = "#50B2EA";
+export const extraLPrimaryColor = "#ADC5F5"; 
+export const secondaryColor = "#FF2990";
+export const lightSecondaryColor = "#EA62A4";
+export const extraLSecondaryColor = "#F5A0C9"; 
+export const tertiaryColor = "#98FF98";
+export const primaryBgColor = "#E7EDF6"
+export const secondaryBgColor = '#F3F6FB'
+export const activeBgColor = '#4C89FF'
+export const mainHeading = "600 38px/30px Raleway, serif";
+export const mainHeadingSm = "600 26px Raleway, serif";
+export const mainSubHeading = "600 30px/30px Raleway, serif";
+export const smText = "600 18px Raleway, serif";
