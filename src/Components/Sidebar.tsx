@@ -1,6 +1,7 @@
 import {
   Box,
   CSSObject,
+  Collapse,
   Divider,
   Drawer,
   IconButton,
@@ -16,7 +17,13 @@ import {
 } from "@mui/material";
 import MuiDrawer, { DrawerProps } from "@mui/material/Drawer";
 import React, { useEffect, useState } from "react";
-import { activeBgColor, primaryBgColor, primaryColor, secondaryBgColor, secondaryColor } from "../Theme";
+import {
+  activeBgColor,
+  primaryBgColor,
+  primaryColor,
+  secondaryBgColor,
+  secondaryColor,
+} from "../Theme";
 import styled from "@emotion/styled";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -34,6 +41,14 @@ import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user-slice";
 import MenuIcon from "@mui/icons-material/Menu";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import BungalowIcon from "@mui/icons-material/Bungalow";
+import DirectionsCarFilledIcon from "@mui/icons-material/DirectionsCarFilled";
+import SchoolIcon from "@mui/icons-material/School";
+import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
+import GiteIcon from "@mui/icons-material/Gite";
+import SavingsIcon from "@mui/icons-material/Savings";
 // import d from "../assets/"
 
 const drawerWidth = 250;
@@ -89,7 +104,14 @@ const DrawerLg = styled(MuiDrawer, {
 }));
 
 const links = ["Dashboard", "Loan Types"];
-
+const loanTypes = [
+  "Home Loan",
+  "Car Loan",
+  "Education Loan",
+  "Personal Loan",
+  "Loan Against Property",
+  "Loan as per budget",
+];
 const currencies = [
   {
     value: "₹",
@@ -119,7 +141,9 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [indexActive, setIndexActive] = useState(0);
+  const [listActInd, setListActInd] = useState(0);
   const [smOpen, setSmOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -168,7 +192,11 @@ const Sidebar = () => {
           onClose={() => setSmOpen(false)}
           open={smOpen}
         >
-          <Box sx={{ width: 250 }} role="presentation" onClick={()=>setSmOpen(false)}>
+          <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={() => setSmOpen(false)}
+          >
             <Box display={"flex"} alignItems={"center"} gap={"5px"}>
               <img src={logo} style={{ height: "50px" }} />
               <span
@@ -183,9 +211,18 @@ const Sidebar = () => {
               {links.map((text, index) => (
                 <NavLink
                   key={index}
-                  to={links[index]}
+                  to={text === "Loan Types" ? loanTypes[0] : links[index]}
                   style={{ background: "red", textDecoration: "none" }}
-                  onClick={() => setIndexActive(index)}
+                  onClick={() => {
+                    if (index === 1) {
+                      setListOpen(!listOpen);
+                      setListActInd(0);
+                    } else {
+                      setListActInd(0);
+                      setListOpen(false);
+                    }
+                    setIndexActive(index);
+                  }}
                   // className={({ isActive }) => (isActive ? "activeLink" : "")}
                 >
                   <ListItem
@@ -219,15 +256,17 @@ const Sidebar = () => {
                         }}
                       >
                         {index === 0 ? (
-                          <DashboardIcon />
+                          <BungalowIcon />
                         ) : index === 1 ? (
-                          <CreditScoreIcon />
+                          <DirectionsCarFilledIcon />
                         ) : index === 2 ? (
-                          <RequestQuoteIcon />
+                          <SchoolIcon />
                         ) : index === 3 ? (
-                          <AccountBoxIcon />
+                          <SettingsAccessibilityIcon />
+                        ) : index === 4 ? (
+                          <GiteIcon />
                         ) : (
-                          <SettingsIcon />
+                          <SavingsIcon />
                         )}
                       </ListItemIcon>
 
@@ -247,6 +286,80 @@ const Sidebar = () => {
                 </NavLink>
               ))}
             </List>
+            <ListItem>
+              <Collapse in={listOpen} timeout="auto" unmountOnExit>
+                {loanTypes.map((loanType, index) => (
+                  <NavLink
+                    key={index}
+                    to={loanTypes[index]}
+                    style={{ background: "red", textDecoration: "none" }}
+                    onClick={() => {
+                      setListActInd(index);
+                    }}
+                    // className={({ isActive }) => (isActive ? "activeLink" : "")}
+                  >
+                    <ListItem
+                      key={index}
+                      disablePadding
+                      style={{
+                        background: index === listActInd ? secondaryColor : "",
+                        borderTopLeftRadius: 10,
+                        borderBottomLeftRadius: 10,
+                      }}
+                      sx={{
+                        display: "block",
+                        marginTop: "20px",
+                        marginLeft: "20px",
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: open ? "initial" : "center",
+                          px: 0.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : "auto",
+                            justifyContent: "center",
+                            color:
+                              index === listActInd ? "#FFFFFF" : primaryColor,
+                          }}
+                        >
+                          {index === 0 ? (
+                            <BungalowIcon />
+                          ) : index === 1 ? (
+                            <DirectionsCarFilledIcon />
+                          ) : index === 2 ? (
+                            <SchoolIcon />
+                          ) : index === 3 ? (
+                            <SettingsAccessibilityIcon />
+                          ) : index === 4 ? (
+                            <GiteIcon />
+                          ) : (
+                            <SavingsIcon />
+                          )}
+                        </ListItemIcon>
+
+                        <ListItemText
+                          primary={loanType}
+                          sx={{
+                            opacity: open ? 1 : 0,
+                            color:
+                              index === listActInd ? "#FFFFFF" : primaryColor,
+                            fontWeight: 800,
+                            textDecoration: "none",
+                          }}
+                          style={{ fontWeight: 800, textDecoration: "none" }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  </NavLink>
+                ))}
+              </Collapse>
+            </ListItem>
             <Divider />
             <ListItem
               // key={"Sign out"}
@@ -291,7 +404,10 @@ const Sidebar = () => {
           },
         }}
       >
-        <Box onClick={() => setSmOpen(true)} sx={{position:"absolute", right:"15px", top:"25px", zIndex:100}}>
+        <Box
+          onClick={() => setSmOpen(true)}
+          sx={{ position: "absolute", right: "15px", top: "25px", zIndex: 100 }}
+        >
           <MenuIcon />
         </Box>
       </Box>
@@ -314,7 +430,10 @@ const Sidebar = () => {
               <img src={logo} style={{ height: "50px" }} />
               <span
                 className="text-xl font-semibold text-white"
-                style={{ fontFamily: "Sixtyfour, sans-serif", color:"#FFFFFF" }}
+                style={{
+                  fontFamily: "Sixtyfour, sans-serif",
+                  color: "#FFFFFF",
+                }}
               >
                 EMI Buddy
               </span>
@@ -327,10 +446,10 @@ const Sidebar = () => {
               display: "flex",
               marginLeft: "auto",
               marginRight: "7px",
-              marginTop: "35px",
+              marginTop: "5px",
               // border: `1px solid #FFFFFF`,
               color: "#FFFFFF",
-              background: activeBgColor
+              background: activeBgColor,
             }}
           >
             {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -339,9 +458,17 @@ const Sidebar = () => {
             {links.map((text, index) => (
               <NavLink
                 key={index}
-                to={links[index]}
+                to={text === "Loan Types" ? loanTypes[0] : links[index]}
                 style={{ background: "red", textDecoration: "none" }}
-                onClick={() => setIndexActive(index)}
+                onClick={() => {
+                  if (index === 1) {
+                    setListOpen(!listOpen);
+                  } else {
+                    setListActInd(0);
+                    setListOpen(false);
+                  }
+                  setIndexActive(index);
+                }}
                 // className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <ListItem
@@ -396,10 +523,90 @@ const Sidebar = () => {
                       }}
                       style={{ fontWeight: 800, textDecoration: "none" }}
                     />
+                    {index === 1 && (
+                      <div style={{ marginRight: "20px", color: "#FFFFFF" }}>
+                        {!listOpen && <KeyboardArrowDownIcon />}
+                        {listOpen && <KeyboardArrowUpIcon />}
+                      </div>
+                    )}
                   </ListItemButton>
                 </ListItem>
               </NavLink>
             ))}
+            {listOpen && <Divider variant="inset" sx={{marginTop:"10px", background:"#ffffff"}}/>}
+            <ListItem>
+              <Collapse in={listOpen} timeout="auto" unmountOnExit>
+                {loanTypes.map((loanType, index) => (
+                  <NavLink
+                    key={index}
+                    to={loanTypes[index]}
+                    style={{ background: "red", textDecoration: "none" }}
+                    onClick={() => {
+                      setListActInd(index);
+                    }}
+                  >
+                    <ListItem
+                      key={index}
+                      disablePadding
+                      style={{
+                        background: index === listActInd ? activeBgColor : "",
+                        borderTopLeftRadius: 10,
+                        borderBottomLeftRadius: 10,
+                      }}
+                      sx={{
+                        display: "block",
+                        marginTop: "20px",
+                        marginLeft:"5px"
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: open ? "initial" : "center",
+                          px: 0.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : "auto",
+                            justifyContent: "center",
+                            color:
+                              index === indexActive ? "#FFFFFF" : "#FFFFFF",
+                          }}
+                        >
+                          {index === 0 ? (
+                            <BungalowIcon />
+                          ) : index === 1 ? (
+                            <DirectionsCarFilledIcon />
+                          ) : index === 2 ? (
+                            <SchoolIcon />
+                          ) : index === 3 ? (
+                            <SettingsAccessibilityIcon />
+                          ) : index === 4 ? (
+                            <GiteIcon />
+                          ) : (
+                            <SavingsIcon />
+                          )}
+                        </ListItemIcon>
+
+                        <ListItemText
+                          primary={loanType}
+                          sx={{
+                            opacity: open ? 1 : 0,
+                            color:
+                              index === indexActive ? "#FFFFFF" : "#FFFFFF",
+                            fontWeight: 800,
+                            textDecoration: "none",
+                          }}
+                          style={{ fontWeight: 800, textDecoration: "none" }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  </NavLink>
+                ))}
+              </Collapse>
+            </ListItem>
 
             {open && (
               <ListItem
@@ -410,10 +617,17 @@ const Sidebar = () => {
                   display: "block",
                   marginTop: "150px",
                   // marginLeft: "20px",
-                  padding:"10px"
+                  padding: "10px",
                 }}
               >
-                <Box sx={{background:primaryBgColor, display:"flex", padding:"8px 16px", borderRadius:2}}>
+                <Box
+                  sx={{
+                    background: primaryBgColor,
+                    display: "flex",
+                    padding: "8px 16px",
+                    borderRadius: 2,
+                  }}
+                >
                   <TextField
                     id="outlined-select-currency"
                     variant="filled"
@@ -422,8 +636,8 @@ const Sidebar = () => {
                     defaultValue="₹"
                     helperText="Please select your currency"
                     onChange={currencyChangeHandler}
-                    inputProps={{color:"#FFFFFF"}}
-                    sx={{margin:"auto"}}
+                    inputProps={{ color: "#FFFFFF" }}
+                    sx={{ margin: "auto" }}
                   >
                     {currencies.map((option) => (
                       <MenuItem key={option.value} value={option.value}>

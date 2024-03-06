@@ -15,6 +15,7 @@ const Header = () => {
   ]);
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const [title, setTitle] = useState<string>("Dashboard");
 
   const logoutHandler = () => {
     removeCookie("auth_token");
@@ -23,19 +24,40 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const isLoggedIn = cookies.auth_token;
-    if (isLoggedIn) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
+    const path = window.location.pathname;
+    switch (path) {
+      case "/Dashboard":
+        setTitle("Dashboard");
+        break;
+      case "/Home%20Loan":
+        setTitle("Loan Types • Home Loan");
+        break;
+      case "/Car%20Loan":
+        setTitle("Loan Types • Car Loan");
+        break;
+      case "/Education%20Loan":
+        setTitle("Loan Types • Education Loan");
+        break;
+      case "/Personal%20Loan":
+        setTitle("Loan Types • Personal Loan");
+        break;
+      case "/Loan%20Against%20Property":
+        setTitle("Loan Types • LAP");
+        break;
+      case "/Loan%20as%20per%20budget":
+        setTitle("Loan Types • Loan as per budget");
+        break;
+      default:
+        setTitle("Loan Types > Loan");
+        break;
     }
-  }, [cookies]);
+  }, [window.location.pathname]);
   return (
     <div
       style={{
         position: "sticky",
         top: 0,
-        zIndex:50
+        zIndex: 50,
       }}
     >
       <Box
@@ -57,22 +79,16 @@ const Header = () => {
             EMI Buddy
           </div>
         </div>
-        <div className="flex justify-end ml-auto">
-          <NavLink
-            to="/"
-            style={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              textDecoration: "none",
-              margin: "0 10px",
-              transition: "color 0.3s ease",
-              display: "none",
-            }}
-            className="text-[#00d09b] hover:text-teal-900 hidden"
-          >
-            Home
-          </NavLink>
-        </div>
+        <Box
+          sx={{
+            marginLeft: "80px",
+            color: primaryColor,
+            paddingRight: { lg: "0px", md: "0px", xs: "50px" },
+            fontStyle:"italic"
+          }}
+        >
+          {title}
+        </Box>
       </Box>
     </div>
   );

@@ -1,14 +1,15 @@
-import { Box, MenuItem, TextField } from "@mui/material";
+import { Box, InputAdornment, MenuItem, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   extraLPrimaryColor,
+  labelFont,
   lightPrimaryColor,
   primaryColor,
   smText,
 } from "../Theme";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 
-const InputCalculator:React.FC<any> = ({
+const InputCalculator: React.FC<any> = ({
   amountLabel,
   rateOfInterest,
   tenure,
@@ -48,7 +49,7 @@ const InputCalculator:React.FC<any> = ({
     );
   };
 
-  const toggleTenureType = (tType:string) => {
+  const toggleTenureType = (tType: string) => {
     // if (tenureType === tType) {
     //   return;
     // }
@@ -96,15 +97,10 @@ const InputCalculator:React.FC<any> = ({
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
       <Box>
-        <div
-          style={{
-            fontWeight: "600",
-            color: primaryColor,
-            paddingBottom: "6px",
-          }}
-        >
+        <div style={{ font: labelFont, marginBottom: "6px" }}>
           {amountLabel || "Loan Amount"}
         </div>
+
         <TextField
           onChange={(e) => {
             if (parseInt(e.target.value) > 100000000000) {
@@ -114,20 +110,34 @@ const InputCalculator:React.FC<any> = ({
           }}
           value={inAmount}
           type="number"
-          label={`In ${currency}`}
           disabled={disableAmount}
           sx={{ background: "#FFFFFF" }}
           onFocus={(e) => e.target.select()}
+          InputProps={{
+            style: { height: "41px" },
+            startAdornment: (
+              <InputAdornment position="start">
+                <div
+                  style={{
+                    background: "#e7edf6",
+                    height: "41px",
+                    width: "40px",
+                    marginLeft: "-13px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: primaryColor,
+                  }}
+                >
+                  {currency}
+                </div>
+              </InputAdornment>
+            ),
+          }}
         />
       </Box>
       <Box>
-        <div
-          style={{
-            fontWeight: "600",
-            color: primaryColor,
-            paddingBottom: "6px",
-          }}
-        >
+        <div style={{ font: labelFont, marginBottom: "6px" }}>
           Interest Rate
         </div>
         <TextField
@@ -140,20 +150,65 @@ const InputCalculator:React.FC<any> = ({
           onFocus={(e) => e.target.select()}
           value={inInterest}
           type="number"
-          label="In %"
           sx={{ background: "#FFFFFF" }}
+          InputProps={{
+            style: { height: "41px" },
+            startAdornment: (
+              <InputAdornment position="start">
+                <div
+                  style={{
+                    background: "#e7edf6",
+                    height: "41px",
+                    width: "40px",
+                    marginLeft: "-13px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: primaryColor,
+                  }}
+                >
+                  %
+                </div>
+              </InputAdornment>
+            ),
+          }}
         />
       </Box>
       <Box>
-        <div
-          style={{
-            fontWeight: "600",
-            color: primaryColor,
-            paddingBottom: "6px",
-          }}
-        >
-          Loan Tenure
-        </div>
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <div
+            style={{
+              font: labelFont,
+              marginBottom: "6px",
+            }}
+          >
+            Loan Tenure
+          </div>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            // sx={{height:"10px"}}
+            // marginLeft={"-130px"}
+            marginTop={"-5px"}
+          >
+            <div>
+              <TextField
+                select
+                // label="Select"
+                defaultValue="Years"
+                helperText=""
+                onChange={(e) => toggleTenureType(e.target.value)}
+                value={tenureType}
+                variant="standard"
+              >
+                <MenuItem value={"Years"}>Yr</MenuItem>
+                <MenuItem value={"Months"}>Mo</MenuItem>
+              </TextField>
+            </div>
+          </Box>
+        </Box>
         <Box display={"flex"}>
           <TextField
             onChange={(e) => {
@@ -167,11 +222,31 @@ const InputCalculator:React.FC<any> = ({
             }}
             value={inTenure}
             type="number"
-            label={`in ${tenureType}`}
             sx={{ background: "#FFFFFF" }}
             onFocus={(e) => e.target.select()}
+            InputProps={{
+              style: { height: "41px" },
+              startAdornment: (
+                <InputAdornment position="start">
+                  <div
+                    style={{
+                      background: "#e7edf6",
+                      height: "41px",
+                      width: "40px",
+                      marginLeft: "-13px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: primaryColor,
+                    }}
+                  >
+                    {tenureType === "Years" ? "Yr" : "Mo"}
+                  </div>
+                </InputAdornment>
+              ),
+            }}
           />
-          <Box
+          {/* <Box
             display={"flex"}
             flexDirection={"column"}
             alignItems={"center"}
@@ -191,7 +266,7 @@ const InputCalculator:React.FC<any> = ({
                 <MenuItem value={"Months"}>Mo</MenuItem>
               </TextField>
             </div>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Box>

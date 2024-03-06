@@ -5,23 +5,35 @@ import {
   Alert,
   Box,
   Button,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Calculator from "../../../Components/Calculator";
-import { primaryColor, secondaryColor, tertiaryColor } from "../../../Theme";
+import {
+  labelFont,
+  primaryColor,
+  secondaryBgColor,
+  secondaryColor,
+  tertiaryColor,
+} from "../../../Theme";
 import { Doughnut } from "react-chartjs-2";
 import InputCalculator from "../../../Components/InputCalculator";
 import PaymentList from "../../../Components/PaymentList";
+import { useSelector } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { IRootState } from "../../../store";
 
-const HomeLoan = ({ currency }) => {
+const HomeLoan = () => {
   // console.log(currency);
+  const currency = useSelector((state: IRootState) => state.currency.currency);
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [tenure, setTenure] = useState(5);
   const [interest, setInterest] = useState(6.5);
-  const [monthlyEMI, setMonthlyEMI] = useState();
-  const [totalInterest, setTotalInterest] = useState();
+  const [monthlyEMI, setMonthlyEMI] = useState<number>();
+  const [totalInterest, setTotalInterest] = useState<number>();
   const [loanCharges, setLoanCharges] = useState(0);
   const [advancedInfo, setAdvancedInfo] = useState({
     hv: 1000000,
@@ -32,7 +44,7 @@ const HomeLoan = ({ currency }) => {
     homeInsurance: 0,
     maintenence: 0,
   });
-  const [errorMsg, setErrorMsg] = useState();
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [unfilled, setUnfilled] = useState(false);
   const [accOpen, setAccOpen] = useState(false);
   const [monthlyPayList, setMonthlyPayList] = useState([
@@ -81,7 +93,7 @@ const HomeLoan = ({ currency }) => {
     },
   ]);
 
-  const setTable = (emi, taxes, insurance, maintenence) => {
+  const setTable = (emi: any, taxes: any, insurance: any, maintenence: any) => {
     const total = emi + taxes + insurance + maintenence;
     setMonthlyPayList([
       {
@@ -112,14 +124,13 @@ const HomeLoan = ({ currency }) => {
   };
 
   const setTotalTable = (
-    oneTime,
-    principal,
-    interestLocal,
-    TaxInsurMain
+    oneTime: any,
+    principal: any,
+    interestLocal: any,
+    TaxInsurMain: any
   ) => {
     // console.log(interestLocal)
-    const total =
-      +oneTime + +principal + +interestLocal + +TaxInsurMain;
+    const total = +oneTime + +principal + +interestLocal + +TaxInsurMain;
     setTotalPayList([
       {
         key: "Down Payment, Fees & One-time Expenses",
@@ -145,11 +156,11 @@ const HomeLoan = ({ currency }) => {
   };
 
   const getData = (
-    loanAmountI,
-    tenureI,
-    interestI,
-    monthlyEMII,
-    totalInterestI
+    loanAmountI: any,
+    tenureI: any,
+    interestI: any,
+    monthlyEMII: any,
+    totalInterestI: any
   ) => {
     // console.log(tenureI)
     setLoanAmount(+loanAmountI);
@@ -167,7 +178,7 @@ const HomeLoan = ({ currency }) => {
       +monthlyEMII,
       monthlyPayList[1].value,
       monthlyPayList[2].value,
-      monthlyPayList[3].value,
+      monthlyPayList[3].value
       // monthlyPayList[4].value
     );
   };
@@ -188,40 +199,40 @@ const HomeLoan = ({ currency }) => {
       setErrorMsg("Home Value should always be greater than Down Payment");
       return;
     }
-    if(li >= hv){
+    if (li >= hv) {
       setUnfilled(true);
       setErrorMsg("Loan Insurance can not be greater than Home Value");
       return;
     }
-    if(loanCharges >= hv){
+    if (loanCharges >= hv) {
       setUnfilled(true);
       setErrorMsg("Loan fees & Charges can not be greater than Home Value");
       return;
     }
-    if(propertyTaxes >= hv){
+    if (propertyTaxes >= hv) {
       setUnfilled(true);
       setErrorMsg("Property Taxes can not be greater than Home Value");
       return;
     }
-    if(homeInsurance >= hv){
+    if (homeInsurance >= hv) {
       setUnfilled(true);
       setErrorMsg("Home Insurance can not be greater than Home Value");
       return;
     }
-    if(maintenence >= hv){
+    if (maintenence >= hv) {
       setUnfilled(true);
       setErrorMsg("Maintenence can not be greater than Home Value");
       return;
     }
 
-    const hvNumber = parseInt(hv, 10);
-    const dpNumber = parseInt(dp, 10) || 0;
-    const liNumber = parseInt(li, 10) || 0;
-    const loanChargesNumber = parseInt(loanCharges, 10);
+    const hvNumber = +hv;
+    const dpNumber = +dp || 0;
+    const liNumber = +li || 0;
+    const loanChargesNumber = +loanCharges;
     setLoanCharges(loanChargesNumber);
-    console.log(liNumber)
+    // console.log(liNumber);
     const tempLoanAmount = hvNumber + liNumber - dpNumber;
-    console.log(tenure);
+    // console.log(tenure);
     setLoanAmount(tempLoanAmount);
     // if()
     setTotalTable(
@@ -229,8 +240,8 @@ const HomeLoan = ({ currency }) => {
       totalPayList[1].value,
       totalPayList[2].value,
       +(propertyTaxes * tenure) +
-      +(homeInsurance * tenure) +
-      +(maintenence * 12 * tenure)
+        +(homeInsurance * tenure) +
+        +(maintenence * 12 * tenure)
     );
     setTable(
       monthlyPayList[0].value,
@@ -241,14 +252,15 @@ const HomeLoan = ({ currency }) => {
     );
   };
 
-  // console.log(advancedInfo)
-
   // useEffect(()=>{
   //   setAdvancedInfo({ ...advancedInfo, ['hv']: e.target.value });
   // },[loanAmount])
 
-  const advancedChangeHandler = (e) => {
-    if((e.target.name === 'hv' || e.target.name === 'dp') && e.target.value > 99999999999){
+  const advancedChangeHandler = (e: any) => {
+    if (
+      (e.target.name === "hv" || e.target.name === "dp") &&
+      e.target.value > 99999999999
+    ) {
       return;
     }
     if (e.target.value / 10 < 1) {
@@ -264,14 +276,27 @@ const HomeLoan = ({ currency }) => {
 
   // console.log(loanAmount)
 
+  // console.log(+advancedInfo.loanCharges + +advancedInfo.dp)
+
   useEffect(() => {
     setTimeout(() => {
       setUnfilled(false);
-    }, [4000]);
+    }, 4000);
   }, [unfilled]);
 
   return (
-    <Box sx={{ marginLeft: "auto" }}>
+    <Box
+      sx={{
+        background: secondaryBgColor,
+        border: "8px solid #FFFFFF",
+        width: { xl: "80%", lg: "80%", xs: "100%" },
+        padding: "10px",
+        marginTop: "30px",
+        marginLeft: "auto",
+        marginRight: "auto",
+        borderRadius: 5,
+      }}
+    >
       {unfilled && (
         <div className="absolute bottom-3 right-5">
           <Alert variant="filled" severity="error">
@@ -280,13 +305,14 @@ const HomeLoan = ({ currency }) => {
         </div>
       )}
       <Box
-        sx={{ marginBottom: "50px", marginLeft: "50px", marginRight: "50px" }}
+        sx={{ marginBottom: "50px", marginLeft: "18px", marginRight: "18px" }}
       >
         <Accordion
-          sx={{ minHeight: "80px", borderRadius: "10px" }}
+          sx={{ minHeight: "80px" }}
           onChange={() => {
             setAccOpen(!accOpen);
           }}
+          style={{ borderRadius: 20 }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
@@ -296,114 +322,325 @@ const HomeLoan = ({ currency }) => {
               display: "flex",
               alignItems: "center",
               minHeight: "80px",
-              font: "500 28px Raleway, serif",
-              color: "#FFFFFF",
-              background:
-                "linear-gradient(90deg, rgba(80,178,234,1) 88%, rgba(255,141,0,1) 100%)",
-              // borderRadius: "10px",
+              font: "500 22px Raleway, serif",
+              // color: "#FFFFFF",
+              background: "#ffffff",
+              fontWeight: 600,
+              borderRadius: 10,
+              maxHeight: "10px",
             }}
           >
-            Advanced Details
+            Advanced Details{" "}
+            {!accOpen && (
+              <span style={{ paddingLeft: "20px" }}>
+                <AddIcon style={{ fontWeight: 900, fontSize: "28px" }} />
+              </span>
+            )}
+            {accOpen && (
+              <span style={{ paddingLeft: "20px" }}>
+                <RemoveIcon style={{ fontWeight: 900, fontSize: "28px" }} />
+              </span>
+            )}
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 10 }}>
             <div style={{ borderRadius: 10 }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  flexWrap: "wrap",
-                  gap: "50px",
-                  rowGap: "20px",
-                  marginTop: "10px",
+              <Box
+                sx={{
+                  // display: "flex",
+                  // justifyContent: "space-evenly",
+                  // flexWrap: "wrap",
+                  // rowGap: "20px",
+                  // marginTop: "10px",
+                  display: "grid",
+                  gridTemplateColumns: {
+                    lg: "auto auto auto auto",
+                    md: "auto auto auto",
+                    sm: "auto auto",
+                    xs: "auto",
+                  },
+                  gap: "12px",
+                  rowGap: "15px",
                 }}
               >
-                <TextField
-                  name="hv"
-                  value={advancedInfo.hv}
-                  label={`Home Value(HV) in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="dp"
-                  value={advancedInfo.dp}
-                  label={`Down Payment (DP) in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="li"
-                  value={advancedInfo.li}
-                  label={`Loan Insurance (LI) in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="loanCharges"
-                  value={advancedInfo.loanCharges}
-                  label={`Loan Fees & Charges in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="propertyTaxes"
-                  value={advancedInfo.propertyTaxes}
-                  label={`Property Taxes / year in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="homeInsurance"
-                  value={advancedInfo.homeInsurance}
-                  label={`Home Insurance / year in ${currency}`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                <TextField
-                  name="maintenence"
-                  value={advancedInfo.maintenence}
-                  label={`Maintenance Expenses / month`}
-                  onChange={advancedChangeHandler}
-                  onFocus={(e) => e.target.select()}
-                  type="number"
-                />
-                {/* <TextField label={"Home Value(HV)"} /> */}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  marginLeft: "auto",
-                  justifyContent: "center",
-                  marginTop: "15px",
-                  gap: "10px",
-                }}
-              >
-                <Button onClick={submitHandler} variant="contained">
-                  Submit
-                </Button>
-                <Button
-                  onClick={() => {
-                    setAdvancedInfo({
-                      hv: 0,
-                      dp: 0,
-                      li: 0,
-                      loanCharges: 0,
-                      propertyTaxes: 0,
-                      homeInsurance: 0,
-                      maintenence: 0,
-                    });
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Home Value (HV)
+                  </div>
+                  <TextField
+                    name="hv"
+                    value={advancedInfo.hv}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Down Payment (DP)
+                  </div>
+                  <TextField
+                    name="dp"
+                    value={advancedInfo.dp}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Loan Insurance (LI)
+                  </div>
+                  <TextField
+                    name="li"
+                    value={advancedInfo.li}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Loan Fees & Charges
+                  </div>
+                  <TextField
+                    name="loanCharges"
+                    value={advancedInfo.loanCharges}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Property Taxes / year
+                  </div>
+                  <TextField
+                    name="propertyTaxes"
+                    value={advancedInfo.propertyTaxes}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Home Insurance / year
+                  </div>
+                  <TextField
+                    name="homeInsurance"
+                    value={advancedInfo.homeInsurance}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ font: labelFont, marginBottom: "6px" }}>
+                    Maintenance Expenses / month
+                  </div>
+                  <TextField
+                    name="maintenence"
+                    value={advancedInfo.maintenence}
+                    label={null}
+                    onChange={advancedChangeHandler}
+                    onFocus={(e) => e.target.select()}
+                    type="number"
+                    InputProps={{
+                      style: { height: "41px" },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div
+                            style={{
+                              background: "#e7edf6",
+                              height: "41px",
+                              width: "40px",
+                              marginLeft: "-13px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              color: primaryColor,
+                            }}
+                          >
+                            {currency}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    // marginLeft: "auto",
+                    justifyContent: "center",
+                    marginTop: "22px",
+                    gap: "10px",
                   }}
-                  variant="outlined"
                 >
-                  Reset
-                </Button>
-              </div>
+                  <Button
+                    onClick={() => {
+                      setAdvancedInfo({
+                        hv: 0,
+                        dp: 0,
+                        li: 0,
+                        loanCharges: 0,
+                        propertyTaxes: 0,
+                        homeInsurance: 0,
+                        maintenence: 0,
+                      });
+                    }}
+                    variant="outlined"
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    onClick={submitHandler}
+                    variant="contained"
+                    sx={{ height: "40px" }}
+                  >
+                    Submit
+                  </Button>
+                </div>
+                {/* <TextField label={"Home Value(HV)"} /> */}
+              </Box>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -412,21 +649,17 @@ const HomeLoan = ({ currency }) => {
         sx={{
           background: "",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-around",
+          flexWrap:"wrap",
           alignItems: "center",
-          gap: "150px",
-        }}
-        style={{
-          // maxWidth: "500px",
-          // border: `2px solid ${secondaryColor}`,
-          padding: "20px",
-          borderRadius: 20,
+          rowGap:"20px"
+          // gap: "150px",
         }}
       >
-        <div
-          style={{
-            height: "316px",
-            width: "350px",
+        <Box
+          sx={{
+            height: "266px",
+            width: {lg:"300px", md:"300", xs:"350px"},
             background: "#FFFFFF",
             borderRadius: 6,
             display: "flex",
@@ -444,43 +677,44 @@ const HomeLoan = ({ currency }) => {
             disableAmount={accOpen}
             currency={currency}
           />
-        </div>
+        </Box>
         <div>
           <PaymentList paymentList={monthlyPayList} currency={currency} />
         </div>
-      </Box>
 
-      <Box sx={{ paddingX: "50px" }}>
-        <PaymentList paymentList={totalPayList} currency={currency} />
+        <Box sx={{}}>
+          <PaymentList paymentList={totalPayList} currency={currency} />
+        </Box>
       </Box>
-
       <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
-        {advancedInfo.dp && loanCharges && <Box>
-          <Doughnut
-            data={{
-              labels: ["Down Payment", "Loan Charges"],
-              datasets: [
-                {
-                  label: "1 Time Expenses",
-                  data: [advancedInfo.dp, loanCharges],
-                  backgroundColor: [primaryColor, secondaryColor],
+        {advancedInfo.dp && loanCharges && (
+          <Box>
+            <Doughnut
+              data={{
+                labels: ["Down Payment", "Loan Charges"],
+                datasets: [
+                  {
+                    // label: "1 Time Expenses",
+                    data: [advancedInfo.dp, loanCharges],
+                    backgroundColor: [primaryColor, secondaryColor],
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "One Time Expenses",
+                  },
                 },
-              ],
-            }}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "top",
-                },
-                title: {
-                  display: true,
-                  text: "One Time Expenses",
-                },
-              },
-            }}
-          />
-        </Box>}
+              }}
+            />
+          </Box>
+        )}
 
         <Box>
           <Doughnut
@@ -496,7 +730,7 @@ const HomeLoan = ({ currency }) => {
                   data: [
                     loanAmount,
                     totalInterest,
-                    advancedInfo.loanCharges + advancedInfo.dp,
+                    +advancedInfo.loanCharges + +advancedInfo.dp,
                   ],
                   backgroundColor: [
                     primaryColor,

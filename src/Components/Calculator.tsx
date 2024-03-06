@@ -1,6 +1,7 @@
 import {
   Box,
   Divider,
+  InputAdornment,
   MenuItem,
   Slider,
   TextField,
@@ -14,6 +15,7 @@ import {
   extraLPrimaryColor,
   primaryBgColor,
   primaryColor,
+  secondaryBgColor,
   secondaryColor,
 } from "../Theme";
 import { useSelector } from "react-redux";
@@ -28,6 +30,7 @@ const Calculator: React.FC<any> = ({
   amountUl,
   interestUl,
   tenureUl,
+  lg
 }) => {
   const currency = useSelector((state: IRootState) => state.currency.currency);
 
@@ -104,14 +107,16 @@ const Calculator: React.FC<any> = ({
     //   const totalAmountNum = parseInt(totalAmt, 10);
     //   totalAmt = totalAmountNum + chargesNum;
     // }
-    onChange(
-      totalLoanAmount,
-      tenureType === "Years" ? tenure : tenure / 12,
-      tenureInMonths,
-      rateOfInterest,
-      Math.floor(emi),
-      Math.ceil(totalInt)
-    );
+    if (onChange) {
+      onChange(
+        totalLoanAmount,
+        tenureType === "Years" ? tenure : tenure / 12,
+        tenureInMonths,
+        rateOfInterest,
+        Math.floor(emi),
+        Math.ceil(totalInt)
+      );
+    }
 
     setMonthlyEMI(Math.floor(emi));
     setTotalAmount(Math.ceil(totalAmt));
@@ -127,15 +132,16 @@ const Calculator: React.FC<any> = ({
     );
     let totalAmt = details?.emi * details?.tenureInMonths;
     let totalInt = totalAmt - totalLoanAmount;
-
-    onChange(
-      totalLoanAmount,
-      tenureType === "Years" ? tenure : tenure / 12,
-      details?.tenureInMonths,
-      rateOfInterest,
-      details?.emi,
-      totalInt
-    );
+    if (onChange) {
+      onChange(
+        totalLoanAmount,
+        tenureType === "Years" ? tenure : tenure / 12,
+        details?.tenureInMonths,
+        rateOfInterest,
+        details?.emi,
+        totalInt
+      );
+    }
 
     setMonthlyEMI(details?.emi || 0);
     setTotalAmount(totalAmt || 0);
@@ -228,7 +234,7 @@ const Calculator: React.FC<any> = ({
         xs: "column",
         sm: "column",
       }}
-      gap={"40px"}
+      gap={!lg ? "30px" : "200px"}
     >
       <Box
         sx={{
@@ -257,9 +263,37 @@ const Calculator: React.FC<any> = ({
               such as Early Payoff Penalties, Upfront Fees, Privacy Concerns, Precomputed Interest, Insurance Offers.
               "
                 placement="right"
-                style={{ background: primaryColor }}
               >
-                <input
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  value={totalLoanAmount}
+                  onChange={handleTotalLoanChange}
+                  onFocus={(e) => e.target.select()}
+                  sx={{ height: "41px" }}
+                  InputProps={{
+                    style: { height: "41px" },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <div
+                          style={{
+                            background: "#e7edf6",
+                            height: "41px",
+                            width: "40px",
+                            marginLeft: "-28px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: primaryColor,
+                          }}
+                        >
+                          {currency}
+                        </div>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                {/* <input
                   type="number"
                   className={totalLoanError}
                   style={{
@@ -270,12 +304,12 @@ const Calculator: React.FC<any> = ({
                   value={totalLoanAmount}
                   onChange={handleTotalLoanChange}
                   onFocus={(e) => e.target.select()}
-                />
+                /> */}
               </Tooltip>
-              <span>{currency}</span>
+              {/* <span>{currency}</span> */}
             </div>
           </div>
-          <div style={{ display: "flex", paddingBottom:"5px" }}>
+          <div style={{ display: "flex", paddingBottom: "5px" }}>
             <Slider
               min={1000}
               max={1000000000}
@@ -290,7 +324,7 @@ const Calculator: React.FC<any> = ({
           </div>
         </div>
         <Divider />
-        <div className="interest-container" style={{paddingTop:"5px"}}>
+        <div className="interest-container" style={{ paddingTop: "5px" }}>
           <div className="title-container">
             <label htmlFor="interest" className="label">
               Rate of interest (p.a)
@@ -307,9 +341,37 @@ const Calculator: React.FC<any> = ({
               such as Interest Rate Burden, Early Payoff Penalties, Upfront Fees, Privacy Concerns, Precomputed Interest, Insurance Offers.
               "
                 placement="right"
-                style={{ background: primaryColor }}
               >
-                <input
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  value={rateOfInterest}
+                  onChange={handleRateOfInterestChange}
+                  onFocus={(e) => e.target.select()}
+                  sx={{ height: "41px" }}
+                  InputProps={{
+                    style: { height: "41px" },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <div
+                          style={{
+                            background: "#e7edf6",
+                            height: "41px",
+                            width: "40px",
+                            marginLeft: "-28px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: primaryColor,
+                          }}
+                        >
+                          %
+                        </div>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                {/* <input
                   type="number"
                   className={rateOfInterestError}
                   style={{
@@ -320,18 +382,18 @@ const Calculator: React.FC<any> = ({
                   value={rateOfInterest}
                   onChange={handleRateOfInterestChange}
                   onFocus={(e) => e.target.select()}
-                />
+                /> */}
               </Tooltip>
-              <span
+              {/* <span
                 className={`${
                   rateOfInterestError.includes("error") ? "error" : ""
                 }`}
               >
                 %
-              </span>
+              </span> */}
             </div>
           </div>
-          <div style={{ display: "flex", paddingBottom:"5px" }}>
+          <div style={{ display: "flex", paddingBottom: "5px" }}>
             <Slider
               min={1}
               max={45}
@@ -346,9 +408,9 @@ const Calculator: React.FC<any> = ({
           </div>
         </div>
 
-        <Divider/>
+        <Divider />
 
-        <div className="tenure-container" style={{paddingTop:"5px"}}>
+        <div className="tenure-container" style={{ paddingTop: "5px" }}>
           <div className="title-container">
             <Box display={"flex"} justifyContent={"space-between"}>
               <div>
@@ -393,9 +455,37 @@ const Calculator: React.FC<any> = ({
               such as Interest Rate Burden, Extended Debt Obligation, Total Interest Paid, Opportunity Cost, Life Changes, Prepayment Penalties.
               "
                 placement="right"
-                style={{ background: primaryColor }}
               >
-                <input
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  value={tenure}
+                  onChange={handleTenureChange}
+                  onFocus={(e) => e.target.select()}
+                  sx={{ height: "41px" }}
+                  InputProps={{
+                    style: { height: "41px" },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <div
+                          style={{
+                            background: "#e7edf6",
+                            height: "41px",
+                            width: "40px",
+                            marginLeft: "-28px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: primaryColor,
+                          }}
+                        >
+                          {tenureType === "Years" ? "Yr" : "Mo"}
+                        </div>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                {/* <input
                   type="number"
                   className={tenureError}
                   style={{
@@ -407,9 +497,9 @@ const Calculator: React.FC<any> = ({
                   value={tenure}
                   onChange={handleTenureChange}
                   onFocus={(e) => e.target.select()}
-                />
+                /> */}
               </Tooltip>
-              <span>{tenureType}</span>
+              {/* <span>{tenureType}</span> */}
             </div>
           </div>
 
@@ -478,14 +568,14 @@ const Calculator: React.FC<any> = ({
           }}
         >
           <div className="values">
-            <span style={{ fontWeight: "500" }}>Monthly EMI</span>
+            <span style={{ fontWeight: "400" }}>Monthly EMI</span>
             <span style={{ color: primaryColor }}>
               {currency} {monthlyEMI?.toLocaleString("en-IN")}
             </span>
           </div>
 
           <div className="values">
-            <span style={{ fontWeight: "500" }}>Principal amount</span>
+            <span style={{ fontWeight: "400" }}>Principal amount</span>
             <span style={{ color: primaryColor }}>
               {currency}{" "}
               {totalLoanAmount ? totalLoanAmount.toLocaleString("en-IN") : 0}
@@ -493,14 +583,14 @@ const Calculator: React.FC<any> = ({
           </div>
 
           <div className="values">
-            <span style={{ fontWeight: "500" }}>Total interest</span>
+            <span style={{ fontWeight: "400" }}>Total interest</span>
             <span style={{ color: primaryColor }}>
               {currency} {totalInterest?.toLocaleString("en-IN")}
             </span>
           </div>
 
           <div className="values">
-            <span style={{ fontWeight: "500" }}>Total amount</span>
+            <span style={{ fontWeight: "400" }}>Total amount</span>
             <span style={{ color: primaryColor }}>
               {currency} {totalAmount?.toLocaleString("en-IN") || 0}
             </span>

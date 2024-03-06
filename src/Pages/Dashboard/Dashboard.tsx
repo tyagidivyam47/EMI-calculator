@@ -33,13 +33,14 @@ import HelpIcon from "@mui/icons-material/Help";
 import LAP from "../LoanTypes/LAP/LAP";
 import BudgetLoan from "../LoanTypes/BudgetLoan/BudgetLoan";
 // import BudgetInfo from "../LoanTypes/BudgetLoan/BudgetInfo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FAQ from "../../Components/FAQ";
 import { budgetFaq, emiCalcFaq, homeLoanFaq, lapFaq } from "../../faqs";
 import InfoIcon from "@mui/icons-material/Info";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
+import EMICalculator from "../Calculator/EMICalculator";
 // const homeLoanFaqData = homeLoanFaq
 
 const style = {
@@ -135,6 +136,7 @@ const Dashboard = () => {
   // ]);
   // const currency = cookies.curr_sign || "₹";
   const currency = useSelector((state: IRootState) => state.currency.currency);
+  const navigate = useNavigate();
   // console.log(currency)
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -151,10 +153,8 @@ const Dashboard = () => {
   const handleChangeTemp = () => {};
 
   // useEffect(() => {
-  //   if (currency) {
-  //     setCurrSign(currency)
-  //   }
-  // }, [cookies]);
+  //   navigate('/calculator')
+  // }, []);
 
   return (
     <Box
@@ -162,12 +162,12 @@ const Dashboard = () => {
         background: secondaryBgColor,
         border: "8px solid #FFFFFF",
         width: { xl: "80%", lg: "80%", xs: "100%" },
-        padding:"10px",
+        padding: "10px",
         marginTop: "30px",
         marginLeft: "auto",
         marginRight: "auto",
         borderRadius: 5,
-        height:"100vh"
+        // height: "100vh",
       }}
     >
       <Box
@@ -178,28 +178,30 @@ const Dashboard = () => {
             sm: mainHeadingSm,
             xs: mainHeadingSm,
           },
-          paddingLeft:{
+          paddingLeft: {
             xl: "0px",
             md: "0px",
             sm: "10px",
             xs: "10px",
           },
-          marginBottom: "50px",
+          // marginBottom: "50px",
           color: primaryColor,
         }}
       >
-        Dashboard
+
       </Box>
       <Box
         sx={{
           marginBottom: "50px",
           display: "flex",
           justifyContent: "center",
-          marginRight: { xl: "110px", md: "110px", xs: "0" },
+          // marginRight: { xl: "110px", md: "110px", xs: "0" },
         }}
       >
+        <EMICalculator />
         <Box
           sx={{
+            display:"none",
             backgroundImage:
               "url(https://images.unsplash.com/photo-1581299327801-faeb40ea459e?q=80&w=1610&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
             backgroundRepeat: "no-repeat",
@@ -231,7 +233,7 @@ const Dashboard = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              textAlign:"center"
+              textAlign: "center",
             }}
           >
             EMI Calculator
@@ -312,8 +314,19 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ marginBottom: "50px", marginRight: { xl: "0px", md: "0px", xs: "0" }, paddingX:{ xl: "50px", md: "50px", xs: "10px" } }}>
-        <Accordion sx={{ minHeight: "100px", marginRight: { xl: "0px", md: "0px", xs: "0" } }}>
+      <Box
+        sx={{
+          marginBottom: "50px",
+          marginRight: { xl: "0px", md: "0px", xs: "0" },
+          paddingX: { xl: "50px", md: "50px", xs: "10px" },
+        }}
+      >
+        <Accordion
+          sx={{
+            minHeight: "100px",
+            marginRight: { xl: "0px", md: "0px", xs: "0" },
+          }}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
             aria-controls="panel1-content"
@@ -324,8 +337,7 @@ const Dashboard = () => {
               minHeight: "100px",
               font: "500 28px Raleway, serif",
               color: "#FFFFFF",
-              background:
-                "linear-gradient(90deg, rgb(0,87,255) 88%, rgb(255,41,144) 100%)",
+              background: primaryColor,
               // borderRadius: "10px",
             }}
           >
@@ -338,7 +350,7 @@ const Dashboard = () => {
                 flexWrap: "wrap",
                 gap: "50px",
                 rowGap: "10px",
-                justifyContent:"center"
+                justifyContent: "center",
               }}
             >
               <div onClick={() => handleLoanClick("home")}>
@@ -437,7 +449,7 @@ const Dashboard = () => {
           </div>
           {loanType === "home" ? (
             <div style={{}}>
-              <HomeLoan currency={currency} />
+              <HomeLoan />
             </div>
           ) : loanType === "lap" ? (
             <LAP />

@@ -45,9 +45,9 @@ input {
 }
 
 .value-container {
-  border: 2px solid #ffffff;
+  /* border: 2px solid #ffffff; */
 
-  background-color: #E7EDF6;
+  /* background-color: #E7EDF6; */
   color: #007BA7;
   border-radius: 4px;
 }

@@ -11,6 +11,7 @@ import {
   lightPrimaryColor,
   mainHeading,
   mainHeadingSm,
+  mainSubHeading,
   primaryBgColor,
   primaryColor,
   secondaryBgColor,
@@ -80,15 +81,15 @@ const EMICalculator = () => {
       sx={{
         background: secondaryBgColor,
         width: { xl: "80%", lg: "80%", xs: "100%" },
-        paddingBottom: "300px",
+        paddingBottom: "0px",
         marginTop: "20px",
-        border: "8px solid #FFFFFF",
+        // border: "8px solid #FFFFFF",
         marginLeft: "auto",
         marginRight: "auto",
         borderRadius: 5,
       }}
     >
-      <Link to={"/Dashboard"} style={{ maxWidth: "190px", background: "red" }}>
+      {/* <Link to={"/Dashboard"} style={{ maxWidth: "190px", background: "red" }}>
         <div
           style={{
             display: "flex",
@@ -110,18 +111,18 @@ const EMICalculator = () => {
             Back to Dashboard
           </div>
         </div>
-      </Link>
+      </Link> */}
 
       <Box
         sx={{
           font: {
-            xl: mainHeading,
-            md: mainHeading,
+            xl: mainSubHeading,
+            md: mainSubHeading,
             sm: mainHeadingSm,
             xs: mainHeadingSm,
           },
           marginBottom: "50px",
-          color: primaryColor,
+          // color: primaryColor,
           // marginLeft: {
           //   xl: "70px",
           //   md: "70px",
@@ -129,8 +130,8 @@ const EMICalculator = () => {
           //   xs: "15px",
           // },
           marginTop: {
-            xl: "30px",
-            md: "30px",
+            xl: "0px",
+            md: "0px",
             sm: "10px",
             xs: "10px",
           },
@@ -143,10 +144,11 @@ const EMICalculator = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "center",
           alignItems: "center",
           marginTop: "0px",
           flexDirection: { xs: "column", md: "column", lg: "row" },
+          gap:"10px"
         }}
       >
         <div className="">
@@ -178,21 +180,21 @@ const EMICalculator = () => {
             background: primaryBgColor,
             borderRadius: 2,
             height: "400px",
-            marginTop: "20px",
+            marginTop: "12px",
             // paddingBottom: "25px",
           }}
         >
           <PieChart loanAmount={loanAmount} totalInterest={totalInterest} />
         </Box>
       </Box>
-      <div style={{ marginTop: "50px" }}>
+      <div style={{ marginTop: "45px" }}>
         <BarChart ammData={ammData} />
       </div>
 
       <Box
         sx={{
           marginTop: "25px",
-          paddingBottom: "100px",
+          paddingBottom: "0px",
           paddingLeft: {xl:"30px", md:"30px", xs:"0px"},
         }}
       >

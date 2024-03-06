@@ -29,7 +29,7 @@ const PaymentList: React.FC<any> = ({ paymentList, currency }) => {
   return (
     <Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} aria-label="simple table">
+        <Table sx={{ minWidth: {lg:300, md:350, xs:370} }} aria-label="simple table">
           <TableHead>
             <TableRow></TableRow>
           </TableHead>

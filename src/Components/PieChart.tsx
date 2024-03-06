@@ -1,5 +1,5 @@
 import React from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut, Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { primaryColor, secondaryColor, tertiaryColor } from "../Theme";
 
@@ -17,7 +17,7 @@ const PieChart: React.FC<any> = ({ loanAmount, totalInterest }) => {
 
   return (
     <div>
-      <Pie data={data} />
+      <Doughnut data={data} />
       <div
         style={{ textAlign: "center", fontWeight: "bold"}}
       >

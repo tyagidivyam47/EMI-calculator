@@ -12,3 +12,4 @@ export const mainHeading = "600 38px/30px Raleway, serif";
 export const mainHeadingSm = "600 26px Raleway, serif";
 export const mainSubHeading = "600 30px/30px Raleway, serif";
 export const smText = "600 18px Raleway, serif";
+export const labelFont = "400 14px Raleway, serif"

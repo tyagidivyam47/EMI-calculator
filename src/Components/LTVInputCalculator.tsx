@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  InputAdornment,
   MenuItem,
   Radio,
   RadioGroup,
@@ -12,6 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   extraLPrimaryColor,
+  labelFont,
   lightPrimaryColor,
   primaryColor,
   smText,
@@ -24,7 +26,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 import { IRootState } from "../store";
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 const salRes = 75;
 const empRes = 70;
 const salCom = 70;
@@ -175,25 +177,6 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
     );
   };
 
-  // console.log(extraProperties)
-
-  // useEffect(() => {
-  //   let extraTotal = 0;
-  //   for (let i = 0; i < extraProperties.length; i++) {
-  //     extraTotal += +extraProperties[i].value;
-  //   }
-  //   const totalPropValue = +propValue + +extraTotal;
-  //   const tempAmount = (ltvRatio / 100) * totalPropValue;
-  //   setAllPropValue(totalPropValue);
-  //   setInAmount(tempAmount);
-  // }, [inInterest, inTenure, propValue, ltvRatio, extraProperties]);
-
-  // useEffect(() => {
-  //   if (!inAmount) {
-  //     return;
-  //   }
-  //   calculateEMI();
-  // }, [inAmount, inInterest, inTenure]);
   useEffect(() => {
     setTimeout(() => {
       setUnfilled(false);
@@ -207,15 +190,17 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
           display={"flex"}
           flexDirection={"column"}
           gap={"10px"}
-          borderRight={"2px solid #d3d3d3"}
+          // borderRight={"2px solid #d3d3d3"}
           paddingRight={"15px"}
         >
+          <div style={{ fontSize: "20px", fontWeight: "600" }}>
+            Loan Against Property
+          </div>
           <Box>
             <div
               style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
+                font: labelFont,
+                marginBottom: "6px",
               }}
             >
               Loan Amount
@@ -230,18 +215,37 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               onFocus={(e) => e.target.select()}
               value={inAmount}
               type="number"
-              label={`In ${currency}`}
               name="inAmount"
               //   disabled={disableAmount}
               sx={{ background: "#FFFFFF" }}
+              InputProps={{
+                style: { height: "41px" },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <div
+                      style={{
+                        background: "#e7edf6",
+                        height: "41px",
+                        width: "40px",
+                        marginLeft: "-13px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: primaryColor,
+                      }}
+                    >
+                      {currency}
+                    </div>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Box>
           <Box>
             <div
               style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
+                font: labelFont,
+                marginBottom: "6px",
               }}
             >
               Interest Rate
@@ -257,27 +261,68 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               value={inInterest}
               name="inInterest"
               type="number"
-              label="In %"
               sx={{ background: "#FFFFFF" }}
+              InputProps={{
+                style: { height: "41px" },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <div
+                      style={{
+                        background: "#e7edf6",
+                        height: "41px",
+                        width: "40px",
+                        marginLeft: "-13px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: primaryColor,
+                      }}
+                    >
+                      %
+                    </div>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Box>
           <Box display={""}>
-            <div
-              style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
-              }}
-            >
-              Loan Tenure
-            </div>
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <div
+                style={{
+                  font: labelFont,
+                  marginBottom: "6px",
+                }}
+              >
+                Loan Tenure
+              </div>
+              <div>
+                <TextField
+                  select
+                  // label="Select"
+                  defaultValue="Years"
+                  helperText=""
+                  onChange={(e) => toggleTenureType(e.target.value)}
+                  value={tenureType}
+                  variant="standard"
+                >
+                  <MenuItem value={"Years"}>Yr</MenuItem>
+                  <MenuItem value={"Months"}>Mo</MenuItem>
+                </TextField>
+              </div>
+            </Box>
             <Box display={"flex"}>
               <TextField
                 onChange={(e) => {
-                  if (parseFloat(e.target.value) > 40 && tenureType === "Years") {
+                  if (
+                    parseFloat(e.target.value) > 40 &&
+                    tenureType === "Years"
+                  ) {
                     return;
                   }
-                  if (parseFloat(e.target.value) > 480 && tenureType === "Months") {
+                  if (
+                    parseFloat(e.target.value) > 480 &&
+                    tenureType === "Months"
+                  ) {
                     return;
                   }
                   handleChange(e);
@@ -286,125 +331,190 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                 value={inTenure}
                 name="inTenure"
                 type="number"
-                label={`In ${tenureType}`}
                 sx={{ background: "#FFFFFF" }}
+                InputProps={{
+                  style: { height: "41px" },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <div
+                        style={{
+                          background: "#e7edf6",
+                          height: "41px",
+                          width: "40px",
+                          marginLeft: "-13px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          color: primaryColor,
+                        }}
+                      >
+                        {tenureType === "Years" ? "Yr" : "Mo"}
+                      </div>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                marginLeft={"8px"}
-              >
-                <div>
-                  <TextField
-                    select
-                    label="Select"
-                    defaultValue="Years"
-                    helperText=""
-                    onChange={(e) => toggleTenureType(e.target.value)}
-                    value={tenureType}
-                  >
-                    <MenuItem value={"Years"}>Yr</MenuItem>
-                    <MenuItem value={"Months"}>Mo</MenuItem>
-                  </TextField>
-                </div>
-              </Box>
             </Box>
-          </Box>
-        </Box>
 
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          gap={"10px"}
-          paddingLeft={"15px"}
-        >
-          <div
-            style={{ height: "250px", overflowY: "auto", paddingRight: "5px" }}
-          >
-            <div
-              style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
-              }}
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"10px"}
+              marginTop={"10px"}
+              // paddingLeft={"15px"}
             >
-              Mortgages
-            </div>
-            {extraProperties?.map((prop, index) => (
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginTop: "10px",
+                  height: "250px",
+                  overflowY: "auto",
+                  paddingRight: "5px",
                 }}
               >
                 <div
                   style={{
-                    display: "none",
-                    fontWeight: "600",
-                    color: primaryColor,
-                    paddingBottom: "6px",
+                    font: labelFont,
+                    marginBottom: "6px",
                   }}
                 >
-                  Mortgage Value
+                  Mortgages
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <TextField
-                    value={prop.value}
-                    type="tel"
-                    label={index === 0 ? "1st Mortgage" : index === 1 ? "2nd Mortgage" : index === 2 ? "3rd Mortgage" : `${index + 1}th Mortgage`}
-                    // label={`Morgage ${index + 1}, In ${currency}`}
-                    sx={{ background: "#FFFFFF" }}
-                    onFocus={(e) => e.target.select()}
-                    // disabled={!ltvActive}
-                    onChange={(e) => {
-                      if (isNaN(parseInt(e.target.value))) {
-                        return;
-                      }
-                      extraPropChangeHandler(index, e.target.value);
+                {extraProperties?.map((prop, index) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      marginTop: "10px",
                     }}
-                  />
-                  {
+                  >
                     <div
-                      onClick={() => {
-                        let tempProperty = [...extraProperties];
-                        tempProperty.splice(index, 1);
-                        setExtraProperties(tempProperty);
+                      style={{
+                        display: "none",
+                        fontWeight: "600",
+                        color: primaryColor,
+                        paddingBottom: "6px",
                       }}
                     >
-                      <CloseIcon
-                        sx={{
-                          background: "darkred",
-                          color: "#FFFFFF",
-                          borderRadius: 100,
+                      Mortgage Value
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <TextField
+                        value={prop.value}
+                        type="tel"
+                        label={
+                          index === 0
+                            ? "1st Mortgage"
+                            : index === 1
+                            ? "2nd Mortgage"
+                            : index === 2
+                            ? "3rd Mortgage"
+                            : `${index + 1}th Mortgage`
+                        }
+                        // label={`Morgage ${index + 1}, In ${currency}`}
+                        sx={{ background: "#FFFFFF" }}
+                        onFocus={(e) => e.target.select()}
+                        // disabled={!ltvActive}
+                        onChange={(e) => {
+                          if (isNaN(parseInt(e.target.value))) {
+                            return;
+                          }
+                          extraPropChangeHandler(index, e.target.value);
+                        }}
+                        InputProps={{
+                          style: { height: "41px" },
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <div
+                                style={{
+                                  background: "#e7edf6",
+                                  height: "41px",
+                                  width: "40px",
+                                  marginLeft: "-13px",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  color: primaryColor,
+                                }}
+                              >
+                                {currency}
+                              </div>
+                            </InputAdornment>
+                          ),
                         }}
                       />
                     </div>
-                  }
-                </div>
+                    <div style={{display:"flex", gap:"5px", justifyContent:"end", marginLeft:"auto"}}>
+                      {index === extraProperties.length-1 &&
+                        <div
+                          onClick={propertyAddHandler}
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            marginLeft: "auto",
+                            marginTop: "3px",
+                          }}
+                        >
+                          <AddCircleIcon
+                            sx={{
+                              background: "#eaf7fc",
+                              color: "#0292ce",
+                              border: "1px solid #0292ce",
+                              borderRadius: 100,
+                              fontWeight: "600",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </div>
+                      }
+                      {extraProperties.length > 1 &&
+                        <div
+                          onClick={() => {
+                            let tempProperty = [...extraProperties];
+                            tempProperty.splice(index, 1);
+                            setExtraProperties(tempProperty);
+                          }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            marginLeft: "auto",
+                            marginTop: "3px",
+                          }}
+                        >
+                          <CloseIcon
+                            sx={{
+                              background: "#ffe6e8",
+                              color: "#ff9097",
+                              border: "1px solid #ff9097",
+                              borderRadius: 100,
+                              fontWeight: "600",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </div>
+                      }
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div>
-            <Button
-              onClick={propertyAddHandler}
-              variant="contained"
-              sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
-            >
-              <AddIcon />
-              Add Another Mortgage
-            </Button>
-          </div>
+              {/* <div>
+                <Button
+                  onClick={propertyAddHandler}
+                  variant="contained"
+                  sx={{ display: "flex", marginX: "auto", marginTop: "20px" }}
+                >
+                  <AddIcon />
+                  Add Another Mortgage
+                </Button>
+              </div> */}
+            </Box>
+          </Box>
         </Box>
       </Box>
 
