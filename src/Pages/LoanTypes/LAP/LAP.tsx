@@ -76,7 +76,14 @@ const LAP = () => {
         }}
       >
         {/* <div style={{ font: "600 26px Raleway, serif" }}>LTV Calculator</div> */}
-        <Box sx={{ display: "flex", flexDirection:{lg:"row", md:"row", xs:"column"}, justifyContent:"center", gap:"30px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { lg: "row", md: "row", xs: "column" },
+            justifyContent: "center",
+            gap: "30px",
+          }}
+        >
           <div
             style={{
               height: "auto",
@@ -87,13 +94,14 @@ const LAP = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
               // border: "1px solid #d3d3d3",
             }}
           >
             <LTVInputCalculator sendData={getData} />
           </div>
 
-          <Box>
+          <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
             <div>
               <LTVCard
                 emi={emiOp}
@@ -105,40 +113,44 @@ const LAP = () => {
               />
             </div>
 
-            <Box>
-              <div
-                style={{
-                  font: "600 20px Raleway, serif",
-                  color: primaryColor,
-                  textAlign: "center",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                }}
-              >
-                Equity Breakdown
+            <Box sx={{ background: "#FFFFFF", borderRadius:2, boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
+              <div>
+                <Box
+                  sx={{
+                    font: "600 20px Raleway, serif",
+                    // color: primaryColor,
+                    textAlign: {lg:"left", md:"left", xs:"center"},
+                    padding: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Equity Breakdown
+                </Box>
               </div>
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  borderRadius: "5px",
+              <Box
+                sx={{
+                  borderRadius: 5,
                   //   width: "100%",
-                  padding: "30px",
+                  // padding: "30px",
                   //   maxWidth: "400px",
                   display: "flex",
                   alignItems: "center",
+                  flexDirection:{lg:"row", md:"row", xs:"column"}
                 }}
               >
                 <div
                   style={{
                     padding: "10px",
                     borderRight: "2px solid #d3d3d3",
+                    // background: "red",
+                    // height:"100%"
                     // color: secondaryColor,
                   }}
                 >
                   <div
                     style={{
                       fontSize: "18px",
-                      fontWeight: 700,
+                      fontWeight: 400,
                       paddingBottom: "10px",
                     }}
                   >
@@ -147,7 +159,7 @@ const LAP = () => {
                       {currency} {bankEquity.toFixed(2)}
                     </span>
                   </div>
-                  <div style={{ fontSize: "18px", fontWeight: 700 }}>
+                  <div style={{ fontSize: "18px", fontWeight: 400 }}>
                     Customer's Equity ={" "}
                     <span>
                       {currency} {cusEquity.toFixed(2)}
@@ -168,7 +180,7 @@ const LAP = () => {
                     }}
                   />
                 </div>
-              </div>
+              </Box>
             </Box>
           </Box>
         </Box>

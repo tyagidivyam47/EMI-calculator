@@ -458,7 +458,7 @@ const Sidebar = () => {
             {links.map((text, index) => (
               <NavLink
                 key={index}
-                to={text === "Loan Types" ? loanTypes[0] : links[index]}
+                to={text === "Loan Types" ? loanTypes[listActInd] : links[index]}
                 style={{ background: "red", textDecoration: "none" }}
                 onClick={() => {
                   if (index === 1) {
@@ -555,7 +555,7 @@ const Sidebar = () => {
                       }}
                       sx={{
                         display: "block",
-                        marginTop: "20px",
+                        // marginTop: "20px",
                         marginLeft:"5px"
                       }}
                     >
@@ -610,12 +610,10 @@ const Sidebar = () => {
 
             {open && (
               <ListItem
-                // key={"Sign out"}
-                // onClick={logoutHandler}
                 disablePadding
                 sx={{
                   display: "block",
-                  marginTop: "150px",
+                  marginTop: "50px",
                   // marginLeft: "20px",
                   padding: "10px",
                 }}

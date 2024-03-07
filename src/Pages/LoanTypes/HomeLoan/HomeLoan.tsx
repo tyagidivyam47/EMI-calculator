@@ -650,22 +650,23 @@ const HomeLoan = () => {
           background: "",
           display: "flex",
           justifyContent: "space-around",
-          flexWrap:"wrap",
+          flexWrap: "wrap",
           alignItems: "center",
-          rowGap:"20px"
+          rowGap: "20px",
           // gap: "150px",
         }}
       >
         <Box
           sx={{
             height: "266px",
-            width: {lg:"300px", md:"300", xs:"350px"},
+            width: { lg: "300px", md: "300", xs: "350px" },
             background: "#FFFFFF",
             borderRadius: 6,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             border: "1px solid #d3d3d3",
+            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
           }}
         >
           <InputCalculator
@@ -678,11 +679,12 @@ const HomeLoan = () => {
             currency={currency}
           />
         </Box>
-        <div>
+        <div style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
           <PaymentList paymentList={monthlyPayList} currency={currency} />
         </div>
 
-        <Box sx={{}}>
+        <Box sx={{              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
+}}>
           <PaymentList paymentList={totalPayList} currency={currency} />
         </Box>
       </Box>

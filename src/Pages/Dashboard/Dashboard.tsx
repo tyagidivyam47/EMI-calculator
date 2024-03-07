@@ -316,6 +316,7 @@ const Dashboard = () => {
       </Box>
       <Box
         sx={{
+          display:"none",
           marginBottom: "50px",
           marginRight: { xl: "0px", md: "0px", xs: "0" },
           paddingX: { xl: "50px", md: "50px", xs: "10px" },

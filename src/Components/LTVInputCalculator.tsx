@@ -365,7 +365,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
             >
               <div
                 style={{
-                  height: "250px",
+                  height: "230px",
                   overflowY: "auto",
                   paddingRight: "5px",
                 }}
@@ -450,8 +450,15 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                         }}
                       />
                     </div>
-                    <div style={{display:"flex", gap:"5px", justifyContent:"end", marginLeft:"auto"}}>
-                      {index === extraProperties.length-1 &&
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        justifyContent: "end",
+                        marginLeft: "auto",
+                      }}
+                    >
+                      {index === extraProperties.length - 1 && (
                         <div
                           onClick={propertyAddHandler}
                           style={{
@@ -472,8 +479,8 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                             }}
                           />
                         </div>
-                      }
-                      {extraProperties.length > 1 &&
+                      )}
+                      {extraProperties.length > 1 && (
                         <div
                           onClick={() => {
                             let tempProperty = [...extraProperties];
@@ -498,7 +505,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                             }}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                   </div>
                 ))}
