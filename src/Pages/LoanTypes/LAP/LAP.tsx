@@ -154,19 +154,19 @@ const LAP = () => {
                       paddingBottom: "10px",
                     }}
                   >
-                    Bank's Equity ={" "}
-                    <span>
+                    Bank's Equity {" "} <br/>
+                    <span style={{fontWeight:"500"}}>
                       {currency} {bankEquity.toFixed(2)}
                     </span>
                   </div>
                   <div style={{ fontSize: "18px", fontWeight: 400 }}>
-                    Customer's Equity ={" "}
-                    <span>
+                    Customer's Equity{" "} <br/>
+                    <span style={{fontWeight:"500"}}>
                       {currency} {cusEquity.toFixed(2)}
                     </span>
                   </div>
                 </div>
-                <div style={{ height: "350px", width: "350px" }}>
+                <div style={{ height: "310px", width: "310px" }}>
                   <Doughnut
                     data={{
                       labels: ["Bank's Equity", "Customer's Equity"],

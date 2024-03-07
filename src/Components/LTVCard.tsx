@@ -50,7 +50,7 @@ const LTVCard: React.FC<any> = ({
         >
           <Box
             sx={{
-              fontSize: "13px",
+              fontSize: "16px",
               fontWeight: 600,
               // borderBottom: "2px solid #d3d3d3",
               background: "#d4e3ff",
@@ -77,7 +77,7 @@ const LTVCard: React.FC<any> = ({
               </span>
             )}{" "}
             {!eligibility && (
-              <div style={{ fontSize: "16px" }}>
+              <div style={{ fontSize: "17px" }}>
                 Add Mortgage worth {currency}{" "}
                 {(totalLoanAmt - totalMortAmt).toFixed(2)} more.
               </div>
@@ -88,7 +88,7 @@ const LTVCard: React.FC<any> = ({
             justifyContent={"space-between"}
             width={"100%"}
             height={"110px"}
-            paddingTop={"28px"}
+            paddingTop={"20px"}
           >
             <Box>
               <Box

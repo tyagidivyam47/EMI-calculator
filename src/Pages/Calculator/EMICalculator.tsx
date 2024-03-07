@@ -89,30 +89,6 @@ const EMICalculator = () => {
         borderRadius: 5,
       }}
     >
-      {/* <Link to={"/Dashboard"} style={{ maxWidth: "190px", background: "red" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-            padding: "10px 15px",
-            // background:"red",
-            maxWidth: "190px",
-          }}
-        >
-          <WestIcon sx={{ color: lightPrimaryColor }} />
-          <div
-            style={{
-              font: "600 14px Raleway, serif",
-              color: lightPrimaryColor,
-              textDecoration: "underline",
-            }}
-          >
-            Back to Dashboard
-          </div>
-        </div>
-      </Link> */}
-
       <Box
         sx={{
           font: {
@@ -122,13 +98,6 @@ const EMICalculator = () => {
             xs: mainHeadingSm,
           },
           marginBottom: "50px",
-          // color: primaryColor,
-          // marginLeft: {
-          //   xl: "70px",
-          //   md: "70px",
-          //   sm: "10px",
-          //   xs: "15px",
-          // },
           marginTop: {
             xl: "0px",
             md: "0px",
@@ -148,7 +117,7 @@ const EMICalculator = () => {
           alignItems: "center",
           marginTop: "0px",
           flexDirection: { xs: "column", md: "column", lg: "row" },
-          gap:"10px"
+          gap: "10px",
         }}
       >
         <div className="">
@@ -165,12 +134,6 @@ const EMICalculator = () => {
           </div>
         </div>
         <Box
-          // style={{
-          //   background: "#FFFFFF",
-          //   borderRadius: "5px",
-          //   width: "100%",
-          //   maxWidth: "200px",
-          // }}
           sx={{
             border: "1px solid lightgray",
             display: "flex",
@@ -181,21 +144,19 @@ const EMICalculator = () => {
             borderRadius: 2,
             height: "400px",
             marginTop: "12px",
-            // paddingBottom: "25px",
           }}
         >
           <PieChart loanAmount={loanAmount} totalInterest={totalInterest} />
         </Box>
       </Box>
-      <div style={{ marginTop: "45px" }}>
+      <div style={{ marginTop: "45px"}}>
         <BarChart ammData={ammData} />
       </div>
-
       <Box
         sx={{
           marginTop: "25px",
           paddingBottom: "0px",
-          paddingLeft: {xl:"30px", md:"30px", xs:"0px"},
+          // paddingLeft: { xl: "30px", md: "30px", xs: "0px" },
         }}
       >
         <AmortizationTable data={ammData} />

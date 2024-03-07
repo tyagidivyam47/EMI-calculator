@@ -4,12 +4,6 @@ import { primaryColor, secondaryColor } from "../Theme";
 import { Box } from "@mui/material";
 
 const BarChart: React.FC<any> = ({ ammData }: any) => {
-  //   const years = ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"];
-  //   const principalData = [50000, 60000, 70000, 80000, 90000];
-  //   const interestData = [10000, 12000, 14000, 16000, 18000];
-
-  // console.log(ammData)
-
   const [years, setYears] = useState([]);
   const [principalData, setPrincipalData] = useState([]);
   const [interestData, setInterestData] = useState([]);
@@ -20,7 +14,6 @@ const BarChart: React.FC<any> = ({ ammData }: any) => {
       let tempInt = [];
       let tempYr = [];
       for (let i = 1; i < ammData.length; i++) {
-        // console.log(ammData)
         let currPrinc = 0;
         let currInt = 0;
 
@@ -30,7 +23,6 @@ const BarChart: React.FC<any> = ({ ammData }: any) => {
           if (i % 12 === 0) {
             break;
           }
-          // console.log(i," : ",ammData[i])
           i++;
         }
         tempPrinc.push(currPrinc);
@@ -81,10 +73,20 @@ const BarChart: React.FC<any> = ({ ammData }: any) => {
 
   return (
     <Box>
-      <Box sx={{ display:{xl:"flex", md:"flex", xs:"none"}, justifyContent: "center" }}>
+      <Box
+        sx={{
+          display: { xl: "flex", md: "flex", xs: "none" },
+          justifyContent: "center",
+        }}
+      >
         <Bar data={data} options={options} />
       </Box>
-      <Box sx={{ display:{xl:"none", md:"none", xs:"flex"}, justifyContent: "center" }}>
+      <Box
+        sx={{
+          display: { xl: "none", md: "none", xs: "flex" },
+          justifyContent: "center",
+        }}
+      >
         <Bar data={data} options={options} height={"250%"} />
       </Box>
     </Box>

@@ -240,7 +240,7 @@ const BudgetLoan = () => {
         </Box>
       </Box>
 
-      <Box display={"flex"} justifyContent={"center"} marginTop={"0px"}>
+      <Box display={"flex"} justifyContent={"left"} marginLeft={"48px"}>
         <Box
           sx={{
             background: "#FFFFFF",

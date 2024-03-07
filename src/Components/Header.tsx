@@ -1,7 +1,7 @@
 // Header.js
 
 import React, { useEffect, useState } from "react";
-import logo from "../assets/EMI-logo1.png";
+import logo from "../assets/EMI-logo1.svg";
 // const logo =  require("../assets/EMI-logo1.png");
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -53,7 +53,7 @@ const Header = () => {
     }
   }, [window.location.pathname]);
   return (
-    <div
+    <Box
       style={{
         position: "sticky",
         top: 0,
@@ -71,10 +71,10 @@ const Header = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} style={{ height: "68px" }} />
+          <img src={logo} />
           <div
             className="text-xl font-semibold text-white"
-            style={{ fontFamily: "Sixtyfour, sans-serif" }}
+            style={{ fontFamily: "Sixtyfour, sans-serif", paddingLeft: "32px" }}
           >
             EMI Buddy
           </div>
@@ -84,13 +84,13 @@ const Header = () => {
             marginLeft: "80px",
             color: primaryColor,
             paddingRight: { lg: "0px", md: "0px", xs: "50px" },
-            fontStyle:"italic"
+            fontStyle: "italic",
           }}
         >
           {title}
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

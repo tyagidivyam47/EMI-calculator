@@ -34,7 +34,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import logo from "../assets/EMI-logo1.png";
+import logo from "../assets/EMI-logo1.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./components.css";
 import { useCookies } from "react-cookie";
@@ -198,7 +198,7 @@ const Sidebar = () => {
             onClick={() => setSmOpen(false)}
           >
             <Box display={"flex"} alignItems={"center"} gap={"5px"}>
-              <img src={logo} style={{ height: "50px" }} />
+              <img src={logo} />
               <span
                 className="text-xl font-semibold text-white"
                 style={{ fontFamily: "Sixtyfour, sans-serif" }}
@@ -427,12 +427,13 @@ const Sidebar = () => {
         <DrawerLg variant="permanent" open={open}>
           <DrawerHeader>
             <Box display={"flex"} alignItems={"center"} gap={"5px"}>
-              <img src={logo} style={{ height: "50px" }} />
+              <img src={logo} />
               <span
                 className="text-xl font-semibold text-white"
                 style={{
                   fontFamily: "Sixtyfour, sans-serif",
                   color: "#FFFFFF",
+                  paddingLeft:"18px"
                 }}
               >
                 EMI Buddy
