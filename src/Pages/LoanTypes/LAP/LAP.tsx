@@ -5,6 +5,7 @@ import PaymentList from "../../../Components/PaymentList";
 import LTVInputCalculator from "../../../Components/LTVInputCalculator";
 import LTVCard from "../../../Components/LTVCard";
 import {
+  mainHeadingSm,
   mainSubHeading,
   primaryColor,
   secondaryBgColor,
@@ -50,7 +51,7 @@ const LAP = () => {
         background: secondaryBgColor,
         border: "8px solid #FFFFFF",
         width: { xl: "80%", lg: "80%", xs: "100%" },
-        padding: "10px",
+        // padding: "10px",
         marginTop: "30px",
         marginLeft: "auto",
         marginRight: "auto",
@@ -59,6 +60,20 @@ const LAP = () => {
         marginBottom: "100px",
       }}
     >
+      <Box
+        sx={{
+          marginBottom: "30px",
+          font: mainHeadingSm,
+          display: {
+            md: "none",
+            xs: "flex",
+          },
+          color: primaryColor,
+          justifyContent: "center",
+        }}
+      >
+        <u>Loan Against Property</u>
+      </Box>
       <Box
         sx={{
           background: "",
@@ -84,12 +99,12 @@ const LAP = () => {
             gap: "30px",
           }}
         >
-          <div
-            style={{
+          <Box
+            sx={{
               height: "auto",
               width: "auto",
-              padding: "30px 30px",
-              background: "#FFFFFF",
+              padding: "0px 30px",
+              // background: "red",
               borderRadius: 6,
               display: "flex",
               justifyContent: "center",
@@ -99,10 +114,10 @@ const LAP = () => {
             }}
           >
             <LTVInputCalculator sendData={getData} />
-          </div>
+          </Box>
 
           <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-            <div>
+            <Box>
               <LTVCard
                 emi={emiOp}
                 interest={totalInterest}
@@ -111,7 +126,7 @@ const LAP = () => {
                 totalMortAmt={totalMortAmt}
                 eligibility={eligibility}
               />
-            </div>
+            </Box>
 
             <Box sx={{ background: "#FFFFFF", borderRadius:2, boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
               <div>
@@ -121,7 +136,7 @@ const LAP = () => {
                     // color: primaryColor,
                     textAlign: {lg:"left", md:"left", xs:"center"},
                     padding: "10px",
-                    marginBottom: "10px",
+                    marginBottom: "0px",
                   }}
                 >
                   Equity Breakdown
@@ -135,13 +150,14 @@ const LAP = () => {
                   //   maxWidth: "400px",
                   display: "flex",
                   alignItems: "center",
-                  flexDirection:{lg:"row", md:"row", xs:"column"}
+                  flexDirection:{lg:"row", md:"row", xs:"column"},
+                  justifyContent:"space-around"
                 }}
               >
                 <div
                   style={{
                     padding: "10px",
-                    borderRight: "2px solid #d3d3d3",
+                    // borderRight: "2px solid #d3d3d3",
                     // background: "red",
                     // height:"100%"
                     // color: secondaryColor,
@@ -149,7 +165,7 @@ const LAP = () => {
                 >
                   <div
                     style={{
-                      fontSize: "18px",
+                      fontSize: "16px",
                       fontWeight: 400,
                       paddingBottom: "10px",
                     }}
@@ -159,14 +175,14 @@ const LAP = () => {
                       {currency} {bankEquity.toFixed(2)}
                     </span>
                   </div>
-                  <div style={{ fontSize: "18px", fontWeight: 400 }}>
+                  <div style={{ fontSize: "16px", fontWeight: 400 }}>
                     Customer's Equity{" "} <br/>
                     <span style={{fontWeight:"500"}}>
                       {currency} {cusEquity.toFixed(2)}
                     </span>
                   </div>
                 </div>
-                <div style={{ height: "310px", width: "310px" }}>
+                <div style={{ height: "310px", width: "310px", marginBottom:"10px" }}>
                   <Doughnut
                     data={{
                       labels: ["Bank's Equity", "Customer's Equity"],

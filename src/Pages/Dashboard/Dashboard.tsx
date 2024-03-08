@@ -172,23 +172,16 @@ const Dashboard = () => {
     >
       <Box
         sx={{
-          font: {
-            xl: mainHeading,
-            md: mainHeading,
-            sm: mainHeadingSm,
-            xs: mainHeadingSm,
+          font: mainHeadingSm,
+          display: {
+            md: "none",
+            xs: "flex",
           },
-          paddingLeft: {
-            xl: "0px",
-            md: "0px",
-            sm: "10px",
-            xs: "10px",
-          },
-          // marginBottom: "50px",
           color: primaryColor,
+          justifyContent: "center",
         }}
       >
-
+        <u>Home</u>
       </Box>
       <Box
         sx={{
@@ -201,7 +194,7 @@ const Dashboard = () => {
         <EMICalculator />
         <Box
           sx={{
-            display:"none",
+            display: "none",
             backgroundImage:
               "url(https://images.unsplash.com/photo-1581299327801-faeb40ea459e?q=80&w=1610&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
             backgroundRepeat: "no-repeat",
@@ -316,7 +309,7 @@ const Dashboard = () => {
       </Box>
       <Box
         sx={{
-          display:"none",
+          display: "none",
           marginBottom: "50px",
           marginRight: { xl: "0px", md: "0px", xs: "0" },
           paddingX: { xl: "50px", md: "50px", xs: "10px" },

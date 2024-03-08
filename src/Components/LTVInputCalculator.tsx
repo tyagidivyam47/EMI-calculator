@@ -8,6 +8,7 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -26,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 import { IRootState } from "../store";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 const salRes = 75;
 const empRes = 70;
@@ -184,18 +186,28 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
   }, [unfilled]);
 
   return (
-    <Box>
+    <Box
+    // bgcolor={'red'}
+    >
       <Box display={"flex"}>
         <Box
           display={"flex"}
           flexDirection={"column"}
           gap={"10px"}
           // borderRight={"2px solid #d3d3d3"}
-          paddingRight={"15px"}
+          // paddingRight={"15px"}
+          width={"380px"}
+          paddingTop={"20px"}
         >
-          <div style={{ fontSize: "20px", fontWeight: "600" }}>
+          <Box
+            sx={{
+              display: { md: "flex", xs: "none" },
+              fontSize: "20px",
+              fontWeight: "600",
+            }}
+          >
             Loan Against Property
-          </div>
+          </Box>
           <Box>
             <div
               style={{
@@ -217,7 +229,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               type="number"
               name="inAmount"
               //   disabled={disableAmount}
-              sx={{ background: "#FFFFFF" }}
+              sx={{ background: "#FFFFFF", width: "100%" }}
               InputProps={{
                 style: { height: "41px" },
                 startAdornment: (
@@ -261,7 +273,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               value={inInterest}
               name="inInterest"
               type="number"
-              sx={{ background: "#FFFFFF" }}
+              sx={{ background: "#FFFFFF", width: "100%" }}
               InputProps={{
                 style: { height: "41px" },
                 startAdornment: (
@@ -295,20 +307,17 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               >
                 Loan Tenure
               </div>
-              <div>
-                <TextField
-                  select
-                  // label="Select"
+              {/* <div style={{ marginBottom: "5px" }}>
+                <Select
                   defaultValue="Years"
-                  helperText=""
                   onChange={(e) => toggleTenureType(e.target.value)}
                   value={tenureType}
-                  variant="standard"
+                  sx={{ height: "20px", fontSize: "15px" }}
                 >
                   <MenuItem value={"Years"}>Yr</MenuItem>
                   <MenuItem value={"Months"}>Mo</MenuItem>
-                </TextField>
-              </div>
+                </Select>
+              </div> */}
             </Box>
             <Box display={"flex"}>
               <TextField
@@ -331,7 +340,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                 value={inTenure}
                 name="inTenure"
                 type="number"
-                sx={{ background: "#FFFFFF" }}
+                sx={{ background: "#FFFFFF", width: "100%" }}
                 InputProps={{
                   style: { height: "41px" },
                   startAdornment: (
@@ -342,13 +351,39 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                           height: "41px",
                           width: "40px",
                           marginLeft: "-13px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
                           color: primaryColor,
                         }}
                       >
-                        {tenureType === "Years" ? "Yr" : "Mo"}
+                        <Select
+                          defaultValue="Years"
+                          onChange={(e) => toggleTenureType(e.target.value)}
+                          value={tenureType}
+                          label={null}
+                          sx={{
+                            height: "41px",
+                            width: "41px",
+                            color: primaryColor,
+                            bgcolor: "transparent",
+                            marginLeft: "-8px",
+                            fontSize: `${
+                              tenureType === "Years" ? "16px" : "14px"
+                            }`,
+                            boxShadow: "none",
+                            ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                            "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                              { border: 0 },
+                            "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                              { border: 0 },
+                          }}
+                          IconComponent={() => (
+                            <ArrowDropDownIcon
+                              sx={{ position: "relative", left: "-18px" }}
+                            />
+                          )}
+                        >
+                          <MenuItem value={"Years"}>Yr</MenuItem>
+                          <MenuItem value={"Months"}>Mo</MenuItem>
+                        </Select>
                       </div>
                     </InputAdornment>
                   ),
@@ -368,6 +403,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                   height: "230px",
                   overflowY: "auto",
                   paddingRight: "5px",
+                  // background:"red"
                 }}
               >
                 <div
@@ -399,10 +435,12 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                     </div>
                     <div
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
+                        // display: "flex",
+                        // alignItems: "center",
+                        // gap: "10px",
                         cursor: "pointer",
+                        // background:"red",
+                        width: "100%",
                       }}
                     >
                       <TextField
@@ -418,7 +456,11 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                             : `${index + 1}th Mortgage`
                         }
                         // label={`Morgage ${index + 1}, In ${currency}`}
-                        sx={{ background: "#FFFFFF" }}
+                        sx={{
+                          background: "#FFFFFF",
+                          width: "100%",
+                          marginTop: "5px",
+                        }}
                         onFocus={(e) => e.target.select()}
                         // disabled={!ltvActive}
                         onChange={(e) => {
@@ -525,7 +567,12 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
         </Box>
       </Box>
 
-      <Box display={"flex"} marginTop={"12px"} marginLeft={"25px"}>
+      <Box
+        display={"flex"}
+        marginTop={"12px"}
+        marginLeft={"25px"}
+        sx={{ paddingBottom: { md: "10px", xs: "40px" } }}
+      >
         <Button
           onClick={submitClickHandler}
           variant="contained"

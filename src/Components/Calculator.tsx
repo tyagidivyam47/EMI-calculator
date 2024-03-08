@@ -3,6 +3,7 @@ import {
   Divider,
   InputAdornment,
   MenuItem,
+  Select,
   Slider,
   TextField,
   Tooltip,
@@ -21,6 +22,8 @@ import {
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 import { IRootState } from "../store";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import LoanTypes from "../Pages/LoanTypes/LoanTypes";
 
 const Calculator: React.FC<any> = ({
   inputLoanAmount,
@@ -30,7 +33,7 @@ const Calculator: React.FC<any> = ({
   amountUl,
   interestUl,
   tenureUl,
-  lg
+  lg,
 }) => {
   const currency = useSelector((state: IRootState) => state.currency.currency);
 
@@ -423,24 +426,22 @@ const Calculator: React.FC<any> = ({
                 flexDirection={"column"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                // sx={{height:"10px"}}
+                // sx={{height:"10px", overflow:"hidden"}}
                 // marginLeft={"-130px"}
-                marginTop={"-5px"}
+                // marginTop={"-5px"}
               >
-                <div>
-                  <TextField
-                    select
-                    // label="Select"
+                {/* <div>
+                  <Select
                     defaultValue="Years"
-                    helperText=""
                     onChange={(e) => toggleTenureType(e.target.value)}
                     value={tenureType}
-                    variant="standard"
+                    label={null}
+                    sx={{ height: "20px", fontSize: "15px" }}
                   >
                     <MenuItem value={"Years"}>Yr</MenuItem>
                     <MenuItem value={"Months"}>Mo</MenuItem>
-                  </TextField>
-                </div>
+                  </Select>
+                </div> */}
               </Box>
             </Box>
             <div
@@ -472,14 +473,40 @@ const Calculator: React.FC<any> = ({
                             background: "#e7edf6",
                             height: "41px",
                             width: "40px",
-                            marginLeft: "-28px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            marginLeft: "-30px",
                             color: primaryColor,
                           }}
                         >
-                          {tenureType === "Years" ? "Yr" : "Mo"}
+                          <Select
+                            defaultValue="Years"
+                            onChange={(e) => toggleTenureType(e.target.value)}
+                            value={tenureType}
+                            label={null}
+                            sx={{
+                              height: "41px",
+                              width: "41px",
+                              color: primaryColor,
+                              bgcolor: "transparent",
+                              marginLeft: "-8px",
+                              fontSize: `${
+                                tenureType === "Years" ? "16px" : "14px"
+                              }`,
+                              boxShadow: "none",
+                              ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                              "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                                { border: 0 },
+                              "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                { border: 0 },
+                            }}
+                            IconComponent={() => (
+                              <ArrowDropDownIcon
+                                sx={{ position: "relative", left: "-18px" }}
+                              />
+                            )}
+                          >
+                            <MenuItem value={"Years"}>Yr</MenuItem>
+                            <MenuItem value={"Months"}>Mo</MenuItem>
+                          </Select>
                         </div>
                       </InputAdornment>
                     ),

@@ -11,6 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../store";
 
+
 const BudgetLoan = () => {
   const currency = useSelector((state: IRootState) => state.currency.currency);
 
@@ -46,7 +47,7 @@ const BudgetLoan = () => {
         background: secondaryBgColor,
         border: "8px solid #FFFFFF",
         width: { xl: "80%", lg: "80%", xs: "100%" },
-        padding: "10px",
+        // padding: "10px",
         marginTop: "30px",
         marginLeft: "auto",
         marginRight: "auto",
@@ -106,6 +107,8 @@ const BudgetLoan = () => {
             overflow: "hidden",
             margin: "auto",
             boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            // bgcolor:"red",
+            maxHeight: "339px",
           }}
         >
           <Box
@@ -137,7 +140,7 @@ const BudgetLoan = () => {
                   fontWeight: 600,
                   // borderBottom: "2px solid #d3d3d3",
                   background: "#d4e3ff",
-                  width: { md: "600px", sm: "600px", xs: "390px" },
+                  width: { md: "600px", sm: "600px", xs: "400px" },
                   marginTop: "-10px",
                   height: "100px",
                   textAlign: "center",
@@ -170,16 +173,17 @@ const BudgetLoan = () => {
                 </Box>
                 <Box
                   sx={{
+                    minWidth: { md: "500px", xs: "400px" },
                     background: secondaryBgColor,
                     paddingY: "40px",
-                    paddingX: "20px",
+                    // paddingX: "10px",
                   }}
                 >
                   <Box
                     width={"100%"}
                     display={"flex"}
                     justifyContent={"center"}
-                    gap={"40px"}
+                    gap={"15px"}
                     flexWrap={"wrap"}
                     // sx={{ flexDirection: { md: "row", xs: "column" } }}
                   >
@@ -187,8 +191,8 @@ const BudgetLoan = () => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 600,
-                        borderRight: "2px solid #FFFFFF",
-                        paddingRight: "40px",
+                        borderRight: "1px solid",
+                        paddingRight: "15px",
                         textAlign: "center",
                       }}
                     >
@@ -204,9 +208,9 @@ const BudgetLoan = () => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 600,
-                        borderRight: "2px solid #FFFFFF",
+                        borderRight: "1px solid",
                         textAlign: "center",
-                        paddingRight: "40px",
+                        paddingRight: "15px",
                       }}
                     >
                       <div>Loan Amount</div>
@@ -240,7 +244,7 @@ const BudgetLoan = () => {
         </Box>
       </Box>
 
-      <Box display={"flex"} justifyContent={"left"} marginLeft={"48px"}>
+      <Box display={"flex"} justifyContent={"left"} marginLeft={{md:"48px", xs:"0px"}}>
         <Box
           sx={{
             background: "#FFFFFF",

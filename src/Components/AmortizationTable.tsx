@@ -12,13 +12,11 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { extraLSecondaryColor } from "../Theme";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 
-
 function Row({ row, index, year }: any) {
-  const currency = useSelector((state:IRootState)=> state.currency.currency);
+  const currency = useSelector((state: IRootState) => state.currency.currency);
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -40,13 +38,13 @@ function Row({ row, index, year }: any) {
           {currency} {parseFloat(row.annInterest).toFixed(2)}
         </TableCell>
         <TableCell align="right">
-        {currency} {parseFloat(row.annPrincipal).toFixed(2)}
+          {currency} {parseFloat(row.annPrincipal).toFixed(2)}
         </TableCell>
         <TableCell align="right">
-        {currency} {parseFloat(row.annPayment).toFixed(2)}
+          {currency} {parseFloat(row.annPayment).toFixed(2)}
         </TableCell>
         <TableCell align="right">
-        {currency} {parseFloat(row.annUnpaid).toFixed(2)}
+          {currency} {parseFloat(row.annUnpaid).toFixed(2)}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -60,12 +58,22 @@ function Row({ row, index, year }: any) {
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontWeight: "bold" }}>Month</TableCell>
-                    <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }}>Interest</TableCell>
-                    <TableCell sx={{ fontWeight: "bold", minWidth:"0px" }}>Principal</TableCell>
-                    <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+                    <TableCell sx={{ fontWeight: "bold", minWidth: "120px" }}>
+                      Interest
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", minWidth: "0px" }}>
+                      Principal
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: "bold", minWidth: "120px" }}
+                      align="right"
+                    >
                       Payment
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+                    <TableCell
+                      sx={{ fontWeight: "bold", minWidth: "120px" }}
+                      align="right"
+                    >
                       Unpaid
                     </TableCell>
                   </TableRow>
@@ -76,10 +84,18 @@ function Row({ row, index, year }: any) {
                       <TableCell component="th" scope="row">
                         {index + 1}
                       </TableCell>
-                      <TableCell>{currency} {monRow.interest.toLocaleString("en-IN")}</TableCell>
-                      <TableCell>{currency} {monRow.principal.toLocaleString("en-IN")}</TableCell>
-                      <TableCell align="right">{currency} {monRow.payment.toLocaleString("en-IN")}</TableCell>
-                      <TableCell align="right">{currency} {monRow.unpaid.toLocaleString("en-IN")}</TableCell>
+                      <TableCell>
+                        {currency} {monRow.interest.toLocaleString("en-IN")}
+                      </TableCell>
+                      <TableCell>
+                        {currency} {monRow.principal.toLocaleString("en-IN")}
+                      </TableCell>
+                      <TableCell align="right">
+                        {currency} {monRow.payment.toLocaleString("en-IN")}
+                      </TableCell>
+                      <TableCell align="right">
+                        {currency} {monRow.unpaid.toLocaleString("en-IN")}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -93,7 +109,6 @@ function Row({ row, index, year }: any) {
 }
 
 const AmortizationTable = ({ data }: any) => {
-
   const [ammData, setAmmData] = React.useState([]);
 
   React.useEffect(() => {
@@ -143,16 +158,40 @@ const AmortizationTable = ({ data }: any) => {
           <TableRow>
             <TableCell />
             <TableCell sx={{ fontWeight: "bold" }}>Year</TableCell>
-            <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+            <TableCell
+              sx={{
+                fontWeight: "bold",
+                minWidth: { md: "120px", xs: "128px" },
+              }}
+              align="right"
+            >
               Interest
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+            <TableCell
+              sx={{
+                fontWeight: "bold",
+                minWidth: { md: "120px", xs: "138px" },
+              }}
+              align="right"
+            >
               Principal
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+            <TableCell
+              sx={{
+                fontWeight: "bold",
+                minWidth: { md: "120px", xs: "138px" },
+              }}
+              align="right"
+            >
               Payment
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold", minWidth:"120px" }} align="right">
+            <TableCell
+              sx={{
+                fontWeight: "bold",
+                minWidth: { md: "120px", xs: "138px" },
+              }}
+              align="right"
+            >
               Unpaid
             </TableCell>
           </TableRow>

@@ -1,4 +1,10 @@
-import { Box, InputAdornment, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   extraLPrimaryColor,
@@ -8,6 +14,7 @@ import {
   smText,
 } from "../Theme";
 import { giveEMI, toggleTenure } from "./calculate-emi";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const InputCalculator: React.FC<any> = ({
   amountLabel,
@@ -193,20 +200,17 @@ const InputCalculator: React.FC<any> = ({
             // marginLeft={"-130px"}
             marginTop={"-5px"}
           >
-            <div>
-              <TextField
-                select
-                // label="Select"
+            {/* <div>
+              <Select
                 defaultValue="Years"
-                helperText=""
                 onChange={(e) => toggleTenureType(e.target.value)}
                 value={tenureType}
-                variant="standard"
+                sx={{ height: "20px", fontSize: "15px" }}
               >
                 <MenuItem value={"Years"}>Yr</MenuItem>
                 <MenuItem value={"Months"}>Mo</MenuItem>
-              </TextField>
-            </div>
+              </Select>
+            </div> */}
           </Box>
         </Box>
         <Box display={"flex"}>
@@ -234,13 +238,37 @@ const InputCalculator: React.FC<any> = ({
                       height: "41px",
                       width: "40px",
                       marginLeft: "-13px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
                       color: primaryColor,
                     }}
                   >
-                    {tenureType === "Years" ? "Yr" : "Mo"}
+                    <Select
+                      defaultValue="Years"
+                      onChange={(e) => toggleTenureType(e.target.value)}
+                      value={tenureType}
+                      label={null}
+                      sx={{
+                        height: "41px",
+                        width: "41px",
+                        color: primaryColor,
+                        bgcolor: "transparent",
+                        marginLeft: "-8px",
+                        fontSize: `${tenureType === "Years" ? "16px" : "14px"}`,
+                        boxShadow: "none",
+                        ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                          { border: 0 },
+                        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                          { border: 0 },
+                      }}
+                      IconComponent={() => (
+                        <ArrowDropDownIcon
+                          sx={{ position: "relative", left: "-18px" }}
+                        />
+                      )}
+                    >
+                      <MenuItem value={"Years"}>Yr</MenuItem>
+                      <MenuItem value={"Months"}>Mo</MenuItem>
+                    </Select>
                   </div>
                 </InputAdornment>
               ),

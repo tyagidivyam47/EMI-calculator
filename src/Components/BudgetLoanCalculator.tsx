@@ -3,6 +3,7 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
+  Select,
   Slider,
   TextField,
   Tooltip,
@@ -20,6 +21,7 @@ import {
 } from "../Theme";
 // import { Input } from "postcss";
 import InfoIcon from "@mui/icons-material/Info";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useSelector } from "react-redux";
 import { giveEMI, toggleTenure } from "./calculate-emi";
 import { IRootState } from "../store";
@@ -170,9 +172,8 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
           <Box>
             <div
               style={{
-                fontWeight: "600",
-                color: primaryColor,
-                paddingBottom: "6px",
+                font: labelFont,
+                marginBottom: "6px",
               }}
             >
               Enter your Monthly Budget
@@ -218,20 +219,17 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
               >
                 Loan Tenure
               </div>
-              <div>
-                <TextField
-                  select
-                  // label="Select"
+              {/* <div style={{marginBottom:"5px"}}>
+                <Select
                   defaultValue="Years"
-                  helperText=""
                   onChange={(e) => toggleTenureType(e.target.value)}
                   value={tenureType}
-                  variant="standard"
+                  sx={{ height: "20px", fontSize: "15px" }}
                 >
                   <MenuItem value={"Years"}>Yr</MenuItem>
                   <MenuItem value={"Months"}>Mo</MenuItem>
-                </TextField>
-              </div>
+                </Select>
+              </div> */}
             </Box>
             <Box
             // display={"flex"}
@@ -246,7 +244,11 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                   name="tenure"
                   type="number"
                   onFocus={(e) => e.target.select()}
-                  sx={{ background: "#FFFFFF", display: "flex", minWidth:"350px" }}
+                  sx={{
+                    background: "#FFFFFF",
+                    display: "flex",
+                    minWidth: "350px",
+                  }}
                   inputProps={{ step: "any" }}
                   InputProps={{
                     style: { height: "41px" },
@@ -258,13 +260,39 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                             height: "41px",
                             width: "40px",
                             marginLeft: "-13px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
                             color: primaryColor,
                           }}
                         >
-                          {tenureType === "Years" ? "Yr" : "Mo"}
+                          <Select
+                            defaultValue="Years"
+                            onChange={(e) => toggleTenureType(e.target.value)}
+                            value={tenureType}
+                            label={null}
+                            sx={{
+                              height: "41px",
+                              width: "41px",
+                              color: primaryColor,
+                              bgcolor: "transparent",
+                              marginLeft: "-8px",
+                              fontSize: `${
+                                tenureType === "Years" ? "16px" : "14px"
+                              }`,
+                              boxShadow: "none",
+                              ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                              "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                                { border: 0 },
+                              "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                { border: 0 },
+                            }}
+                            IconComponent={() => (
+                              <ArrowDropDownIcon
+                                sx={{ position: "relative", left: "-18px" }}
+                              />
+                            )}
+                          >
+                            <MenuItem value={"Years"}>Yr</MenuItem>
+                            <MenuItem value={"Months"}>Mo</MenuItem>
+                          </Select>
                         </div>
                       </InputAdornment>
                     ),
@@ -294,9 +322,8 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
             <Box>
               <div
                 style={{
-                  fontWeight: "600",
-                  color: primaryColor,
-                  paddingBottom: "6px",
+                  font: labelFont,
+                  marginBottom: "6px",
                 }}
               >
                 Enter the Interest Rate

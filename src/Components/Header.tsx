@@ -64,6 +64,7 @@ const Header = () => {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: { md: "left", xs: "center" },
           backgroundColor: "#FFFFFF",
           height: "64px",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
@@ -81,6 +82,7 @@ const Header = () => {
         </div>
         <Box
           sx={{
+            display: { md: "block", xs: "none" },
             marginLeft: "80px",
             color: primaryColor,
             paddingRight: { lg: "0px", md: "0px", xs: "50px" },

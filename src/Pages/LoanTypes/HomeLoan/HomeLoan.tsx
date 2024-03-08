@@ -13,6 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Calculator from "../../../Components/Calculator";
 import {
   labelFont,
+  mainHeadingSm,
   primaryColor,
   secondaryBgColor,
   secondaryColor,
@@ -297,6 +298,11 @@ const HomeLoan = () => {
         borderRadius: 5,
       }}
     >
+      <Box
+        sx={{ font: mainHeadingSm, textAlign: "center", marginBottom: "50px" }}
+      >
+        Home Loan Calulator
+      </Box>
       {unfilled && (
         <div className="absolute bottom-3 right-5">
           <Alert variant="filled" severity="error">
@@ -330,17 +336,21 @@ const HomeLoan = () => {
               maxHeight: "10px",
             }}
           >
-            Advanced Details{" "}
-            {!accOpen && (
-              <span style={{ paddingLeft: "20px" }}>
-                <AddIcon style={{ fontWeight: 900, fontSize: "28px" }} />
-              </span>
-            )}
-            {accOpen && (
-              <span style={{ paddingLeft: "20px" }}>
-                <RemoveIcon style={{ fontWeight: 900, fontSize: "28px" }} />
-              </span>
-            )}
+            <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+              <div>Advanced Details </div>
+              <div>
+                {!accOpen && (
+                  <span style={{}}>
+                    <AddIcon style={{ fontWeight: 900, fontSize: "28px" }} />
+                  </span>
+                )}
+                {accOpen && (
+                  <span style={{}}>
+                    <RemoveIcon style={{ fontWeight: 900, fontSize: "28px" }} />
+                  </span>
+                )}
+              </div>
+            </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 10 }}>
             <div style={{ borderRadius: 10 }}>
@@ -683,8 +693,7 @@ const HomeLoan = () => {
           <PaymentList paymentList={monthlyPayList} currency={currency} />
         </div>
 
-        <Box sx={{              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
-}}>
+        <Box sx={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
           <PaymentList paymentList={totalPayList} currency={currency} />
         </Box>
       </Box>

@@ -186,18 +186,18 @@ const Sidebar = () => {
 
   return (
     <Box>
-      <Box>
+      <Box sx={{}}>
         <SwipeableDrawer
           onOpen={() => setSmOpen(true)}
           onClose={() => setSmOpen(false)}
           open={smOpen}
         >
           <Box
-            sx={{ width: 250 }}
+            sx={{ width: 250, overflowX:"hidden" }}
             role="presentation"
             onClick={() => setSmOpen(false)}
           >
-            <Box display={"flex"} alignItems={"center"} gap={"5px"}>
+            <Box display={"flex"} alignItems={"center"} gap={"5px"} padding={'10px'} >
               <img src={logo} />
               <span
                 className="text-xl font-semibold text-white"
@@ -271,7 +271,7 @@ const Sidebar = () => {
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={text}
+                        primary={index === 0 ? "Home" : text}
                         sx={{
                           opacity: open ? 1 : 0,
                           color:
@@ -406,7 +406,7 @@ const Sidebar = () => {
       >
         <Box
           onClick={() => setSmOpen(true)}
-          sx={{ position: "absolute", right: "15px", top: "25px", zIndex: 100 }}
+          sx={{ position: "fixed", left: "15px", top: "25px", zIndex: 100 }}
         >
           <MenuIcon />
         </Box>
