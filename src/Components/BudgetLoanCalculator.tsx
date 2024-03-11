@@ -148,7 +148,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
         details?.emi * details?.tenureInMonths -
         totalAmount_1
       ).toFixed(2);
-      sendData(budget, tenure, totalAmount_1, interest, totalInt);
+      sendData(budget, tenure, totalAmount_1, interest, totalInt, tenureType);
       return;
     }
     const totalAmount =
@@ -158,7 +158,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
       details?.emi * details?.tenureInMonths -
       totalAmount
     ).toFixed(2);
-    sendData(budget, tenure, totalAmount, interest, totalInt);
+    sendData(budget, tenure, totalAmount, interest, totalInt, tenureType);
     // calculateEMI(budget, tenure, totalAmount, interest);
     // sendData(budget, tenure, totalAmount);
   }, [budget, tenure, interest]);
@@ -268,6 +268,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                             onChange={(e) => toggleTenureType(e.target.value)}
                             value={tenureType}
                             label={null}
+                            disableUnderline
                             sx={{
                               height: "41px",
                               width: "41px",
@@ -277,12 +278,18 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                               fontSize: `${
                                 tenureType === "Years" ? "16px" : "14px"
                               }`,
+                              outline: "none",
                               boxShadow: "none",
-                              ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                              "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                                { border: 0 },
-                              "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                { border: 0 },
+                              ".MuiOutlinedInput-notchedOutline": { borderStyle: "none" },
+                              // "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                              //   { border: 0 },
+                              // "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                              //   { border: 0 },
+                              // "& .Mui-focused .MuiOutlinedInput-notchedOutline":
+                              //   {
+                              //     border: "1px solid red",
+                              //     borderRadius: "5px 5px 0 0",
+                              //   },
                             }}
                             IconComponent={() => (
                               <ArrowDropDownIcon
@@ -333,11 +340,32 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                 onChange={handleChange}
                 value={interest}
                 type="tel"
-                label="In %"
+                // label="In %"
                 name="interest"
                 onFocus={(e) => e.target.select()}
                 //   disabled={disableAmount}
                 sx={{ background: "#FFFFFF", display: "flex" }}
+                InputProps={{
+                  style: { height: "41px" },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <div
+                        style={{
+                          background: "#e7edf6",
+                          height: "41px",
+                          width: "40px",
+                          marginLeft: "-13px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          color: primaryColor,
+                        }}
+                      >
+                        %
+                      </div>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Box>
           </Box>

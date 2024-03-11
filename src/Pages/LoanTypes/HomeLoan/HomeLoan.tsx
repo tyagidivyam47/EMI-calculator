@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { IRootState } from "../../../store";
+import FAQ from "../../../Components/FAQ";
+import { homeLoanFaq } from "../../../faqs";
 
 const HomeLoan = () => {
   // console.log(currency);
@@ -285,6 +287,10 @@ const HomeLoan = () => {
     }, 4000);
   }, [unfilled]);
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -321,7 +327,7 @@ const HomeLoan = () => {
           style={{ borderRadius: 20 }}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon style={{ color: "#FFFFFF" }} />}
+            expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
             sx={{
@@ -336,9 +342,13 @@ const HomeLoan = () => {
               maxHeight: "10px",
             }}
           >
-            <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              width={"100%"}
+            >
               <div>Advanced Details </div>
-              <div>
+              {/* <div>
                 {!accOpen && (
                   <span style={{}}>
                     <AddIcon style={{ fontWeight: 900, fontSize: "28px" }} />
@@ -349,7 +359,7 @@ const HomeLoan = () => {
                     <RemoveIcon style={{ fontWeight: 900, fontSize: "28px" }} />
                   </span>
                 )}
-              </div>
+              </div> */}
             </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 10 }}>
@@ -765,6 +775,9 @@ const HomeLoan = () => {
             }}
           />
         </Box>
+      </Box>
+      <Box sx={{ marginTop: "80px" }}>
+        <FAQ data={homeLoanFaq} />
       </Box>
     </Box>
   );

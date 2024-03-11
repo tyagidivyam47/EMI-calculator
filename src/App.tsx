@@ -58,16 +58,26 @@ function App() {
             </Box>
           )}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/calculator" element={<EMICalculator />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Navigate to="/Dashboard" />} />
+            <Route path="/EMI Calculator" element={<Dashboard />} />
+            {/* <Route path="/calculator" element={<EMICalculator />} /> */}
+            <Route path="/Dashboard" element={<Home />} />
             <Route path="/Home Loan" element={<HomeLoan />} />
             <Route path="/Loan Against Property" element={<LAP />} />
             <Route path="/Loan as per budget" element={<BudgetLoan />} />
 
-            <Route path="/Car Loan" element={<OtherLoan type="Car Loan Calculator" />} />
-            <Route path="/Education Loan" element={<OtherLoan type="Education Loan Calculator" />} />
-            <Route path="/Personal Loan" element={<OtherLoan type="Personal Loan Calculator" />} />
+            <Route
+              path="/Car Loan"
+              element={<OtherLoan type="Car Loan Calculator" />}
+            />
+            <Route
+              path="/Education Loan"
+              element={<OtherLoan type="Education Loan Calculator" />}
+            />
+            <Route
+              path="/Personal Loan"
+              element={<OtherLoan type="Personal Loan Calculator" />}
+            />
           </Routes>
         </Box>
       </ThemeProvider>

@@ -152,6 +152,10 @@ const Dashboard = () => {
 
   const handleChangeTemp = () => {};
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   // useEffect(() => {
   //   navigate('/calculator')
   // }, []);
@@ -170,7 +174,7 @@ const Dashboard = () => {
         // height: "100vh",
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           font: mainHeadingSm,
           display: {
@@ -182,7 +186,7 @@ const Dashboard = () => {
         }}
       >
         <u>Home</u>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           marginBottom: "50px",

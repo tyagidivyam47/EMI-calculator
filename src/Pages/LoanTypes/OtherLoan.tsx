@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { mainHeading, mainHeadingSm, secondaryBgColor } from "../../Theme";
 import { Box } from "@mui/material";
 import Calculator from "../../Components/Calculator";
+import FAQ from "../../Components/FAQ";
+import { emiCalcFaq } from "../../faqs";
 
 const OtherLoan: React.FC<any> = ({ type }) => {
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, [type]);
   return (
     <Box
       sx={{
@@ -36,6 +41,9 @@ const OtherLoan: React.FC<any> = ({ type }) => {
         }}
       >
         <Calculator lg={true} />
+      </Box>
+      <Box sx={{ marginTop: "80px" }}>
+        <FAQ data={emiCalcFaq} />
       </Box>
     </Box>
   );

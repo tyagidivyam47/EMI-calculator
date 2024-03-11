@@ -49,6 +49,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
 import GiteIcon from "@mui/icons-material/Gite";
 import SavingsIcon from "@mui/icons-material/Savings";
+import HomeIcon from "@mui/icons-material/Home";
+import CalculateIcon from "@mui/icons-material/Calculate";
 // import d from "../assets/"
 
 const drawerWidth = 250;
@@ -103,7 +105,7 @@ const DrawerLg = styled(MuiDrawer, {
   }),
 }));
 
-const links = ["Dashboard", "Loan Types"];
+const links = ["Dashboard", "EMI Calculator", "Loan Types"];
 const loanTypes = [
   "Home Loan",
   "Car Loan",
@@ -160,29 +162,20 @@ const Sidebar = () => {
   useEffect(() => {
     const path = window.location.pathname;
     switch (path) {
-      case "/Dashboard":
+      case "/":
         setIndexActive(0);
         break;
-      case "/Loan%20Types":
+      case "/EMI%20Calculator":
         setIndexActive(1);
         break;
-      case "/Request%20Management":
+      case "/Loan%20Types":
         setIndexActive(2);
         break;
-      case "/Profile":
-        setIndexActive(3);
-        break;
       default:
-        setIndexActive(4);
+        setIndexActive(0);
         break;
     }
   }, []);
-
-  const logoutHandler = () => {
-    removeCookie("auth_token");
-    removeCookie("user_id");
-    navigate("/");
-  };
 
   return (
     <Box>
@@ -193,11 +186,16 @@ const Sidebar = () => {
           open={smOpen}
         >
           <Box
-            sx={{ width: 250, overflowX:"hidden" }}
+            sx={{ width: 250, overflowX: "hidden" }}
             role="presentation"
             onClick={() => setSmOpen(false)}
           >
-            <Box display={"flex"} alignItems={"center"} gap={"5px"} padding={'10px'} >
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              gap={"5px"}
+              padding={"10px"}
+            >
               <img src={logo} />
               <span
                 className="text-xl font-semibold text-white"
@@ -212,9 +210,9 @@ const Sidebar = () => {
                 <NavLink
                   key={index}
                   to={text === "Loan Types" ? loanTypes[0] : links[index]}
-                  style={{ background: "red", textDecoration: "none" }}
+                  style={{ textDecoration: "none" }}
                   onClick={() => {
-                    if (index === 1) {
+                    if (index === 2) {
                       setListOpen(!listOpen);
                       setListActInd(0);
                     } else {
@@ -223,7 +221,6 @@ const Sidebar = () => {
                     }
                     setIndexActive(index);
                   }}
-                  // className={({ isActive }) => (isActive ? "activeLink" : "")}
                 >
                   <ListItem
                     key={text}
@@ -433,7 +430,7 @@ const Sidebar = () => {
                 style={{
                   fontFamily: "Sixtyfour, sans-serif",
                   color: "#FFFFFF",
-                  paddingLeft:"18px"
+                  paddingLeft: "18px",
                 }}
               >
                 EMI Buddy
@@ -459,10 +456,12 @@ const Sidebar = () => {
             {links.map((text, index) => (
               <NavLink
                 key={index}
-                to={text === "Loan Types" ? loanTypes[listActInd] : links[index]}
+                to={
+                  text === "Loan Types" ? loanTypes[listActInd] : links[index]
+                }
                 style={{ background: "red", textDecoration: "none" }}
                 onClick={() => {
-                  if (index === 1) {
+                  if (index === 2) {
                     setListOpen(!listOpen);
                   } else {
                     setListActInd(0);
@@ -504,10 +503,12 @@ const Sidebar = () => {
                       {index === 0 ? (
                         <DashboardIcon />
                       ) : index === 1 ? (
-                        <CreditScoreIcon />
+                        <CalculateIcon />
                       ) : index === 2 ? (
-                        <RequestQuoteIcon />
+                        <CreditScoreIcon />
                       ) : index === 3 ? (
+                        <RequestQuoteIcon />
+                      ) : index === 4 ? (
                         <AccountBoxIcon />
                       ) : (
                         <SettingsIcon />
@@ -524,7 +525,7 @@ const Sidebar = () => {
                       }}
                       style={{ fontWeight: 800, textDecoration: "none" }}
                     />
-                    {index === 1 && (
+                    {index === 2 && (
                       <div style={{ marginRight: "20px", color: "#FFFFFF" }}>
                         {!listOpen && <KeyboardArrowDownIcon />}
                         {listOpen && <KeyboardArrowUpIcon />}
@@ -534,7 +535,12 @@ const Sidebar = () => {
                 </ListItem>
               </NavLink>
             ))}
-            {listOpen && <Divider variant="inset" sx={{marginTop:"10px", background:"#ffffff"}}/>}
+            {listOpen && (
+              <Divider
+                variant="inset"
+                sx={{ marginTop: "10px", background: "#ffffff" }}
+              />
+            )}
             <ListItem>
               <Collapse in={listOpen} timeout="auto" unmountOnExit>
                 {loanTypes.map((loanType, index) => (
@@ -557,7 +563,7 @@ const Sidebar = () => {
                       sx={{
                         display: "block",
                         // marginTop: "20px",
-                        marginLeft:"5px"
+                        marginLeft: "5px",
                       }}
                     >
                       <ListItemButton

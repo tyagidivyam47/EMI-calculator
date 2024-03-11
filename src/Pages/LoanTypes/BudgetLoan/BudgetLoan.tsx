@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BudgetLoanCalculator from "../../../Components/BudgetLoanCalculator";
 import { Doughnut } from "react-chartjs-2";
 import {
@@ -10,7 +10,8 @@ import {
 } from "../../../Theme";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../store";
-
+import FAQ from "../../../Components/FAQ";
+import { budgetFaq } from "../../../faqs";
 
 const BudgetLoan = () => {
   const currency = useSelector((state: IRootState) => state.currency.currency);
@@ -30,6 +31,7 @@ const BudgetLoan = () => {
     totalInterest: number,
     currTenureType: string
   ) => {
+    // console.log(currTenureType)
     // console.log(emiValue, " : ", tenureValue, " : ",amountValue, " : ",interestRate, " : ",totalInterest )
     setEmi(+emiValue);
     setTenure(+tenureValue);
@@ -40,6 +42,9 @@ const BudgetLoan = () => {
   };
 
   // console.log(tenureType)
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   return (
     <Box
@@ -71,15 +76,11 @@ const BudgetLoan = () => {
             gap: "30px",
           }}
           style={{
-            // maxWidth: "500px",
-            // border: `2px solid ${secondaryColor}`,
             padding: "20px",
             borderRadius: 20,
           }}
         >
-          <div style={{ font: "600 26px Raleway, serif" }}>
-            {/* LTV Calculator */}
-          </div>
+          <div style={{ font: "600 26px Raleway, serif" }}></div>
           <div
             style={{
               height: "auto",
@@ -147,10 +148,9 @@ const BudgetLoan = () => {
                 }}
               >
                 <Box sx={{ marginTop: "20px" }}>
-                  Your total principal amount is <br />
-                  {currency}{" "}
+                  Your total loan amount is <br />
                   <span style={{ fontSize: "32px", fontWeight: 700 }}>
-                    {amount}
+                    {currency} {amount}
                   </span>
                 </Box>
               </Box>
@@ -198,9 +198,8 @@ const BudgetLoan = () => {
                     >
                       <div>Total Interest</div>
                       <div>
-                        {currency}{" "}
                         <span style={{ fontSize: "22px" }}>
-                          {totalInterest || 0}
+                          {currency} {totalInterest || 0}
                         </span>
                       </div>
                     </div>
@@ -213,10 +212,10 @@ const BudgetLoan = () => {
                         paddingRight: "15px",
                       }}
                     >
-                      <div>Loan Amount</div>
+                      <div>Principal Amount</div>
                       <div>
-                        {currency}{" "}
                         <span style={{ fontSize: "22px" }}>
+                          {currency}{" "}
                           {amount - totalInterest > 0
                             ? amount - totalInterest
                             : amount}
@@ -244,7 +243,11 @@ const BudgetLoan = () => {
         </Box>
       </Box>
 
-      <Box display={"flex"} justifyContent={"left"} marginLeft={{md:"48px", xs:"0px"}}>
+      <Box
+        display={"flex"}
+        justifyContent={"left"}
+        marginLeft={{ md: "48px", xs: "0px" }}
+      >
         <Box
           sx={{
             background: "#FFFFFF",
@@ -280,6 +283,9 @@ const BudgetLoan = () => {
             }}
           />
         </Box>
+      </Box>
+      <Box sx={{ marginTop: "80px" }}>
+        <FAQ data={budgetFaq} />
       </Box>
     </Box>
   );

@@ -492,7 +492,9 @@ const Calculator: React.FC<any> = ({
                                 tenureType === "Years" ? "16px" : "14px"
                               }`,
                               boxShadow: "none",
-                              ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                              ".MuiOutlinedInput-notchedOutline": {
+                                borderStyle: "none",
+                              },
                               "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                                 { border: 0 },
                               "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":

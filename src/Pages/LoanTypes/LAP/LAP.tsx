@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputCalculator from "../../../Components/InputCalculator";
 import PaymentList from "../../../Components/PaymentList";
 import LTVInputCalculator from "../../../Components/LTVInputCalculator";
@@ -14,6 +14,8 @@ import {
 import { Doughnut, Pie } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../store";
+import FAQ from "../../../Components/FAQ";
+import { lapFaq } from "../../../faqs";
 
 const LAP = () => {
   const currency = useSelector((state: IRootState) => state.currency.currency);
@@ -45,6 +47,11 @@ const LAP = () => {
     setBankEquity(isEligibile ? +totalLoan : totalLoan - totalMortgage);
     setCusEquity(isEligibile ? totalMortgage - totalLoan : 0);
   };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -109,14 +116,14 @@ const LAP = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
               // border: "1px solid #d3d3d3",
             }}
           >
             <LTVInputCalculator sendData={getData} />
           </Box>
 
-          <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
+          <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
             <Box>
               <LTVCard
                 emi={emiOp}
@@ -128,13 +135,19 @@ const LAP = () => {
               />
             </Box>
 
-            <Box sx={{ background: "#FFFFFF", borderRadius:2, boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
+            <Box
+              sx={{
+                background: "#FFFFFF",
+                borderRadius: 2,
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }}
+            >
               <div>
                 <Box
                   sx={{
                     font: "600 20px Raleway, serif",
                     // color: primaryColor,
-                    textAlign: {lg:"left", md:"left", xs:"center"},
+                    textAlign: { lg: "left", md: "left", xs: "center" },
                     padding: "10px",
                     marginBottom: "0px",
                   }}
@@ -150,8 +163,8 @@ const LAP = () => {
                   //   maxWidth: "400px",
                   display: "flex",
                   alignItems: "center",
-                  flexDirection:{lg:"row", md:"row", xs:"column"},
-                  justifyContent:"space-around"
+                  flexDirection: { lg: "row", md: "row", xs: "column" },
+                  justifyContent: "space-around",
                 }}
               >
                 <div
@@ -170,19 +183,25 @@ const LAP = () => {
                       paddingBottom: "10px",
                     }}
                   >
-                    Bank's Equity {" "} <br/>
-                    <span style={{fontWeight:"500"}}>
+                    Bank's Equity <br />
+                    <span style={{ fontWeight: "500" }}>
                       {currency} {bankEquity.toFixed(2)}
                     </span>
                   </div>
                   <div style={{ fontSize: "16px", fontWeight: 400 }}>
-                    Customer's Equity{" "} <br/>
-                    <span style={{fontWeight:"500"}}>
+                    Customer's Equity <br />
+                    <span style={{ fontWeight: "500" }}>
                       {currency} {cusEquity.toFixed(2)}
                     </span>
                   </div>
                 </div>
-                <div style={{ height: "310px", width: "310px", marginBottom:"10px" }}>
+                <div
+                  style={{
+                    height: "310px",
+                    width: "310px",
+                    marginBottom: "10px",
+                  }}
+                >
                   <Doughnut
                     data={{
                       labels: ["Bank's Equity", "Customer's Equity"],
@@ -200,6 +219,9 @@ const LAP = () => {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box sx={{ marginTop: "80px" }}>
+        <FAQ data={lapFaq} />
       </Box>
     </Box>
   );

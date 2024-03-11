@@ -26,6 +26,9 @@ const Header = () => {
   useEffect(() => {
     const path = window.location.pathname;
     switch (path) {
+      case "/EMI%20Calculator":
+        setTitle("EMI Calculator");
+        break;
       case "/Dashboard":
         setTitle("Dashboard");
         break;
@@ -48,7 +51,7 @@ const Header = () => {
         setTitle("Loan Types • Loan as per budget");
         break;
       default:
-        setTitle("Loan Types > Loan");
+        setTitle("");
         break;
     }
   }, [window.location.pathname]);

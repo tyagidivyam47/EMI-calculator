@@ -307,17 +307,6 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
               >
                 Loan Tenure
               </div>
-              {/* <div style={{ marginBottom: "5px" }}>
-                <Select
-                  defaultValue="Years"
-                  onChange={(e) => toggleTenureType(e.target.value)}
-                  value={tenureType}
-                  sx={{ height: "20px", fontSize: "15px" }}
-                >
-                  <MenuItem value={"Years"}>Yr</MenuItem>
-                  <MenuItem value={"Months"}>Mo</MenuItem>
-                </Select>
-              </div> */}
             </Box>
             <Box display={"flex"}>
               <TextField
@@ -369,7 +358,9 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                               tenureType === "Years" ? "16px" : "14px"
                             }`,
                             boxShadow: "none",
-                            ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                            ".MuiOutlinedInput-notchedOutline": {
+                              borderStyle: "none",
+                            },
                             "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                               { border: 0 },
                             "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
@@ -435,9 +426,9 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                     </div>
                     <div
                       style={{
-                        // display: "flex",
-                        // alignItems: "center",
-                        // gap: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
                         cursor: "pointer",
                         // background:"red",
                         width: "100%",
@@ -491,37 +482,6 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                           ),
                         }}
                       />
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "5px",
-                        justifyContent: "end",
-                        marginLeft: "auto",
-                      }}
-                    >
-                      {index === extraProperties.length - 1 && (
-                        <div
-                          onClick={propertyAddHandler}
-                          style={{
-                            display: "flex",
-                            justifyContent: "end",
-                            marginLeft: "auto",
-                            marginTop: "3px",
-                          }}
-                        >
-                          <AddCircleIcon
-                            sx={{
-                              background: "#eaf7fc",
-                              color: "#0292ce",
-                              border: "1px solid #0292ce",
-                              borderRadius: 100,
-                              fontWeight: "600",
-                              cursor: "pointer",
-                            }}
-                          />
-                        </div>
-                      )}
                       {extraProperties.length > 1 && (
                         <div
                           onClick={() => {
@@ -549,6 +509,63 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                         </div>
                       )}
                     </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        justifyContent: "end",
+                        marginLeft: "auto",
+                      }}
+                    >
+                      {/* {index === extraProperties.length - 1 && (
+                        <div
+                          onClick={propertyAddHandler}
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            marginLeft: "auto",
+                            marginTop: "3px",
+                          }}
+                        >
+                          <AddCircleIcon
+                            sx={{
+                              background: "#eaf7fc",
+                              color: "#0292ce",
+                              border: "1px solid #0292ce",
+                              borderRadius: 100,
+                              fontWeight: "600",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </div>
+                      )} */}
+                      {/* {extraProperties.length > 1 && (
+                        <div
+                          onClick={() => {
+                            let tempProperty = [...extraProperties];
+                            tempProperty.splice(index, 1);
+                            setExtraProperties(tempProperty);
+                          }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "end",
+                            marginLeft: "auto",
+                            marginTop: "3px",
+                          }}
+                        >
+                          <CloseIcon
+                            sx={{
+                              background: "#ffe6e8",
+                              color: "#ff9097",
+                              border: "1px solid #ff9097",
+                              borderRadius: 100,
+                              fontWeight: "600",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </div>
+                      )} */}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -569,14 +586,28 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
 
       <Box
         display={"flex"}
+        justifyContent={"center"}
+        gap={"10px"}
         marginTop={"12px"}
         marginLeft={"25px"}
         sx={{ paddingBottom: { md: "10px", xs: "40px" } }}
       >
+        <Button variant="outlined" onClick={propertyAddHandler}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              marginLeft: "auto",
+              marginTop: "3px",
+            }}
+          >
+            Add Mortgage
+          </div>
+        </Button>
         <Button
           onClick={submitClickHandler}
           variant="contained"
-          sx={{ marginX: "auto" }}
+          // sx={{ marginX: "auto" }}
         >
           Submit
         </Button>

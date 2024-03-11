@@ -5,7 +5,7 @@ import {
   Box,
 } from "@mui/material";
 import React from "react";
-import SouthIcon from "@mui/icons-material/South";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   lightPrimaryColor,
   lightSecondaryColor,
@@ -19,22 +19,23 @@ const FAQ: React.FC<any> = ({ data }) => {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      alignItems={"center"}
+      // alignItems={"center"}
       justifyContent={"center"}
-      margin={"auto"}
+      marginLeft={"32px"}
       gap={"16px"}
       paddingRight={"20px"}
     >
       <div
         style={{
-          font: mainSubHeading,
-          color: secondaryColor,
-          marginBottom: "16px",
+          font: "600 26px/30px Raleway, serif",
+          // color: ,
+          // marginBottom: "1px",
+          textAlign:"left"
         }}
       >
         Frequently Asked Questions
       </div>
-      <div style={{ overflowY: "auto", height: "500px" }}>
+      <div style={{}}>
         {data &&
           data?.map((e:any) => (
             <div style={{}}>
@@ -43,20 +44,20 @@ const FAQ: React.FC<any> = ({ data }) => {
                   minHeight: "100px",
                   // borderRadius: "10px",
                   // marginRight: "60px",
-                  marginTop: "30px",
+                  marginTop: "10px",
                   marginBottom: "10px",
                   marginRight: "10px",
                 }}
               >
                 <AccordionSummary
-                  expandIcon={<SouthIcon style={{ color: "#FFFFFF" }} />}
+                  expandIcon={<KeyboardArrowDownIcon style={{ color: "#FFFFFF" }} />}
                   aria-controls="panel1-content"
                   id="panel1-header"
                   sx={{
                     display: "flex",
                     alignItems: "center",
                     minHeight: "100px",
-                    font: "500 22px Raleway, serif",
+                    font: {md: "500 22px Raleway, serif", xs:"500 16px Raleway, serif"},
                     color: "#FFFFFF",
                     background: lightSecondaryColor,
                     // borderRadius: "10px",
