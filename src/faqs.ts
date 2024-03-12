@@ -57,6 +57,12 @@ export const lapFaq = [
 export const budgetFaq = [
   {
     summary:
+      "What is Loan as per budget?",
+    details:
+      "The loan as per budget takes your total monthly budget and gives all the details about the loan that you will get based on your monthly budget.",
+  },
+  {
+    summary:
       "How do I calculate the total loan amount and the EMI for a personal loan?",
     details:
       "You can use this loan EMI calculator to easily calculate the total loan amount and the EMI for different loan scenarios . You just need to enter your monthly budget, the interest rate, and the loan tenure, and the calculator will show you the total loan amount, monthly repayment, the interest component, and the total outflow.",

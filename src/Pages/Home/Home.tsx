@@ -20,6 +20,9 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import CalculateIcon from "@mui/icons-material/Calculate";
 
 const Home = () => {
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <Box
       sx={{
@@ -43,8 +46,8 @@ const Home = () => {
             fontSize: "32px",
             marginBottom: "56px",
             // marginTop: "156px",
-            textAlign:"center"
-          }
+            textAlign: "center",
+          },
         }}
       >
         Dashboard
