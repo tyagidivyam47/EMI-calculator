@@ -30,7 +30,8 @@ const InputCalculator: React.FC<any> = ({
   const [inTenure, setInTenure] = useState(tenure);
   const [inAmount, setInAmount] = useState(totalLoanAmount);
   const [tenureType, setTenureType] = useState("Years");
-
+  const [openSel, setOpenSel] = useState(false);
+  
   const calculateEMI = () => {
     if (!Number(inInterest) || !Number(inTenure) || !Number(inAmount)) {
       return;
@@ -242,6 +243,8 @@ const InputCalculator: React.FC<any> = ({
                     }}
                   >
                     <Select
+                      onClick={() => setOpenSel(!openSel)}
+                      open={openSel}
                       defaultValue="Years"
                       onChange={(e) => toggleTenureType(e.target.value)}
                       value={tenureType}
@@ -264,7 +267,12 @@ const InputCalculator: React.FC<any> = ({
                       }}
                       IconComponent={() => (
                         <ArrowDropDownIcon
-                          sx={{ position: "relative", left: "-18px" }}
+                          sx={{
+                            position: "relative",
+                            left: "-18px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setOpenSel(!openSel)}
                         />
                       )}
                     >

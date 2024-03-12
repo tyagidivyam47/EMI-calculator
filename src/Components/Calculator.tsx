@@ -47,6 +47,7 @@ const Calculator: React.FC<any> = ({
   const [tenureError, setTenureError] = useState("input");
   const [rateOfInterestError, setRateOfInterestError] = useState("input");
   const [tenureType, setTenureType] = useState("Years");
+  const [openSel, setOpenSel] = useState(false);
 
   const [cookies, setCookie, removeCookie] = useCookies([
     "auth_token",
@@ -478,6 +479,8 @@ const Calculator: React.FC<any> = ({
                           }}
                         >
                           <Select
+                            onClick={() => setOpenSel(!openSel)}
+                            open={openSel}
                             defaultValue="Years"
                             onChange={(e) => toggleTenureType(e.target.value)}
                             value={tenureType}
@@ -499,10 +502,12 @@ const Calculator: React.FC<any> = ({
                                 { border: 0 },
                               "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                                 { border: 0 },
+                              // background:"red"
                             }}
                             IconComponent={() => (
                               <ArrowDropDownIcon
-                                sx={{ position: "relative", left: "-18px" }}
+                                sx={{ position: "relative", left: "-18px", cursor:"pointer" }}
+                                onClick={() => setOpenSel(!openSel)}
                               />
                             )}
                           >

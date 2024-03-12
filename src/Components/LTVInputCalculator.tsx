@@ -57,6 +57,7 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
   const [allPropValue, setAllPropValue] = useState(0);
   const [totalLoanAmount, setTotalLoanAmount] = useState(0);
   const [eligible, setEligible] = useState(false);
+  const [openSel, setOpenSel] = useState(false);
 
   const calculateEMI = () => {
     if (!Number(inInterest) || !Number(inTenure) || !Number(inAmount)) {
@@ -344,6 +345,8 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                         }}
                       >
                         <Select
+                          onClick={() => setOpenSel(!openSel)}
+                          open={openSel}
                           defaultValue="Years"
                           onChange={(e) => toggleTenureType(e.target.value)}
                           value={tenureType}
@@ -368,7 +371,12 @@ const LTVInputCalculator: React.FC<any> = ({ sendData }) => {
                           }}
                           IconComponent={() => (
                             <ArrowDropDownIcon
-                              sx={{ position: "relative", left: "-18px" }}
+                              sx={{
+                                position: "relative",
+                                left: "-18px",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => setOpenSel(!openSel)}
                             />
                           )}
                         >

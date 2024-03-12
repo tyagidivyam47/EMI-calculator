@@ -33,6 +33,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
   const [tenure, setTenure] = useState(0);
   const [interest, setInterest] = useState(0);
   const [tenureType, setTenureType] = useState("Years");
+  const [openSel, setOpenSel] = useState(false);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -264,6 +265,8 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                           }}
                         >
                           <Select
+                            onClick={() => setOpenSel(!openSel)}
+                            open={openSel}
                             defaultValue="Years"
                             onChange={(e) => toggleTenureType(e.target.value)}
                             value={tenureType}
@@ -280,7 +283,9 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                               }`,
                               outline: "none",
                               boxShadow: "none",
-                              ".MuiOutlinedInput-notchedOutline": { borderStyle: "none" },
+                              ".MuiOutlinedInput-notchedOutline": {
+                                borderStyle: "none",
+                              },
                               // "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                               //   { border: 0 },
                               // "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
@@ -293,7 +298,12 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                             }}
                             IconComponent={() => (
                               <ArrowDropDownIcon
-                                sx={{ position: "relative", left: "-18px" }}
+                                sx={{
+                                  position: "relative",
+                                  left: "-18px",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => setOpenSel(!openSel)}
                               />
                             )}
                           >
