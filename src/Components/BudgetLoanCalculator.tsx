@@ -50,7 +50,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
       return;
     }
     if (name === "budget") {
-      setBudget(+value);
+      setBudget(value);
       return;
     }
     if (name === "tenure") {
@@ -63,14 +63,14 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
       if (tenureType === "Months" && !Number.isInteger(+value)) {
         return;
       }
-      setTenure(+value);
+      setTenure(value);
       return;
     }
     if (name === "interest" && value > 99) {
       return;
     }
     if (name === "interest") {
-      setInterest(+value);
+      setInterest(value);
     }
   };
 
@@ -349,7 +349,7 @@ const BudgetLoanCalculator: React.FC<any> = ({ sendData }) => {
                 helperText={""}
                 onChange={handleChange}
                 value={interest}
-                type="tel"
+                type="number"
                 // label="In %"
                 name="interest"
                 onFocus={(e) => e.target.select()}

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import React, { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import {
@@ -52,62 +52,68 @@ const Home = () => {
       >
         Dashboard
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1px",
+          alignItems: "center",
+        }}
+      >
+        {/* <Box sx={{ fontSize: "26px", textAlign: "center" }}>
+          Featured Calculators
+        </Box> */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            background: primaryColor,
-            borderRadius: 15,
-            width: { md: "450px", xs: "340px" },
-            marginX: "auto",
-            // marginX: {md:"300px", xs:"0"},
-            paddingTop: "30px",
-            paddingBottom: "30px",
-            marginBottom: "32px",
-            ":hover": {
-              transition: "0.3s",
-              background: lightPrimaryColor,
-              boxShadow:
-                "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
-            },
+            maxWidth: "400px",
+            marginRight: { lg: "40px", xs: "0px" },
+            borderBottom: "1px solid black",
           }}
         >
-          <Link
-            to={"/EMI Calculator"}
-            style={{
-              textDecoration: "none",
-              color: primaryColor,
-              width: "100%",
-            }}
-          >
+          <Link to={"/EMI Calculator"} style={{ textDecoration: "none" }}>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                // maxWidth:"400px",
+                gap: "10px",
+                padding: "20px 80px",
+                borderRadius: 5,
+                ":hover": {
+                  transition: "0.5s",
+                  ".icons": {
+                    color: secondaryColor,
+                  },
+                },
               }}
             >
-              <CalculateIcon
-                sx={{ width: "180px", height: "180px", color: "#ffffff" }}
-              />
-            </Box>
-            <Box
-              sx={{
-                fontSize: { md: "32px", xs: "28px" },
-                color: "#ffffff",
-                textAlign: "center",
-              }}
-            >
-              EMI Calculator
+              <Box
+                sx={{
+                  width: "100px",
+                  height: "100px",
+                  background: "#ffffff",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 100,
+                }}
+              >
+                <CalculateIcon
+                  className="icons"
+                  sx={{
+                    color: lightPrimaryColor,
+                    width: "50px",
+                    height: "50px",
+                  }}
+                />
+              </Box>
+              <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
+                EMI Calculator
+              </Box>
             </Box>
           </Link>
-        </Box>
-        <Box sx={{ fontSize: "26px", textAlign: "center" }}>
-          Featured Calculators
         </Box>
         <Box>
           <Box
@@ -120,14 +126,14 @@ const Home = () => {
               },
               justifyContent: "center",
               gap: "60px",
-              background: lightPrimaryColor,
+              // background: lightPrimaryColor,
               borderRadius: 15,
               marginX: "25px",
               paddingTop: "50px",
               paddingBottom: "50px",
               marginBottom: "32px",
-              boxShadow:
-                "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
+              // boxShadow:
+              //   "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
             }}
           >
             <Link to={"/Home Loan"} style={{ textDecoration: "none" }}>
@@ -170,8 +176,8 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
-                  Home Loan Calculator
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
+                  Home Loan
                 </Box>
               </Box>
             </Link>
@@ -215,8 +221,8 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
-                  Car Loan Calculator
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
+                  Car Loan
                 </Box>
               </Box>
             </Link>
@@ -260,8 +266,8 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
-                  Education Loan Calculator
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
+                  Education Loan
                 </Box>
               </Box>
             </Link>
@@ -305,8 +311,8 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
-                  Personal Loan Calculator
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
+                  Personal Loan
                 </Box>
               </Box>
             </Link>
@@ -353,7 +359,7 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
                   Loan Against Property
                 </Box>
               </Box>
@@ -398,7 +404,7 @@ const Home = () => {
                     }}
                   />
                 </Box>
-                <Box sx={{ color: "#ffffff", fontSize: "18px" }}>
+                <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
                   Loan as per budget
                 </Box>
               </Box>
