@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import {
   lightPrimaryColor,
   lightSecondaryColor,
+  primaryBgColor,
   primaryColor,
   secondaryBgColor,
   secondaryColor,
@@ -18,6 +19,7 @@ import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility
 import GiteIcon from "@mui/icons-material/Gite";
 import SavingsIcon from "@mui/icons-material/Savings";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import calciIcon from "../../assets/calciIcons.svg";
 
 const Home = () => {
   useEffect(() => {
@@ -36,6 +38,7 @@ const Home = () => {
         marginBottom: "40px",
         borderRadius: 5,
         font: "600 16px Raleway, serif",
+        paddingBottom:"90px"
       }}
     >
       <Box
@@ -55,9 +58,10 @@ const Home = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          gap: "1px",
-          alignItems: "center",
+          flexDirection: {lg:"row", xs:"column-reverse"},
+          justifyContent:"space-between"
+          // gap: "1px",
+          // alignItems: "center",
         }}
       >
         {/* <Box sx={{ fontSize: "26px", textAlign: "center" }}>
@@ -69,52 +73,7 @@ const Home = () => {
             marginRight: { lg: "40px", xs: "0px" },
             borderBottom: "1px solid black",
           }}
-        >
-          <Link to={"/EMI Calculator"} style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                // maxWidth:"400px",
-                gap: "10px",
-                padding: "20px 80px",
-                borderRadius: 5,
-                ":hover": {
-                  transition: "0.5s",
-                  ".icons": {
-                    color: secondaryColor,
-                  },
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  width: "100px",
-                  height: "100px",
-                  background: "#ffffff",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 100,
-                }}
-              >
-                <CalculateIcon
-                  className="icons"
-                  sx={{
-                    color: lightPrimaryColor,
-                    width: "50px",
-                    height: "50px",
-                  }}
-                />
-              </Box>
-              <Box sx={{ color: lightPrimaryColor, fontSize: "18px" }}>
-                EMI Calculator
-              </Box>
-            </Box>
-          </Link>
-        </Box>
+        ></Box>
         <Box>
           <Box
             display={"grid"}
@@ -411,6 +370,48 @@ const Home = () => {
             </Link>
           </Box>
         </Box>
+        <Link to={"/EMI Calculator"} style={{ textDecoration: "none" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              // maxWidth:"400px",
+              gap: "10px",
+              padding: "20px 80px",
+              borderRadius: 5,
+              ":hover": {
+                transition: "1s",
+                ".icons": {
+                  color: secondaryColor,
+                },
+                ".titleP":{
+                  color: primaryColor
+                }
+              },
+            }}
+          >
+            <Box
+              sx={{
+                width: "100px",
+                height: "100px",
+                background: "#ffffff",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 100,
+                marginTop:"20px",
+              }}
+              
+            >
+              <img src={calciIcon} style={{ height: "160px", paddingBottom:"30px" }} />
+            </Box>
+            <Box className="titleP" sx={{ color: secondaryBgColor, fontSize: "20px" }}>
+              EMI Calculator
+            </Box>
+          </Box>
+        </Link>
       </Box>
     </Box>
   );
