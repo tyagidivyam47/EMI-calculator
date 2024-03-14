@@ -19,7 +19,6 @@ import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility
 import GiteIcon from "@mui/icons-material/Gite";
 import SavingsIcon from "@mui/icons-material/Savings";
 import CalculateIcon from "@mui/icons-material/Calculate";
-import calciIcon from "../../assets/calciIcons.svg";
 
 const Home = () => {
   useEffect(() => {
@@ -57,9 +56,9 @@ const Home = () => {
       </Box>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: {lg:"row", xs:"column-reverse"},
-          justifyContent:"space-between"
+          // display: "flex",
+          // flexDirection: {lg:"row", xs:"column-reverse"},
+          // justifyContent:"space-between"
           // gap: "1px",
           // alignItems: "center",
         }}
@@ -71,7 +70,7 @@ const Home = () => {
           sx={{
             maxWidth: "400px",
             marginRight: { lg: "40px", xs: "0px" },
-            borderBottom: "1px solid black",
+            // borderBottom: "1px solid black",
           }}
         ></Box>
         <Box>
@@ -370,48 +369,7 @@ const Home = () => {
             </Link>
           </Box>
         </Box>
-        <Link to={"/EMI Calculator"} style={{ textDecoration: "none" }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              // maxWidth:"400px",
-              gap: "10px",
-              padding: "20px 80px",
-              borderRadius: 5,
-              ":hover": {
-                transition: "1s",
-                ".icons": {
-                  color: secondaryColor,
-                },
-                ".titleP":{
-                  color: primaryColor
-                }
-              },
-            }}
-          >
-            <Box
-              sx={{
-                width: "100px",
-                height: "100px",
-                background: "#ffffff",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 100,
-                marginTop:"20px",
-              }}
-              
-            >
-              <img src={calciIcon} style={{ height: "160px", paddingBottom:"30px" }} />
-            </Box>
-            <Box className="titleP" sx={{ color: secondaryBgColor, fontSize: "20px" }}>
-              EMI Calculator
-            </Box>
-          </Box>
-        </Link>
+        
       </Box>
     </Box>
   );
